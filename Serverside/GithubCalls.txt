@@ -1,0 +1,4 @@
+https://api.github.com/repos/AP-Elektronica-ICT/iot-studentrepo/contributors --> Mensen in een repo
+https://api.github.com/repos/AP-Elektronica-ICT/ipd_2016-ipd16_body_water_meter/stats/contributors --> Wie zit in een repo en hoeveel commits
+https://api.github.com/repos/AP-Elektronica-ICT/ipd_2016-ipd16_body_water_meter/stats/commit_activity --> Wekelijkse activiteit
+https://api.github.com/repos/AP-Elektronica-ICT/ipd_2016-ipd16_body_water_meter/stats/participation --> Totaal aantal wekelijks commits

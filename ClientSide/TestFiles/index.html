@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+
+		function readTextFile(file)
+		{	
+			
+			var doc = "file:///C:/Users/bryan/Dropbox/bryan/GitHub/Automatisering%20BAP/CA_BAPAutomatisering/ClientSide/TestFiles/Info.md"
+			var doc2 = "Info.md"
+		    var rawFile = new XMLHttpRequest();
+		    rawFile.open("GET", doc, true);
+		    rawFile.onreadystatechange = function ()
+		    {
+		    	
+		        if(rawFile.readyState === 4)
+		        {
+		            if(rawFile.status === 200 || rawFile.status == 0)
+		            {
+		                var allText = rawFile.responseText;
+		                alert(allText);
+
+		                var getNaam = allText.substring(allText.indexOf("tagnaam:") + 9, allText.indexOf("naamtag") - 1);
+		                console.log(getNaam);
+
+		                var getGitnaam = allText.substring(allText.indexOf("taggitnaam:") + 12, allText.indexOf("gitnaamtag") - 1);
+		                console.log(getGitnaam);
+
+		                var getReponaam = allText.substring(allText.indexOf("tagreponaam:") + 13, allText.indexOf("reponaamtag") - 1);
+		                console.log(getReponaam);
+
+		                var getPromotor = allText.substring(allText.indexOf("tagpromotor:") + 13, allText.indexOf("promotortag") - 1);
+		                console.log(getPromotor);
+
+		                var getPhone = allText.substring(allText.indexOf("tagphone:") + 10, allText.indexOf("phonetag") - 1);
+		                console.log(getPhone);
+
+		                var getAddress = allText.substring(allText.indexOf("tagaddress:") + 12, allText.indexOf("addresstag") - 1);
+		                console.log(getAddress);
+		                
+
+		          
+
+		                
+		            }
+		        }
+		    }
+		    rawFile.send(null);
+		}
+	</script>
+</head>
+<body>
+	<button onclick="readTextFile()">ClickMe</button>
+</body>
+</html>

@@ -2,3 +2,6 @@ https://api.github.com/repos/AP-Elektronica-ICT/iot-studentrepo/contributors -->
 https://api.github.com/repos/AP-Elektronica-ICT/ipd_2016-ipd16_body_water_meter/stats/contributors --> Wie zit in een repo en hoeveel commits
 https://api.github.com/repos/AP-Elektronica-ICT/ipd_2016-ipd16_body_water_meter/stats/commit_activity --> Wekelijkse activiteit
 https://api.github.com/repos/AP-Elektronica-ICT/ipd_2016-ipd16_body_water_meter/stats/participation --> Totaal aantal wekelijks commits
+
+
+PULL FILE VAN GITHUB https://raw.githubusercontent.com/kayelst/do_Ansible_ElstKay/master/README.md

@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('127.0.0.1:27017/BapAutomizer');
+console.log(db);
 
 var routes = require('../routes/index');
 var users = require('../routes/users');

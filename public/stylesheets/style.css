@@ -6,3 +6,32 @@ body {
 a {
   color: #00B7FF;
 }
+
+.panel{
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+
+
+}
+.SignIn-fix{
+  margin-right: 30;
+  margin-bottom: 20;
+}
+
+.searchbar-fix{
+  margin-top: 10;
+  margin-bottom: 10;
+}
+
+.list-fix{
+  height: 40px;
+}
+
+.glyphicon-download-alt{
+  height: 26px;
+}
+
+.glyphicon-search{
+  height: 20px;
+}

@@ -1,1 +1,0 @@
-start chrome --allow-file-access-from-files file:///C:/Users/bryan/Dropbox/bryan/GitHub/Automatisering%20BAP/CA_BAPAutomatisering/ClientSide/TestFiles/index.html

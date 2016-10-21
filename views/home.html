@@ -131,21 +131,27 @@
  	 			</div>
  	 		</div>
  	 		<div class="col-md-8 col-lg-10 col-sm-8 col-xs-8" style="background-color:lightblue;">
+
  	 			<div>ProjectName Student name</div>
+
 	 			<div class="btn-group btn-group-justified" role="group">
 					<div class="btn-group" role="group">
-					    <button ng-click="value = '1'" type="button" class="btn btn-default">RepoStats
+					    <button type="button" class="btn btn-default">
+					    RepoStats
 					    </button>
 					</div>
 					<div ng-click="value = '2'" class="btn-group" role="group">
-					    <button type="button" class="btn btn-default">RepoHulp
+					    <button type="button" class="btn btn-default" ng-click="myStyle={background-color:'red'}" ng-style="myStyle">
+					    RepoHulp
 					    </button>
 					</div>
 					<div ng-click="value = '3'" class="btn-group" role="group">
-					    <button type="button" class="btn btn-default">RepoHulp
+					    <button type="button" class="btn btn-default" ng-style="myStyle">
+					    RepoHulp
 					    </button>
 					</div>
 				</div>
+
 				<div>
 					<div ng-show="value =='1'">
 						11111111111111111

@@ -9,7 +9,12 @@ app.controller("myCtrl",function($http, $scope){
 	}*/
 
 	var vm = this;
-	$scope.value = "1";
+	$scope.isActive = false;
+
+	$scope.toggleActive = function() {
+		$scope.value = '1';
+		$scope.isActive = !$scope.isActive;
+	}
 
 	$scope.GetFile = function() {
 
@@ -26,7 +31,7 @@ app.controller("myCtrl",function($http, $scope){
 		var rawfile;
 
 		function filterInfo(rawfile) {
-			var getNaam = rawfile.substring(rawfile.indexOf("tagnaam:") + 9,
+			var getNaam = rawfile.substring(rawfile.indexOf("tagnaam") + 8,
 				rawfile.indexOf("naamtag") - 1);
 			var getGitnaam = rawfile.substring(rawfile.indexOf("taggitnaam") + 11,
 				rawfile.indexOf("gitnaamtag") - 1);
@@ -47,9 +52,9 @@ app.controller("myCtrl",function($http, $scope){
 		}
 	};
 
-	$scope.RepoInfo = function(){
+	/*$scope.RepoInfo = function(){
 		$http.get('https://api.github.com/repos/kayelst/CA_BAPAutomizer/stats/contributors').then(function (response) {
 	});
-
+*/
 
 });

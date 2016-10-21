@@ -1,12 +1,7 @@
 var app = angular.module("myapp",[]);
+var LastCommit;
+var TotalCommit = 0;
 app.controller("myCtrl",function($http, $scope){
-
-	/*$scope.GetFile = function(){
-	 Console.log("In Function")
-	 $http.get('https://raw.githubusercontent.com/kayelst/do_Ansible_ElstKay/master/README.md/').then(function(response){
-	 console.log(response);
-	 })
-	}*/
 
 	var vm = this;
 	$scope.div_value = 1;
@@ -34,7 +29,6 @@ app.controller("myCtrl",function($http, $scope){
 		$scope.btnstate_Scriptie = true;
 		$scope.div_value = 3;
 	};
-
 
 	$scope.GetFile = function() {
 
@@ -72,9 +66,20 @@ app.controller("myCtrl",function($http, $scope){
 		}
 	};
 
-	/*$scope.RepoInfo = function(){
-		$http.get('https://api.github.com/repos/kayelst/CA_BAPAutomizer/stats/contributors').then(function (response) {
-	});
-*/
+	$scope.RepoInfo = function(){
+		$http.get('https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation').then(function (response) {
+			console.log(response);
+			for( i = 0; i < response.data.all.length ; i++) {
+				console.log("in loop");
+				LastCommit = response.data.all[i];
+				TotalCommit += LastCommit;
+				console.log(LastCommit);
+				console.log(TotalCommit);
+			}
+			$scope.LastCommithtml = LastCommit;
+			$scope.TotalCommithtml = TotalCommit;
+		});
+	}
+
 
 });

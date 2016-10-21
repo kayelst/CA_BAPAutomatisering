@@ -28,7 +28,7 @@
 	<div class="page-header text-center">
   		<div class="btn-toolbar pull-right">
     		<div class="btn-group">
-     	 		<button type='button' class="btn btn-lg btn-success SignIn-fix" ng-click="GetFile">
+     	 		<button type='button' class="btn btn-lg btn-success SignIn-fix" ng-click="GetFile()">
      	 		SignIn
      	 		</button>
     		</div>
@@ -64,7 +64,7 @@
 					      	</div>
 					      	<div id="collapse1" class="panel-collapse collapse">
 					        	<div class="panel-body">
-					        		<p>Name: {{getNaam1}}</p>
+					        		<p>Name: {{SiteNaam}}</p>
 					        		<p>GitName: {{getGitNaam}}</p>
 					        		<p>Repo: {{getReponaam}}</p>
 					        		<p>Promotor: {{getPromotor}}</p>
@@ -74,7 +74,7 @@
 					      	</div>
 					    </div>
 					    <span class="input-group-btn">
-					    <button class="btn btn-default" type="submit">
+					    <button class="btn btn-default" type="submit" ng-click="RepoInfo()">
     							<i class="glyphicon glyphicon-download-alt">
     							</i>
     					</button>

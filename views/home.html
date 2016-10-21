@@ -20,9 +20,6 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
-	
-
 </head>
 <body ng-app="myapp" ng-controller="myCtrl">
 	<div class="page-header text-center">
@@ -135,31 +132,31 @@
  	 			<div>ProjectName Student name</div>
 
 	 			<div class="btn-group btn-group-justified" role="group">
-					<div class="btn-group" role="group">
-					    <button type="button" class="btn btn-default">
+					<div ng-click="Btn_RepoStats()" class="btn-group" role="group">
+					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
 					    RepoStats
 					    </button>
 					</div>
-					<div ng-click="value = '2'" class="btn-group" role="group">
-					    <button type="button" class="btn btn-default" ng-click="myStyle={background-color:'red'}" ng-style="myStyle">
+					<div ng-click="Btn_RepoHulp()" class="btn-group" role="group">
+					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Repohulp]">
 					    RepoHulp
 					    </button>
 					</div>
-					<div ng-click="value = '3'" class="btn-group" role="group">
-					    <button type="button" class="btn btn-default" ng-style="myStyle">
-					    RepoHulp
+					<div ng-click="Btn_Scriptie()" class="btn-group" role="group">
+					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Scriptie]">
+					    Scriptie
 					    </button>
 					</div>
 				</div>
 
 				<div>
-					<div ng-show="value =='1'">
+					<div ng-show="div_value =='1'">
 						11111111111111111
 					</div>
-					<div ng-show="value =='2'">
+					<div ng-show="div_value =='2'">
 						22222222222222222
 					</div>
-					<div ng-show="value =='3'">
+					<div ng-show="div_value =='3'">
 						33333333333333333
 					</div>
 				</div>

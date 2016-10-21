@@ -9,12 +9,32 @@ app.controller("myCtrl",function($http, $scope){
 	}*/
 
 	var vm = this;
-	$scope.isActive = false;
+	$scope.div_value = 1;
+	$scope.btnstate_repostats = true;
+	$scope.btnstate_Repohulp = false;
+	$scope.btnstate_Scriptie = false;
+	
+	$scope.Btn_RepoStats = function(){
+		$scope.btnstate_repostats = true;
+		$scope.btnstate_Repohulp = false;
+		$scope.btnstate_Scriptie = false;
+		$scope.div_value = 1;
+	};
 
-	$scope.toggleActive = function() {
-		$scope.value = '1';
-		$scope.isActive = !$scope.isActive;
-	}
+	$scope.Btn_RepoHulp = function(){
+		$scope.btnstate_repostats = false;
+		$scope.btnstate_Repohulp = true;
+		$scope.btnstate_Scriptie = false;
+		$scope.div_value = 2;
+	};
+
+	$scope.Btn_Scriptie = function(){
+		$scope.btnstate_repostats = false;
+		$scope.btnstate_Repohulp = false;
+		$scope.btnstate_Scriptie = true;
+		$scope.div_value = 3;
+	};
+
 
 	$scope.GetFile = function() {
 

@@ -68,6 +68,7 @@ app.controller("myCtrl",function($http, $scope){
 
 	$scope.RepoInfo = function(){
 		$http.get('https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation').then(function (response) {
+			TotalCommit = 0;
 			console.log(response);
 			for( i = 0; i < response.data.all.length ; i++) {
 				console.log("in loop");

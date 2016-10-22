@@ -26,3 +26,19 @@
 .glyphicon-search{
 	height: 20px;
 }
+
+.PrimaryColor{
+	background-color:#009688;
+}
+
+.HeaderColor{
+	background-color:#00796b;
+}
+
+.SecondaryColor{
+	background-color:#4db6ac;
+}
+
+.AccentColorSignIn{
+	background:#9c27b0;
+}

@@ -4,6 +4,8 @@ var TotalCommit = 0;
 app.controller("myCtrl",function($http, $scope){
 
 	var vm = this;
+	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
+	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	$scope.div_value = 1;
 	$scope.btnstate_repostats = true;
 	$scope.btnstate_Repohulp = false;
@@ -32,7 +34,7 @@ app.controller("myCtrl",function($http, $scope){
 
 	$scope.GetFile = function() {
 
-		$http.get('https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md').then(function (response) {
+		$http.get(apiCallInfoFile).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -67,7 +69,7 @@ app.controller("myCtrl",function($http, $scope){
 	};
 
 	$scope.RepoInfo = function(){
-		$http.get('https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation').then(function (response) {
+		$http.get(apiCallRepoInfo).then(function (response) {
 			TotalCommit = 0;
 			console.log(response);
 			for( i = 0; i < response.data.all.length ; i++) {

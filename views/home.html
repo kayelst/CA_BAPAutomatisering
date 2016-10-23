@@ -27,7 +27,7 @@
 	<div class="text-center" >
   		<div class="btn-toolbar pull-right">
     		<div class="btn-group">
-     	 		<button type='button' class="btn btn-lg SignIn-fix AccentColorSignIn" ng-click="GetFile()">
+     	 		<button type='button' class="btn btn-lg SignIn-fix AccentColorSignIn">
      	 		SignIn
      	 		</button>
     		</div>
@@ -73,7 +73,7 @@
 					      	</div>
 					    </div>
 					    <span class="input-group-btn">
-					    <button class="btn btn-default" type="submit" ng-click="RepoInfo()">
+					    <button class="btn btn-default" type="submit">
     							<i class="glyphicon glyphicon-download-alt">
     							</i>
     					</button>
@@ -155,43 +155,29 @@
 					<div ng-switch-when="1" class="my-switch-animation">
 						<p>This Weeks Commit: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
+						<div class="btn-group" role="group">
+							<div ng-click="GetFile()" class="btn-group" role="group">
+							<button type="button" class="btn btn-danger">Get Student info</button>
+							</div>
+							<div ng-click="RepoInfo()" class="btn-group" role="group">
+								<button type="button" class="btn btn-success">Get Repo Info</button>
+							</div>
+						</div>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation">
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
-						<p>blabla</p>
+						<p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p>
+						<p>Er is niemand die van pijn zelf houdt, die het zoekt en die het hebben wil, eenvoudigweg omdat het pijn is...</p>
 					</div>
 					<div ng-switch-when="3" class="my-switch-animation">
-						33333333333333333
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mollis facilisis neque, luctus vestibulum ante ultrices at. Duis fermentum vulputate blandit. Curabitur dignissim nunc a mi finibus, sit amet condimentum nibh tristique. Nunc at est sollicitudin leo congue efficitur. Etiam venenatis dictum lacus cursus fringilla. In eleifend neque eu turpis sagittis sodales. Nam ac sem rutrum nibh vulputate ultricies eu vitae arcu. Aenean ac tortor ligula. Donec et est vitae sapien tincidunt finibus id eu est.
+
+						Maecenas nec finibus augue, eu cursus urna. Proin rhoncus risus nec urna ultricies vulputate. Nam sed mauris lacus. Pellentesque iaculis consequat diam non convallis. Quisque pretium leo in quam scelerisque imperdiet. Fusce elementum ipsum quis justo consequat imperdiet. Ut lobortis arcu quis posuere varius. Ut sit amet ipsum quis enim tincidunt ornare eu eget libero. In imperdiet dolor augue, vitae vulputate est vestibulum at. Sed facilisis lorem in est cursus, et laoreet sem finibus. Etiam mauris neque, laoreet in eros sed, ultrices faucibus tortor. Pellentesque ac neque massa. In eget commodo massa. Mauris ornare nulla dolor, id laoreet ipsum aliquet vitae. Morbi eu lacus augue.
+
+						Vestibulum varius tempor ipsum, nec vehicula diam aliquam at. Cras volutpat egestas massa quis blandit. Donec ornare tortor nisl, vel venenatis ligula dignissim hendrerit. Aliquam erat volutpat. Vivamus scelerisque orci nec leo vulputate faucibus. Vivamus pretium non felis id feugiat. Mauris feugiat turpis sed metus porttitor, ut dignissim odio placerat. Mauris semper ipsum dolor, quis ornare neque tempus at. Donec sagittis augue dui, tristique egestas lacus ultrices a. Sed cursus lacus mauris, mattis placerat nunc aliquet id. Integer at aliquam erat, at placerat tellus. Aenean fringilla lacinia ex nec sollicitudin. Sed ut fermentum velit.
+
+						Aliquam erat volutpat. Duis dapibus cursus risus ut tempor. Aliquam vestibulum et tortor sed interdum. Nunc vitae lectus sapien. Vivamus in fringilla velit, eu porta ligula. Nullam vitae mattis arcu. Nam gravida porttitor sem, eleifend placerat nisi molestie nec. In faucibus nulla ac placerat tempor.
+
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales purus magna, non porttitor augue vestibulum at. Quisque sit amet iaculis leo. In venenatis purus eros, nec congue eros viverra nec. Curabitur eget auctor velit. Sed malesuada egestas gravida. Maecenas imperdiet leo nisl, tincidunt tincidunt nunc aliquet vel. Cras imperdiet dapibus facilisis. Nulla nec erat scelerisque, interdum dui vitae, ultricies felis. Donec nec ipsum pretium, sollicitudin turpis eu, finibus lorem. Quisque lacinia consequat velit, et rhoncus ligula iaculis posuere. Suspendisse ut ullamcorper urna, eu congue arcu. Vivamus a scelerisque mauris, nec euismod tortor. In venenatis non turpis sit amet auctor.
 					</div>
 				</div>
  	 		</div>

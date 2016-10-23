@@ -1,7 +1,8 @@
-var app = angular.module("myapp",[]);
+angular.module("myapp",[]);
+angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
-app.controller("myCtrl",function($http, $scope){
+angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope){
 
 	var vm = this;
 	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
@@ -86,3 +87,4 @@ app.controller("myCtrl",function($http, $scope){
 
 
 });
+

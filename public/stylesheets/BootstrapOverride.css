@@ -3,8 +3,8 @@
 	margin-bottom: 0;
 	width: 100%;
 
-
 }
+
 .SignIn-fix{
 	margin-right: 30;
 	margin-bottom: 20;
@@ -29,6 +29,7 @@
 
 .PrimaryColor{
 	background-color:#009688;
+	min-height: 100%;
 }
 
 .HeaderColor{
@@ -41,4 +42,33 @@
 
 .AccentColorSignIn{
 	background:#9c27b0;
+}
+
+.panel-body {
+  position:relative; 
+  overflow: hidden;
+  min-height: 100%;
+}
+
+.my-switch-animation.ng-enter,
+.my-switch-animation.ng-leave {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+
+  position:absolute;
+}
+
+.my-switch-animation.ng-enter {
+  left:100%;
+}
+
+.my-switch-animation.ng-leave,
+.my-switch-animation.ng-enter.ng-enter-active {
+  left:0;
+}
+
+.my-switch-animation.ng-leave.ng-leave-active {
+  left:-100%;
 }

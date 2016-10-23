@@ -6,6 +6,8 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+
 	<script src="javascripts/app.js"></script>
 
 	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
@@ -21,7 +23,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
-<body ng-app="myapp" ng-controller="myCtrl" class="HeaderColor">
+<body ng-app="theapp" ng-controller="myCtrl" class="HeaderColor">
 	<div class="text-center" >
   		<div class="btn-toolbar pull-right">
     		<div class="btn-group">
@@ -149,8 +151,8 @@
 					</div>
 				</div>
 
-				<div>
-					<div ng-show="div_value =='1'">
+				<div class="panel-body" ng-switch="div_value">
+					<div ng-switch-when="1" class="my-switch-animation">
 						<p>This Weeks Commit: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
 						<p>blabla</p>
@@ -170,10 +172,25 @@
 						<p>blabla</p>
 						<p>blabla</p>
 					</div>
-					<div ng-show="div_value =='2'">
-						22222222222222222
+					<div ng-switch-when="2" class="my-switch-animation">
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
+						<p>blabla</p>
 					</div>
-					<div ng-show="div_value =='3'">
+					<div ng-switch-when="3" class="my-switch-animation">
 						33333333333333333
 					</div>
 				</div>

@@ -5,10 +5,34 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //MongoConnection
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('127.0.0.1:27017/BapAutomizer');
-console.log(db);
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/BapAutomiserDB');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console,'connection error...'));
+db.once('open', function callback(){
+  console.log('BapAutomiserDB opened');
+});
+
+var UserInfoSchema = new mongoose.Schema({
+  name: String,
+  GitName: String,
+  Repo: String,
+  Promotor: String,
+  Phone: String,
+  Address: String,
+  Updated_At: {type: Date, default: Date.now}
+});
+
+var UserInfo = mongoose.model('Userinfo', UserInfoSchema);
+
+var userinfo = new UserInfo({name: 'Kay', GitName: 'Kayelst', Repo: 'RepoNaam', Promotor: 'Tim_Dams', Phone: '0476555636', Address: 'Kievitstraat2'});
+
+userinfo.save(function(err){
+  if(err)
+    console.log (err);
+  else
+    console.log(userinfo);
+});
 
 var routes = require('../routes/index');
 var users = require('../routes/users');

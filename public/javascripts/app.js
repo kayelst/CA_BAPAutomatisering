@@ -4,10 +4,23 @@ var LastCommit;
 var TotalCommit = 0;
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope){
 
-	var vm = this;
 	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
+
+	/*$http({method: 'GET', url: '/UserInfo'}).
+	success(function(data, status, headers, config) {
+		console.log('todos: ', data );
+	}).
+	error(function(data, status, headers, config) {
+		console.log('Oops and error', data);
+	});*/
+
+	$http.get( "/UserInfo").success(function( data ) {
+		$scope.A= data; //from your sample;
+		alert( "Load was performed. " + data );
+	});
+
 	$scope.div_value = 1;
 	$scope.btnstate_repostats = true;
 	$scope.btnstate_Repohulp = false;

@@ -9,11 +9,15 @@ var router = express.Router();
   console.log("Posted");
 });*/
 
-router.get('/:id', function (req, res, next) {
+/*router.get('/:id', function (req, res, next) {
   UserInfo.findById(req.params.id, function(err, userinfo){
     if(err) res.send(err);
     res.json(userinfo);
   });
-});
+});*/
+
+router.get('/Userinfo', function(res, req){
+	console.log("received get request");
+})
 
 module.exports = router;

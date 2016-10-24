@@ -13,6 +13,7 @@ db.once('open', function callback(){
   console.log('BapAutomiserDB opened');
 });
 
+
 var UserInfoSchema = new mongoose.Schema({
   name: String,
   GitName: String,
@@ -49,6 +50,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/UserInfo',function(req, res){
+        return res.json(userinfo);
+    });
 
 //db accessible for router
 app.use(function(req,res,next){

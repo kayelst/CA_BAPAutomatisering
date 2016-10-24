@@ -7,6 +7,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var vm = this;
 	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
+	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
 	$scope.div_value = 1;
 	$scope.btnstate_repostats = true;
 	$scope.btnstate_Repohulp = false;
@@ -43,6 +44,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				filterInfo(rawfile);
 			})
 
+		});
+
+		$http.get(apiCallRepoLink).then(function (response){
+			RepoLink = response.data.html_url;
+			$scope.getRepoLink = RepoLink;
 		});
 
 		var rawfile;

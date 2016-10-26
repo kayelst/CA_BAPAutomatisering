@@ -17,10 +17,12 @@
 
 .list-fix{
 	height: 40px;
+	width: 100%;
 }
 
-.glyphicon-download-alt{
-	height: 26px;
+.btn-width-fix {
+	width: 100%;
+	overflow: hidden;
 }
 
 .glyphicon-search{
@@ -73,3 +75,4 @@
 .my-switch-animation.ng-leave.ng-leave-active {
   left:-100%;
 }
+

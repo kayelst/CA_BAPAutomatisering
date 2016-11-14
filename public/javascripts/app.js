@@ -56,7 +56,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				console.log(response.data);
 				rawfile = response.data;
 				filterInfo(rawfile);
-			})
+			});
 
 		});
 

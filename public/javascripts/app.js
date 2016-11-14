@@ -8,6 +8,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
 	var apiCallRepoNames = "https://api.github.com/orgs/AP-Elektronica-ICT/repos";
+	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md"
 
 	/*$http({method: 'GET', url: '/UserInfo'}).
 	success(function(data, status, headers, config) {
@@ -19,7 +20,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	$http.get( "/UserInfo").success(function( data ) {
 		$scope.A= data; //from your sample;
-		alert( "Load was performed. " + data );
+		console.log( "Load was performed. " + data );
 	});
 
 	$scope.div_value = 1;
@@ -58,6 +59,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				filterInfo(rawfile);
 			});
 
+		});
+
+		$http.get(apiCallScriptie).then(function (response) {
+			rawScriptieLink = response.data.download_url;
+			$http.get(rawScriptieLink).then(function (response) {
+				console.log(response.data);
+				$scope.ScriptieData = response.data;
+				});
 		});
 
 		$http.get(apiCallRepoLink).then(function (response){

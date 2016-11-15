@@ -7,8 +7,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
-	var apiCallRepoNames = "https://api.github.com/orgs/AP-Elektronica-ICT/repos";
-	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md"
+	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md";
+	var apiCallAllStudents = "https://api.github.com/orgs/AP-Elektronica-ICT/repos";
 
 	/*$http({method: 'GET', url: '/UserInfo'}).
 	success(function(data, status, headers, config) {
@@ -118,15 +118,17 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	$scope.RepoNames = [];
 
-	$scope.apiRepoCall = function() {
-		console.log("apiRepoCall");
+	$scope.apiAllStudentsCall = function() {
+		console.log("apiAllStudendsCall");
 		$http.get(apiCallRepoNames).then(function (response){
 			console.log(response);
 			for (i = 0; i < response.data.length; i++) {
 				console.log("Looping - " + [i]);
 				RepoName = response.data[i].name;
-				$scope.RepoNames.push(RepoName);
-
+				if (RepoName.indexOf("BAP") !== -1) {
+					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
+					$scope.RepoNames.push(RepoName);
+				}
 			};
 			
 			console.log($scope.RepoNames);

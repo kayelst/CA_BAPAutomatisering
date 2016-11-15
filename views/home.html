@@ -106,6 +106,15 @@
 
 				<div class="panel-body" ng-switch="div_value">
 					<div ng-switch-when="1" class="my-switch-animation">
+						<p>Name: {{SiteNaam}}</p>
+					    <p>GitName: {{getGitNaam}}</p>
+					    <p>Repo: {{getReponaam}}</p>
+					    <p>Promotor: {{getPromotor}}</p>
+					    <p>Phone: {{getPhone}}</p>
+					    <p>Address: {{getAddress}}</p>
+						
+					</div>
+					<div ng-switch-when="2" class="my-switch-animation">
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
 						<div class="btn-group" role="group">
@@ -116,30 +125,6 @@
 								<button type="button" class="btn btn-success">Get Repo Info</button>
 							</div>
 						</div>
-					</div>
-					<div ng-switch-when="2" class="my-switch-animation">
-						<h3>TODOLIST:</h3>
-						<h4>Student info api call</h4>
-						<p>- API call met alle studenten van de organisatie maken</p>
-						<p>- Alle studenten weergeven in lijst onder searchbar</p>
-						<h4>Search functie</h4>
-						<p>- Search filter schrijven</p>
-						<p>- Sliden van list wanneer filter veranderd</p>
-						<h4>Site Layout</h4>
-						<p>- Color pallete vinden voor site / implementeren</p>
-						<p>- Regels google material design implementeren. (zie doc/MaterialDesign.md</p>
-						<p>- Afbeelding gebruiken ipv text als titel van de website</p>
-						<h4>RepoInfo</h4>
-						<p>- API call met repoinfo maken</p>
-						<p>- repoinfo-data in repoinfo-view binden</p>
-						<h4>Database</h4>
-						<p>- Alle verkregen info opslaan in database</p>
-						<p>- Alle data halen uit database en niet uit de API calls</p>
-						<h4>LogIn</h4>
-						<p>- Login database aanmaken</p>
-						<p>- Login functie schrijven</p>
-						<h4>Sugesties</h4>
-						<p>Werken met 4 buttons ipv 3 zodat er geen dropdown nodig is en de data in de view rechts van de lijst bekeken kan worden</p>
 					</div>
 					<div ng-switch-when="3" class="my-switch-animation">
 						{{ScriptieData}}

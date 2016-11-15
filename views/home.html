@@ -106,27 +106,27 @@
 
 				<div class="panel-body" ng-switch="div_value">
 					<div ng-switch-when="1" class="my-switch-animation">
+						<div ng-click="GetFile()" class="btn-group" role="group">
+							<button type="button" class="btn btn-danger">Get Student info</button>
+						</div>
 						<p>Name: {{SiteNaam}}</p>
 					    <p>GitName: {{getGitNaam}}</p>
 					    <p>Repo: {{getReponaam}}</p>
 					    <p>Promotor: {{getPromotor}}</p>
 					    <p>Phone: {{getPhone}}</p>
-					    <p>Address: {{getAddress}}</p>
-						
+					    <p>Address: {{getAddress}}</p>	
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation">
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
-						<div class="btn-group" role="group">
-							<div ng-click="GetFile()" class="btn-group" role="group">
-							<button type="button" class="btn btn-danger">Get Student info</button>
-							</div>
-							<div ng-click="RepoInfo()" class="btn-group" role="group">
-								<button type="button" class="btn btn-success">Get Repo Info</button>
-							</div>
+						<div ng-click="RepoInfo()" class="btn-group" role="group">
+							<button type="button" class="btn btn-success">Get Repo Info</button>
 						</div>
 					</div>
 					<div ng-switch-when="3" class="my-switch-animation">
+						<div ng-click="GetScriptie()" class="btn-group" role="group">
+							<button type="button" class="btn btn-success">Get Scriptie</button>
+						</div>
 						{{ScriptieData}}
 					</div>
 				</div>

@@ -75,7 +75,7 @@
 					</div>
 
 					<div ng-repeat="x in RepoNames" class="btn-group btn-width-fix" role="group">
-						<button type="button" class="btn btn-default btn-block">
+						<button type="button" ng-click="do(x)" class="btn btn-default btn-block">
 							{{x}}
 						</button>
 					</div>

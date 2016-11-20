@@ -9,6 +9,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
 	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
+	var apiCallInfo = "https://api.github.com/MyOrg1617/BAP1617_";
+	//var apiCallInfo2 = "/contents/README.md";
 
 	/*$http({method: 'GET', url: '/UserInfo'}).
 	success(function(data, status, headers, config) {
@@ -134,6 +136,12 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			
 			console.log($scope.RepoNames);
 		});
+	};
+
+	$scope.do = function(x){
+
+		
+
 	};
 
 

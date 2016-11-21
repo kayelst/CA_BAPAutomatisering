@@ -2,14 +2,23 @@ angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
-angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
 
+
+angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
 	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
 	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
 	var apiCallInfo = "https://api.github.com/MyOrg1617/BAP1617_";
+
+	//BryanCalls
+
+
+	//KayCalls
+
+
+
 	//var apiCallInfo2 = "/contents/README.md";
 
 	/*$http({method: 'GET', url: '/UserInfo'}).
@@ -51,6 +60,16 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_value = 3;
 	};
 
+	$scope.GetScriptie = function() {
+		$http.get(apiCallScriptie).then(function (response) {
+			rawScriptieLink = response.data.download_url;
+			$http.get(rawScriptieLink).then(function (response) {
+				console.log(response.data);
+				$scope.ScriptieData = response.data;
+			});
+		});
+	};
+
 	$scope.GetFile = function() {
 
 		$http.get(apiCallInfoFile).then(function (response) {
@@ -61,14 +80,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				filterInfo(rawfile);
 			});
 
-		});
-
-		$http.get(apiCallScriptie).then(function (response) {
-			rawScriptieLink = response.data.download_url;
-			$http.get(rawScriptieLink).then(function (response) {
-				console.log(response.data);
-				$scope.ScriptieData = response.data;
-				});
 		});
 
 		$http.get(apiCallRepoLink).then(function (response){
@@ -117,6 +128,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	};
 
 	var RepoName;
+
+
 
 	$scope.RepoNames = [];
 

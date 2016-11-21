@@ -2,8 +2,8 @@ angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
-
-
+var datetime;
+var PreviousAmount = 10;
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
 	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
@@ -16,7 +16,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 
 	//KayCalls
-
+	var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&until=" + datetime;
 
 
 	//var apiCallInfo2 = "/contents/README.md";
@@ -116,15 +116,31 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			TotalCommit = 0;
 			console.log(response);
 			for( i = 0; i < response.data.all.length ; i++) {
-				console.log("in loop");
 				LastCommit = response.data.all[i];
 				TotalCommit += LastCommit;
-				console.log(LastCommit);
-				console.log(TotalCommit);
 			}
 			$scope.LastCommithtml = LastCommit;
 			$scope.TotalCommithtml = TotalCommit;
 		});
+
+		var currentdate = new Date();
+		var datetime = currentdate.getFullYear() + "-"
+			+ (currentdate.getMonth()+1)  + "-"
+			+ currentdate.getDate() + "T"
+			+ currentdate.getHours() + ":"
+			+ currentdate.getMinutes() + ":"
+			+ currentdate.getSeconds() + "Z";
+		console.log(datetime);
+
+		$http.get(apiCallLogCommits).then(function(response){
+			var CurrentAmount = response.data.length;
+			console.log(CurrentAmount);
+			if (CurrentAmount > PreviousAmount){
+				console.log("Logs have been added");
+				PreviousAmount = CurrentAmount;
+			}
+		});
+
 	};
 
 	var RepoName;

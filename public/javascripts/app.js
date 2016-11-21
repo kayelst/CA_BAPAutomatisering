@@ -10,10 +10,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
 	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
-	var apiCallInfo = "https://api.github.com/MyOrg1617/BAP1617_";
+	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 
 	//BryanCalls
-
+	var apiCallInfo2 = "/contents/Info.md"
+	var apiCallRepoLink2 = 
 
 	//KayCalls
 	var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&until=" + datetime;
@@ -145,8 +146,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	var RepoName;
 
-
-
 	$scope.RepoNames = [];
 
 	$scope.apiAllStudentsCall = function() {
@@ -168,7 +167,43 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	};
 
 	$scope.do = function(x){
+		$http.get(apiCallInfo + x + apiCallInfo2).then(function (response) {
+			rawfileLink = response.data.download_url;
+			$http.get(rawfileLink).then(function (response) {
+				console.log(response.data);
+				rawInfoFile = response.data;
+				filterInfo(rawInfoFile);
+			});
 
+		});
+
+		$http.get(apiCallInfo + x).then(function (response){
+			RepoLink = response.data.html_url;
+			$scope.getRepoLink = RepoLink;
+		});
+
+	var rawInfoFile;
+
+	function filterInfo(rawInfoFile) {
+			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("tagnaam") + 8,
+				rawInfoFile.indexOf("naamtag") - 1);
+			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("taggitnaam") + 11,
+				rawInfoFile.indexOf("gitnaamtag") - 1);
+			var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("tagreponaam") + 12,
+				rawInfoFile.indexOf("reponaamtag") - 1);
+			var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("tagpromotor") + 12,
+				rawInfoFile.indexOf("promotortag") - 1);
+			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("tagphone") + 9,
+				rawInfoFile.indexOf("phonetag") - 1);
+			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("tagaddress") + 11,
+				rawInfoFile.indexOf("addresstag") - 1);
+			$scope.SiteNaam = getNaam;
+			$scope.getGitNaam = getGitnaam;
+			$scope.getReponaam = getReponaam;
+			$scope.getPromotor = getPromotor;
+			$scope.getPhone = getPhone;
+			$scope.getAddress = getAddress;
+		};
 		
 
 	};

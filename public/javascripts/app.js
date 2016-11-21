@@ -5,16 +5,16 @@ var TotalCommit = 0;
 var datetime;
 var PreviousAmount = 10;
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
-	var apiCallInfoFile = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/README.md";
+	
 	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
-	var apiCallRepoLink = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering";
 	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-
-	//BryanCalls
 	var apiCallInfo2 = "/contents/Info.md"
-	var apiCallRepoLink2 = 
+	var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&until=" + datetime;
+	
+	//BryanCalls
+	
 
 	//KayCalls
 	var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&until=" + datetime;
@@ -71,46 +71,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 	};
 
-	$scope.GetFile = function() {
-
-		$http.get(apiCallInfoFile).then(function (response) {
-			rawfileLink = response.data.download_url;
-			$http.get(rawfileLink).then(function (response) {
-				console.log(response.data);
-				rawfile = response.data;
-				filterInfo(rawfile);
-			});
-
-		});
-
-		$http.get(apiCallRepoLink).then(function (response){
-			RepoLink = response.data.html_url;
-			$scope.getRepoLink = RepoLink;
-		});
-
-		var rawfile;
-
-		function filterInfo(rawfile) {
-			var getNaam = rawfile.substring(rawfile.indexOf("tagnaam") + 8,
-				rawfile.indexOf("naamtag") - 1);
-			var getGitnaam = rawfile.substring(rawfile.indexOf("taggitnaam") + 11,
-				rawfile.indexOf("gitnaamtag") - 1);
-			var getReponaam = rawfile.substring(rawfile.indexOf("tagreponaam") + 12,
-				rawfile.indexOf("reponaamtag") - 1);
-			var getPromotor = rawfile.substring(rawfile.indexOf("tagpromotor") + 12,
-				rawfile.indexOf("promotortag") - 1);
-			var getPhone = rawfile.substring(rawfile.indexOf("tagphone") + 9,
-				rawfile.indexOf("phonetag") - 1);
-			var getAddress = rawfile.substring(rawfile.indexOf("tagaddress") + 11,
-				rawfile.indexOf("addresstag") - 1);
-			$scope.SiteNaam = getNaam;
-			$scope.getGitNaam = getGitnaam;
-			$scope.getReponaam = getReponaam;
-			$scope.getPromotor = getPromotor;
-			$scope.getPhone = getPhone;
-			$scope.getAddress = getAddress;
-		}
-	};
 
 	$scope.RepoInfo = function(){
 		$http.get(apiCallRepoInfo).then(function (response) {

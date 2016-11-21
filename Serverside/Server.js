@@ -3,6 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var PreviousAmount = 10;
 
 //MongoConnection
 var mongoose = require('mongoose');
@@ -13,6 +14,17 @@ db.once('open', function callback(){
   console.log('BapAutomiserDB opened');
 });
 
+//Hourly Call to Api
+  console.log("in the function");
+  var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&since=2016-11-15T13:1:27Z&client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
+  $http.get(apiCallLogCommits).then(function(response){
+    var CurrentAmount = response.data.length;
+    console.log(CurrentAmount);
+    if (CurrentAmount > PreviousAmount){
+      console.log("Logs have been added");
+      PreviousAmount = CurrentAmount;
+    }
+  });
 
 var UserInfoSchema = new mongoose.Schema({
   name: String,

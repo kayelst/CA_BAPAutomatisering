@@ -2,22 +2,21 @@ angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
-var datetime;
-var PreviousAmount = 10;
+var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
+var PreviousAmount = 0;
+
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
-	
-	var apiCallRepoInfo = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
-	var apiCallScriptie = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/contents/scriptie/Scriptie.md";
+	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
+	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	var apiCallInfo2 = "/contents/Info.md"
-	var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&until=" + datetime;
+	var apiCallInfo2 = "/contents/Info.md";
+	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	
 	//BryanCalls
 	
 
 	//KayCalls
-	var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&until=" + datetime;
 
 
 	//var apiCallInfo2 = "/contents/README.md";
@@ -61,56 +60,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_value = 3;
 	};
 
-	$scope.GetScriptie = function() {
-		$http.get(apiCallScriptie).then(function (response) {
-			rawScriptieLink = response.data.download_url;
-			$http.get(rawScriptieLink).then(function (response) {
-				console.log(response.data);
-				$scope.ScriptieData = response.data;
-			});
-		});
-	};
-
-
-	$scope.RepoInfo = function(){
-		$http.get(apiCallRepoInfo).then(function (response) {
-			TotalCommit = 0;
-			console.log(response);
-			for( i = 0; i < response.data.all.length ; i++) {
-				LastCommit = response.data.all[i];
-				TotalCommit += LastCommit;
-			}
-			$scope.LastCommithtml = LastCommit;
-			$scope.TotalCommithtml = TotalCommit;
-		});
-
-		var currentdate = new Date();
-		var datetime = currentdate.getFullYear() + "-"
-			+ (currentdate.getMonth()+1)  + "-"
-			+ currentdate.getDate() + "T"
-			+ currentdate.getHours() + ":"
-			+ currentdate.getMinutes() + ":"
-			+ currentdate.getSeconds() + "Z";
-		console.log(datetime);
-
-		$http.get(apiCallLogCommits).then(function(response){
-			var CurrentAmount = response.data.length;
-			console.log(CurrentAmount);
-			if (CurrentAmount > PreviousAmount){
-				console.log("Logs have been added");
-				PreviousAmount = CurrentAmount;
-			}
-		});
-
-	};
-
 	var RepoName;
 
 	$scope.RepoNames = [];
 
 	$scope.apiAllStudentsCall = function() {
 		console.log("apiCallAllStudents");
-		$http.get(apiCallAllStudents).then(function (response){
+		$http.get(apiCallAllStudents + Autho).then(function (response){
 			console.log(response);
 			for (i = 0; i < response.data.length; i++) {
 				console.log("Looping - " + [i]);
@@ -127,7 +83,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	};
 
 	$scope.do = function(x){
-		$http.get(apiCallInfo + x + apiCallInfo2).then(function (response) {
+		$http.get(apiCallInfo + x + apiCallInfo2 + Autho).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -137,14 +93,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		});
 
-		$http.get(apiCallInfo + x).then(function (response){
+		$http.get(apiCallInfo + x + Autho).then(function (response){
 			RepoLink = response.data.html_url;
 			$scope.getRepoLink = RepoLink;
 		});
 
-	var rawInfoFile;
+		var rawInfoFile;
 
-	function filterInfo(rawInfoFile) {
+		function filterInfo(rawInfoFile) {
 			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("tagnaam") + 8,
 				rawInfoFile.indexOf("naamtag") - 1);
 			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("taggitnaam") + 11,
@@ -164,7 +120,48 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			$scope.getPhone = getPhone;
 			$scope.getAddress = getAddress;
 		};
-		
+
+		$scope.RepoInfo = function(){
+			$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
+				TotalCommit = 0;
+				console.log(response);
+				for( i = 0; i < response.data.all.length ; i++) {
+					LastCommit = response.data.all[i];
+					TotalCommit += LastCommit;
+				}
+				$scope.LastCommithtml = LastCommit;
+				$scope.TotalCommithtml = TotalCommit;
+			});
+
+			var currentdate = new Date();
+			var datetime = currentdate.getFullYear() + "-"
+				+ (currentdate.getMonth()+1)  + "-"
+				+ currentdate.getDate() + "T"
+				+ currentdate.getHours() + ":"
+				+ currentdate.getMinutes() + ":"
+				+ currentdate.getSeconds() + "Z";
+			console.log(datetime);
+
+			$http.get(apiCallLogCommits + x +"/commits" + Autho +"&path=Logfiles&until=" + datetime).then(function(response){
+				var CurrentAmount = response.data.length;
+				console.log(CurrentAmount);
+				if (CurrentAmount > PreviousAmount){
+					console.log("Logs have been added");
+					PreviousAmount = CurrentAmount;
+				}
+			});
+
+		};
+
+		$scope.GetScriptie = function() {
+			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho ).then(function (response) {
+				rawScriptieLink = response.data.download_url;
+				$http.get(rawScriptieLink).then(function (response) {
+					console.log(response.data);
+					$scope.ScriptieData = response.data;
+				});
+			});
+		};
 
 	};
 

@@ -152,20 +152,26 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 
 			$scope.GetCommits = function () {
-				CommitArray = [];
+				CommitMessages = [];
 				shaArray = [];
 				$http.get(apiCallCommits + Autho).then(function(response){
 					for( i = 0; i < response.data.length ; i++) {
-						CommitArray.push(response.data[i].commit.message);
-						shaArray.push(response.data[i].sha);
+
+						CommitMessages.push(response.data[i].commit.message);
+						$scope.AllCommits = CommitMessages;
+						//shaArray.push(response.data[i].sha);
 					}
-						StudentCommits = CommitArray;
+					/*	StudentCommits = CommitArray;
 					console.log(CommitArray);
 					console.log(shaArray);
-					console.log(CommitArray[2]);
-					console.log(shaArray[2]);
+					console.log(CommitArray[2]);*/
+					console.log(AllCommits);
 
 				});
+			}
+
+			$scope.SelectCommit = function(){
+				console.log(CommitMessages[i]);
 			}
 
 		};

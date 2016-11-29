@@ -2,9 +2,10 @@ angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
+var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
 var PreviousAmount = 0;
 
-angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
+angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache, $sce){
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
@@ -16,7 +17,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	
 
 	//KayCalls
-
+	var apiCallCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits";
 
 	//var apiCallInfo2 = "/contents/README.md";
 
@@ -150,6 +151,23 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				}
 			});
 
+			$scope.GetCommits = function () {
+				CommitArray = [];
+				shaArray = [];
+				$http.get(apiCallCommits + Autho).then(function(response){
+					for( i = 0; i < response.data.length ; i++) {
+						CommitArray.push(response.data[i].commit.message);
+						shaArray.push(response.data[i].sha);
+					}
+						StudentCommits = CommitArray;
+					console.log(CommitArray);
+					console.log(shaArray);
+					console.log(CommitArray[2]);
+					console.log(shaArray[2]);
+
+				});
+			}
+
 		};
 
 		$scope.GetScriptie = function() {
@@ -158,11 +176,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$http.get(rawScriptieLink).then(function (response) {
 					console.log(response.data);
 					ScriptieRaw = response.data;
-					Converter = new Showdown.Converter();
 
-					console.log(markdown.toHTML(ScriptieRaw));
-					//ScriptieHtml = markdown.toHTML(ScriptieRaw);
-					$scope.ScriptieData = ScriptieHtml;
+					Converter = new showdown.Converter();
+					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
+					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});
 			});
 		};

@@ -120,6 +120,10 @@
 					<div ng-switch-when="2" class="my-switch-animation">
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
+						<button ng-click="GetCommits()"></button>
+						<div ng-repeat="StudentCommit in StudentCommits">
+
+						</div>
 						<div ng-click="RepoInfo()" class="btn-group" role="group">
 							<button type="button" class="btn btn-success">Get Repo Info</button>
 						</div>

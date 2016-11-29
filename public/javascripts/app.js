@@ -2,7 +2,6 @@ angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
-var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
 var PreviousAmount = 0;
 
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
@@ -158,7 +157,12 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				rawScriptieLink = response.data.download_url;
 				$http.get(rawScriptieLink).then(function (response) {
 					console.log(response.data);
-					$scope.ScriptieData = response.data;
+					ScriptieRaw = response.data;
+					Converter = new Showdown.Converter();
+
+					console.log(markdown.toHTML(ScriptieRaw));
+					//ScriptieHtml = markdown.toHTML(ScriptieRaw);
+					$scope.ScriptieData = ScriptieHtml;
 				});
 			});
 		};

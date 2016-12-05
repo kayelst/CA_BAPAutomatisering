@@ -4,20 +4,38 @@ var LastCommit;
 var TotalCommit = 0;
 var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
 var PreviousAmount = 0;
+var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
+var client_id = "?client_id=651b11583f0162b4cc91"
+var UserCode = window.location.search;
 
-angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache, $sce){
+angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache){
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	
-	//BryanCalls
-	
 
+	//BryanCalls
+	var apiLogin = "https://github.com/login/oauth/authorize"
+	var UserToken = "https://github.com/login/oauth/access_token"
+	
 	//KayCalls
+
 	var apiCallCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits";
+
+
+	// onload
+	console.log(UserCode);
+	UserCode = UserCode.replace('?code=', '&');
+	console.log(UserCode);
+	$http.post(UserToken + Autho, {"body":UserCode});
+	
+	
+	//$http.post(UserToken + Autho + UserCode);
+	
+	//window.location.replace(UserToken + Autho + UserCode);
+>>>>>>> 87c82ca46dd106ef9d4b2b5cebd5666b785515ff
 
 	//var apiCallInfo2 = "/contents/README.md";
 
@@ -65,6 +83,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.RepoNames = [];
 
 	$scope.apiAllStudentsCall = function() {
+		console.log(window.location.search);
+		console.log(UserCode);
+
 		console.log("apiCallAllStudents");
 		$http.get(apiCallAllStudents + Autho).then(function (response){
 			console.log(response);
@@ -189,6 +210,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				});
 			});
 		};
+
+	};
+
+	//Login
+	$scope.SignIn = function() {
+
+		window.location.replace(apiLogin + client_id);
 
 	};
 

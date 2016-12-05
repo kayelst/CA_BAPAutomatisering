@@ -35,7 +35,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	//$http.post(UserToken + Autho + UserCode);
 	
 	//window.location.replace(UserToken + Autho + UserCode);
->>>>>>> 87c82ca46dd106ef9d4b2b5cebd5666b785515ff
 
 	//var apiCallInfo2 = "/contents/README.md";
 
@@ -122,18 +121,18 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		var rawInfoFile;
 
 		function filterInfo(rawInfoFile) {
-			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("tagnaam") + 8,
-				rawInfoFile.indexOf("naamtag") - 1);
-			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("taggitnaam") + 11,
-				rawInfoFile.indexOf("gitnaamtag") - 1);
-			var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("tagreponaam") + 12,
-				rawInfoFile.indexOf("reponaamtag") - 1);
-			var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("tagpromotor") + 12,
-				rawInfoFile.indexOf("promotortag") - 1);
-			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("tagphone") + 9,
-				rawInfoFile.indexOf("phonetag") - 1);
-			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("tagaddress") + 11,
-				rawInfoFile.indexOf("addresstag") - 1);
+			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---naam -->") + 13,
+				rawInfoFile.indexOf("<!---gitnaam -->") - 1);
+			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---gitnaam -->") + 16,
+				rawInfoFile.indexOf("<!---reponaam -->") - 1);
+			var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---reponaam -->") + 17,
+				rawInfoFile.indexOf("<!---promotor -->") - 1);
+			var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("<!---promotor -->") + 17,
+				rawInfoFile.indexOf("<!---phone -->") - 1);
+			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("<!---phone -->") + 14,
+				rawInfoFile.indexOf("<!---address -->") - 1);
+			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("<!---address -->") + 16,
+				rawInfoFile.indexOf("<!---end -->") - 1);
 			$scope.SiteNaam = getNaam;
 			$scope.getGitNaam = getGitnaam;
 			$scope.getReponaam = getReponaam;

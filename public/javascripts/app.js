@@ -2,10 +2,9 @@ angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
-var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
 var PreviousAmount = 0;
-var Autho = "?client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
-var client_id = "?client_id=651b11583f0162b4cc91";
+var Autho = "?client_id=651b11583f0162b4cc91&client_secret=68645eb111af8b05bc8fa1f505712fd3eb213298";
+var client_id = "?client_id=651b11583f0162b4cc91"
 var UserCode = window.location.search;
 
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache) {
@@ -17,9 +16,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 
 	//BryanCalls
-	var apiLogin = "https://github.com/login/oauth/authorize";
-	var UserToken = "https://github.com/login/oauth/access_token";
-
+	var apiLogin = "https://github.com/login/oauth/authorize"
+	var UserToken = "https://github.com/login/oauth/access_token"
+	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_IssueTest/issues"
+	
 	//KayCalls
 
 	var apiCallCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits";
@@ -78,6 +78,24 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_value = 3;
 	};
 
+	$scope.div_val = 1;
+	$scope.btnstate_Issues = false;
+	$scope.btnstate_Commits = true;
+
+	$scope.Btn_Commits = function(){
+		$scope.btnstate_Issues = false;
+		$scope.btnstate_Commits = true;
+		$scope.div_val = 1;
+		//$scope.Smoggy();
+	};
+
+	$scope.Btn_Issues = function(){
+		$scope.btnstate_Issues = true;
+		$scope.btnstate_Commits = false;
+		$scope.div_val = 2;
+		$scope.Issues();
+	};
+
 	var RepoName;
 
 	$scope.RepoNames = [];
@@ -103,14 +121,17 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			}
 			;
 
-			$scope.do = function (x) {
-				$http.get(apiCallInfo + x + apiCallInfo2 + Autho).then(function (response) {
-					rawfileLink = response.data.download_url;
-					$http.get(rawfileLink).then(function (response) {
-						console.log(response.data);
-						rawInfoFile = response.data;
-						filterInfo(rawInfoFile);
-					});
+		});
+	};
+
+	$scope.do = function(x){
+		$http.get(apiCallInfo + x + apiCallInfo2 + Autho).then(function (response) {
+			rawfileLink = response.data.download_url;
+			$http.get(rawfileLink).then(function (response) {
+				console.log(response.data);
+				rawInfoFile = response.data;
+				filterInfo(rawInfoFile);
+			});
 
 				});
 
@@ -230,4 +251,41 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		};
 	};
+	//Issues
+	var IssueBody;
+	var IssueTitel;
+	var IssueNumber;
+	var IssueState;
+	$scope.IssueBodys = [];
+	$scope.IssueTitels = [];
+	$scope.IssueNumbers = [];
+	$scope.IssueStates = [];
+	$scope.Repeat = [];
+
+	$scope.Issues = function(){
+		$http.get(apiAllIssuesCall + Autho).then(function (response){
+			console.log(response);
+
+			for (var x = 0; x < response.data.length; x++) {
+				console.log("Looping - " + [x])
+				IssueBody = response.data[x].body;
+				IssueTitel = response.data[x].title;
+				IssueNumber = response.data[x].number;
+				IssueState = response.data[x].state;
+
+				$scope.IssueBodys.push(IssueBody);
+				$scope.IssueTitels.push(IssueTitel);
+				$scope.IssueNumbers.push(IssueNumber);
+				$scope.IssueStates.push(IssueState);
+				$scope.Repeat.push(IssueNumber - 1);
+
+				//console.log(IssueBodys);
+				//console.log(IssueTitels);
+				//console.log(IssueNumbers);
+
+			};
+		});
+	};
+
+
 });

@@ -125,13 +125,33 @@
 					<div ng-switch-when="2" class="my-switch-animation">
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
-						<button ng-click="GetCommits()"> View Commits</button>
+						<div ng-click="RepoInfo()" class="btn-group" role="group">
+							<button type="button" class="btn btn-primary">Get Repo Info</button>
+						</div>
+						<div class="panel-body" ng-switch="div_val">
+							<div ng-click="Btn_Commits()" class="btn-group" role="group">
+								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Commits]">Get Commits</button>
+							</div>
+							<div ng-click="Btn_Issues()" class="btn-group" role="group">
+								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Issues]">Get Issues</button>
+							</div>
+							<div ng-switch-when="1" class="my-switch-animation">
 						<div ng-repeat="StudentCommit in AllCommits track by $index">
 							<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 						</div>
-						<div ng-click="RepoInfo()" class="btn-group" role="group">
-							<button type="button" class="btn btn-success">Get Repo Info</button>
-						</div>
+							</div>
+							<div ng-switch-when="2" class="my-switch-animation">
+							<div>bal</div>
+								<div ng-repeat="x in Repeat">
+									<div>
+						        		<p>Assignee: {{IssueTitels[x]}}</p>
+						        		<p>Issue Number: {{IssueNumbers[x]}}</p>
+						        		<p>Body: {{IssueBodys[x]}}</p>
+						        		<p>State: {{IssueStates[x]}}</p>
+						    		</div>
+								</div>	
+							</div>
+						</div>	
 					</div>
 					<div ng-switch-when="3" class="my-switch-animation">
 						<div ng-click="GetScriptie()" class="btn-group" role="group">

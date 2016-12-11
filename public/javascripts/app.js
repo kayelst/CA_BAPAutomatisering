@@ -23,6 +23,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	//KayCalls
 
 	var apiCallCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits";
+	var apiCallComment = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits/";
 
 
 	// onload
@@ -144,6 +145,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		$scope.RepoInfo = function () {
 			$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
+				CommitMessages = [];
+				shaArray = [];
 				TotalCommit = 0;
 				console.log(response);
 				for (i = 0; i < response.data.all.length; i++) {
@@ -173,23 +176,28 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 
 			$scope.GetCommits = function () {
-				CommitMessages = [];
-				shaArray = [];
 				$http.get(apiCallCommits + Autho).then(function (response) {
 					for (i = 0; i < response.data.length; i++) {
 						CommitMessages.push(response.data[i].commit.message);
 						$scope.AllCommits = CommitMessages;
-						//shaArray.push(response.data[i].sha);
+						shaArray.push(response.data[i].sha);
 					}
-					console.log($scope.AllCommits);
-
 				});
 			};
 
 				$scope.idCommit = null;
-				$scope.SelectCommit = function (idCommit) {
-					$scope.idCommit = idCommit;
-					console.log(idCommit);
+				$scope.SelectCommit = function (index) {
+					console.log(index);
+					console.log(CommitMessages[index]);
+					console.log(shaArray[index]);
+					CommentSha = shaArray[index];
+					CommentInfo = test;
+					$http.post(apiCallComment + CommentSha + "/comments" + Autho, {'body': CommentInfo}, config).then(function(res){
+						console.log(res);
+						document.getElementById("comments").value = "";
+					});
+				}
+		}
 				};
 
 			$scope.GetScriptie = function () {

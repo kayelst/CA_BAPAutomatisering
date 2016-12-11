@@ -126,8 +126,8 @@
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
 						<button ng-click="GetCommits()"> View Commits</button>
-						<div ng-repeat="StudentCommit in AllCommits track by $index" ng-click="SelectCommit(StudentCommit.id)">
-							<li>Commit: {{StudentCommit}} </li>
+						<div ng-repeat="StudentCommit in AllCommits track by $index">
+							<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 						</div>
 						<div ng-click="RepoInfo()" class="btn-group" role="group">
 							<button type="button" class="btn btn-success">Get Repo Info</button>

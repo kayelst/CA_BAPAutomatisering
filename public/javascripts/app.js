@@ -45,7 +45,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	 }).
 	 error(function(data, status, headers, config) {
 	 console.log('Oops and error', data);
-	 });*/
+	});*/
 
 	$http.get("/UserInfo").success(function (data) {
 		$scope.A = data; //from your sample;
@@ -133,124 +133,121 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				filterInfo(rawInfoFile);
 			});
 
-				});
-
-				$http.get(apiCallInfo + x + Autho).then(function (response) {
-					RepoLink = response.data.html_url;
-					$scope.getRepoLink = RepoLink;
-				});
-
-				var rawInfoFile;
-
-				function filterInfo(rawInfoFile) {
-					var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---naam -->") + 13,
-						rawInfoFile.indexOf("<!---gitnaam -->") - 1);
-					var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---gitnaam -->") + 16,
-						rawInfoFile.indexOf("<!---reponaam -->") - 1);
-					var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---reponaam -->") + 17,
-						rawInfoFile.indexOf("<!---promotor -->") - 1);
-					var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("<!---promotor -->") + 17,
-						rawInfoFile.indexOf("<!---phone -->") - 1);
-					var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("<!---phone -->") + 14,
-						rawInfoFile.indexOf("<!---address -->") - 1);
-					var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("<!---address -->") + 16,
-						rawInfoFile.indexOf("<!---end -->") - 1);
-					$scope.SiteNaam = getNaam;
-					$scope.getGitNaam = getGitnaam;
-					$scope.getReponaam = getReponaam;
-					$scope.getPromotor = getPromotor;
-					$scope.getPhone = getPhone;
-					$scope.getAddress = getAddress;
-				};
-
-				$scope.RepoInfo = function () {
-					$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
-						CommitMessages = [];
-						shaArray = [];
-						TotalCommit = 0;
-						console.log(response);
-						for (i = 0; i < response.data.all.length; i++) {
-							LastCommit = response.data.all[i];
-							TotalCommit += LastCommit;
-						}
-						$scope.LastCommithtml = LastCommit;
-						$scope.TotalCommithtml = TotalCommit;
-					});
-
-					var currentdate = new Date();
-					var datetime = currentdate.getFullYear() + "-"
-						+ (currentdate.getMonth() + 1) + "-"
-						+ currentdate.getDate() + "T"
-						+ currentdate.getHours() + ":"
-						+ currentdate.getMinutes() + ":"
-						+ currentdate.getSeconds() + "Z";
-					console.log(datetime);
-
-					$http.get(apiCallLogCommits + x + "/commits" + Autho + "&path=Logfiles&until=" + datetime).then(function (response) {
-						var CurrentAmount = response.data.length;
-						console.log(CurrentAmount);
-						if (CurrentAmount > PreviousAmount) {
-							console.log("Logs have been added");
-							PreviousAmount = CurrentAmount;
-						}
-					});
-
-					$scope.GetCommits = function () {
-						$http.get(apiCallCommits + Autho).then(function (response) {
-							for (i = 0; i < response.data.length; i++) {
-								CommitMessages.push(response.data[i].commit.message);
-								$scope.AllCommits = CommitMessages;
-								shaArray.push(response.data[i].sha);
-							}
-						});
-					};
-
-					$scope.idCommit = null;
-					$scope.SelectCommit = function (index) {
-						console.log(index);
-						console.log(CommitMessages[index]);
-						console.log(shaArray[index]);
-						CommentSha = shaArray[index];
-						CommentInfo = "test";
-						var CommentInfo = prompt("Please enter your Comment for " + CommitMessages[index], "Comment");
-						if(CommentInfo != null) {
-							console.log("Posting comment");
-							var config = {headers: {'Content-Type': 'application/json'}};
-							$http.post(apiCallComment + CommentSha + "/comments" + Autho, {'body': CommentInfo}, config).then(function (res) {
-								console.log(res);
-							});
-							console.log("Comment was filled");
-						}
-						else {
-							Window.alert("Please Fill out a valid comment");
-						}
-					}
-				}
-			};
-
-			$scope.GetScriptie = function () {
-				$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho).then(function (response) {
-					rawScriptieLink = response.data.download_url;
-					$http.get(rawScriptieLink).then(function (response) {
-						console.log(response.data);
-						ScriptieRaw = response.data;
-
-						Converter = new showdown.Converter();
-						ScriptieHtml = Converter.makeHtml(ScriptieRaw);
-						$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
-					});
-				});
-			};
-
 		});
 
+		$http.get(apiCallInfo + x + Autho).then(function (response) {
+			RepoLink = response.data.html_url;
+			$scope.getRepoLink = RepoLink;
+		});
+
+		var rawInfoFile;
+
+		function filterInfo(rawInfoFile) {
+			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---naam -->") + 13,
+				rawInfoFile.indexOf("<!---gitnaam -->") - 1);
+			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---gitnaam -->") + 16,
+				rawInfoFile.indexOf("<!---reponaam -->") - 1);
+			var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---reponaam -->") + 17,
+				rawInfoFile.indexOf("<!---promotor -->") - 1);
+			var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("<!---promotor -->") + 17,
+				rawInfoFile.indexOf("<!---phone -->") - 1);
+			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("<!---phone -->") + 14,
+				rawInfoFile.indexOf("<!---address -->") - 1);
+			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("<!---address -->") + 16,
+				rawInfoFile.indexOf("<!---end -->") - 1);
+			$scope.SiteNaam = getNaam;
+			$scope.getGitNaam = getGitnaam;
+			$scope.getReponaam = getReponaam;
+			$scope.getPromotor = getPromotor;
+			$scope.getPhone = getPhone;
+			$scope.getAddress = getAddress;
+		};
+
+		$scope.RepoInfo = function () {
+			$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
+				CommitMessages = [];
+				shaArray = [];
+				TotalCommit = 0;
+				console.log(response);
+				for (i = 0; i < response.data.all.length; i++) {
+					LastCommit = response.data.all[i];
+					TotalCommit += LastCommit;
+				}
+				$scope.LastCommithtml = LastCommit;
+				$scope.TotalCommithtml = TotalCommit;
+			});
+
+			var currentdate = new Date();
+			var datetime = currentdate.getFullYear() + "-"
+			+ (currentdate.getMonth() + 1) + "-"
+			+ currentdate.getDate() + "T"
+			+ currentdate.getHours() + ":"
+			+ currentdate.getMinutes() + ":"
+			+ currentdate.getSeconds() + "Z";
+			console.log(datetime);
+
+			$http.get(apiCallLogCommits + x + "/commits" + Autho + "&path=Logfiles&until=" + datetime).then(function (response) {
+				var CurrentAmount = response.data.length;
+				console.log(CurrentAmount);
+				if (CurrentAmount > PreviousAmount) {
+					console.log("Logs have been added");
+					PreviousAmount = CurrentAmount;
+				}
+			});
+
+			$scope.GetCommits = function () {
+				$http.get(apiCallCommits + Autho).then(function (response) {
+					for (i = 0; i < response.data.length; i++) {
+						CommitMessages.push(response.data[i].commit.message);
+						$scope.AllCommits = CommitMessages;
+						shaArray.push(response.data[i].sha);
+					}
+				});
+			};
+
+			$scope.idCommit = null;
+			$scope.SelectCommit = function (index) {
+				console.log(index);
+				console.log(CommitMessages[index]);
+				console.log(shaArray[index]);
+				CommentSha = shaArray[index];
+				CommentInfo = "test";
+				var CommentInfo = prompt("Please enter your Comment for " + CommitMessages[index], "Comment");
+				if(CommentInfo != null) {
+					console.log("Posting comment");
+					var config = {headers: {'Content-Type': 'application/json'}};
+					$http.post(apiCallComment + CommentSha + "/comments" + Autho, {'body': CommentInfo}, config).then(function (res) {
+						console.log(res);
+					});
+					console.log("Comment was filled");
+				}
+				else {
+					Window.alert("Please Fill out a valid comment");
+				}
+			}
+		}
+	};
+
+	$scope.GetScriptie = function () {
+		$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho).then(function (response) {
+			rawScriptieLink = response.data.download_url;
+			$http.get(rawScriptieLink).then(function (response) {
+				console.log(response.data);
+				ScriptieRaw = response.data;
+
+				Converter = new showdown.Converter();
+				ScriptieHtml = Converter.makeHtml(ScriptieRaw);
+				$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
+			});
+		});
+	};
+	
 		//Login
 		$scope.SignIn = function () {
 
 			window.location.replace(apiLogin + client_id);
 
 		};
-	};
 	//Issues
 	var IssueBody;
 	var IssueTitel;
@@ -286,6 +283,5 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			};
 		});
 	};
-
 
 });

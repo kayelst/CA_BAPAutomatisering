@@ -15,6 +15,6 @@
     "serve-favicon": "~2.2.1",
     "mongodb": "^1.4.4",
     "mongoose": "^4.6.8",
-	"markdown": "^0.5.0"
+	"showdown": "^1.5.1"
   }
 }

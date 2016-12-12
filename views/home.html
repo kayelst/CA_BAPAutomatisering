@@ -133,7 +133,7 @@
 								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Commits]">Get Commits</button>
 							</div>
 							<div ng-click="Btn_Issues()" class="btn-group" role="group">
-								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Issues]">Get Issues</button>
+								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Issues]">Issues</button>
 							</div>
 							<div ng-switch-when="1" class="my-switch-animation">
 						<div ng-repeat="StudentCommit in AllCommits track by $index">
@@ -141,7 +141,20 @@
 						</div>
 							</div>
 							<div ng-switch-when="2" class="my-switch-animation">
-							<div>bal</div>
+							
+								<div class="btn-group btn-group-justified" role="group">
+									<div ng-click="Btn_GetIssues()" class="btn-group" role="group">
+									    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
+									    View Issues
+									    </button>
+									</div>
+									<div ng-click="Btn_CreateIssue()" class="btn-group" role="group">
+									    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Repohulp]">
+									    Create Issue
+									    </button>
+									</div>
+								</div>
+
 								<div ng-repeat="x in Repeat">
 									<div>
 						        		<p>Assignee: {{IssueTitels[x]}}</p>

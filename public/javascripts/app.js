@@ -52,6 +52,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		console.log("Load was performed. " + data);
 	});
 
+	//Button vars and fucntions
 	$scope.div_value = 1;
 	$scope.btnstate_repostats = true;
 	$scope.btnstate_Repohulp = false;
@@ -93,7 +94,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Issues = true;
 		$scope.btnstate_Commits = false;
 		$scope.div_val = 2;
-		$scope.Issues();
+	};
+
+	$scope.GetIssues = function(){
+
+	};
+
+	$scope.CreateIssue = function(){
+
 	};
 
 	var RepoName;
@@ -143,17 +151,17 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		var rawInfoFile;
 
 		function filterInfo(rawInfoFile) {
-			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---naam -->") + 13,
+			var getNaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---naam -->") + 19,
 				rawInfoFile.indexOf("<!---gitnaam -->") - 1);
-			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---gitnaam -->") + 16,
+			var getGitnaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---gitnaam -->") + 25,
 				rawInfoFile.indexOf("<!---reponaam -->") - 1);
-			var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---reponaam -->") + 17,
+			var getReponaam = rawInfoFile.substring(rawInfoFile.indexOf("<!---reponaam -->") + 27,
 				rawInfoFile.indexOf("<!---promotor -->") - 1);
-			var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("<!---promotor -->") + 17,
+			var getPromotor = rawInfoFile.substring(rawInfoFile.indexOf("<!---promotor -->") + 27,
 				rawInfoFile.indexOf("<!---phone -->") - 1);
-			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("<!---phone -->") + 14,
+			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("<!---phone -->") + 24,
 				rawInfoFile.indexOf("<!---address -->") - 1);
-			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("<!---address -->") + 16,
+			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("<!---address -->") + 25,
 				rawInfoFile.indexOf("<!---end -->") - 1);
 			$scope.SiteNaam = getNaam;
 			$scope.getGitNaam = getGitnaam;
@@ -260,7 +268,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.IssueStates = [];
 	$scope.Repeat = [];
 
-	$scope.Issues = function(){
+	$scope.GetIssues = function(){
 		$http.get(apiAllIssuesCall + Autho).then(function (response){
 			console.log(response);
 
@@ -277,9 +285,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.IssueStates.push(IssueState);
 				$scope.Repeat.push(IssueNumber - 1);
 
-				//console.log(IssueBodys);
-				//console.log(IssueTitels);
-				//console.log(IssueNumbers);
 
 			};
 		});

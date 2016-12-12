@@ -175,8 +175,11 @@
 						<div ng-click="GetScriptie()" class="btn-group" role="group">
 							<button type="button" class="btn btn-success">Get Scriptie</button>
 						</div>
+						<div ng-bind-html = "ScriptieData" ng-mouseup="showSelectedText()"></div>
+						<h1> Selected Text </h1>
 						<div ng-bind-html = "ScriptieData">
 						</div>
+						<button>Add Lines</button>
 					</div>
 				</div>
  	 		</div>

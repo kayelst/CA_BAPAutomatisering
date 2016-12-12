@@ -3,11 +3,9 @@ angular.module("myapp2",["ngAnimate"]);
 var LastCommit;
 var TotalCommit = 0;
 var PreviousAmount = 0;
-var Autho = "?client_id=651b11583f0162b4cc91&client_secret=68645eb111af8b05bc8fa1f505712fd3eb213298";
-var client_id = "?client_id=651b11583f0162b4cc91"
 var UserCode = window.location.search;
 
-angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache) {
+angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache, $sce) {
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
@@ -16,9 +14,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 
 	//BryanCalls
-	var apiLogin = "https://github.com/login/oauth/authorize"
-	var UserToken = "https://github.com/login/oauth/access_token"
-	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_IssueTest/issues"
+	var apiLogin = "https://github.com/login/oauth/authorize";
+	var UserToken = "https://github.com/login/oauth/access_token";
+	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_IssueTest/issues";
 	
 	//KayCalls
 
@@ -131,12 +129,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
 					RepoName = RepoName.substring(8);
 					$scope.RepoNames.push(RepoName);
-				}
-				;
+				};
 
 				console.log($scope.RepoNames);
-			}
-			;
+			};
 
 		});
 	};
@@ -244,20 +240,37 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				}
 			}
 		}
+
+		$scope.GetScriptie = function () {
+			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho).then(function (response) {
+				rawScriptieLink = response.data.download_url;
+				$http.get(rawScriptieLink).then(function (response) {
+					ScriptieRaw = response.data;
+
+					Converter = new showdown.Converter();
+					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
+					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
+				});
+			});
+		};
 	};
 
-	$scope.GetScriptie = function () {
-		$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho).then(function (response) {
-			rawScriptieLink = response.data.download_url;
-			$http.get(rawScriptieLink).then(function (response) {
-				console.log(response.data);
-				ScriptieRaw = response.data;
+	$scope.showSelectedText = function() {
+		$scope.selectedText =  $scope.getSelectionText();
+	};
 
-				Converter = new showdown.Converter();
-				ScriptieHtml = Converter.makeHtml(ScriptieRaw);
-				$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
-			});
-		});
+	$scope.getSelectionText = function() {
+		var text = "";
+		if (window.getSelection) {
+			text = window.getSelection().toString();
+		} else if (document.selection && document.selection.type != "Control") {
+			text = document.selection.createRange().text;
+		}
+		return text;
+	};
+
+	$scope.AddComment = function(){
+
 	};
 	
 		//Login

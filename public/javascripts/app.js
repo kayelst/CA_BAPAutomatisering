@@ -305,4 +305,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 	};
 
+	$scope.CreateIssue = function(){
+		
+
+	};
+
 });

@@ -86,7 +86,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Issues = false;
 		$scope.btnstate_Commits = true;
 		$scope.div_val = 1;
-		//$scope.Smoggy();
+		$scope.GetCommits();
 	};
 
 	$scope.Btn_Issues = function(){
@@ -215,6 +215,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				var CommentInfo = prompt("Please enter your Comment for " + CommitMessages[index], "Comment");
 				if(CommentInfo != null) {
 					console.log("Posting comment");
+					console.log(CommentInfo);
 					var config = {headers: {'Content-Type': 'application/json'}};
 					$http.post(apiCallComment + CommentSha + "/comments" + Autho, {'body': CommentInfo}, config).then(function (res) {
 						console.log(res);

@@ -281,6 +281,12 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$http.get(apiAllIssuesCall + Autho).then(function (response){
 			console.log(response);
 
+			$scope.IssueBodys.length = 0;
+			$scope.IssueTitels.length = 0;
+			$scope.IssueNumbers.length = 0;
+			$scope.IssueStates.length = 0;
+			$scope.Repeat.length = 0;
+
 			for (var x = 0; x < response.data.length; x++) {
 				console.log("Looping - " + [x])
 				IssueBody = response.data[x].body;

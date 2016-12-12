@@ -153,15 +153,21 @@
 										</button>
 									</div>
 								</div>
-								<div ng-repeat="x in Repeat">
-									<div>
-										<br>
-										<p>Title: {{IssueTitels[x]}}</p>
-										<p>Issue Number: {{IssueNumbers[x]}}</p>
-										<p>Body: {{IssueBodys[x]}}</p>
-										<p>State: {{IssueStates[x]}}</p>
+								<div ng-switch="div_issues" class="my-switch-animation">
+									<div ng-switch-when="1" ng-repeat="x in Repeat">
+										<div>
+											<br>
+											<p>Title: {{IssueTitels[x]}}</p>
+											<p>Issue Number: {{IssueNumbers[x]}}</p>
+											<p>Body: {{IssueBodys[x]}}</p>
+											<p>State: {{IssueStates[x]}}</p>
+										</div>
 									</div>
-								</div>	
+									<div ng-switch-when="2" class="my-switch-animation">
+										to be made
+									</div>
+								</div>
+									
 							</div>
 						</div>	
 					</div>
@@ -170,7 +176,6 @@
 							<button type="button" class="btn btn-success">Get Scriptie</button>
 						</div>
 						<div ng-bind-html = "ScriptieData">
-
 						</div>
 					</div>
 				</div>

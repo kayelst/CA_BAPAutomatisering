@@ -96,12 +96,21 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_val = 2;
 	};
 
-	$scope.GetIssues = function(){
+	$scope.div_issues = 0;
+	$scope.btnstate_IssueCreate = false;
+	$scope.btnstate_IssuesView = false;
 
+	$scope.Btn_GetIssues = function(){
+		$scope.btnstate_IssueCreate = false;
+		$scope.btnstate_IssuesView = true;
+		$scope.div_issues = 1;
+		$scope.GetIssues();
 	};
 
-	$scope.CreateIssue = function(){
-
+	$scope.Btn_CreateIssue = function(){
+		$scope.btnstate_IssueCreate = true;
+		$scope.btnstate_IssuesView = false;
+		$scope.div_issues = 2;
 	};
 
 	var RepoName;

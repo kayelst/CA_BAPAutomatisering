@@ -79,7 +79,7 @@
 					    </div>
 					</div>
 
-					<div ng-repeat="x in RepoNames" class="btn-group btn-width-fix" role="group">
+					<div ng-repeat="x in RepoNames" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
 						<button type="button" ng-click="do(x)" class="btn btn-default btn-block">
 							{{x}}
 						</button>
@@ -117,14 +117,12 @@
 					    <p>Promotor: {{getPromotor}}</p>
 					    <p>Phone: {{getPhone}}</p>
 					    <p>Address: {{getAddress}}</p>
-					    <a href="{{getRepoLink}}">Go To Repo</a>	
-					</div>
-					<div ng-switch-when="2" class="my-switch-animation">
+					    <a href="{{getRepoLink}}">Go To Repo</a>
+
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
-						<div ng-click="RepoInfo()" class="btn-group" role="group">
-							<button type="button" class="btn btn-primary">Get Repo Info</button>
-						</div>
+					</div>
+					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
 						<div class="panel-body" ng-switch="div_val">
 							<div ng-click="Btn_Commits()" class="btn-group" role="group">
 								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Commits]">Get Commits</button>

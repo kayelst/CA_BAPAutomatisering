@@ -4,6 +4,8 @@ var LastCommit;
 var TotalCommit = 0;
 var PreviousAmount = 0;
 var UserCode = window.location.search;
+var CommitMessages = [];
+var shaArray = [];
 
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache, $sce) {
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -12,8 +14,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576"
-	var client_id = "?client_id=651b11583f0162b4cc91"
+	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
@@ -150,6 +151,19 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		});
 
+		$scope.RepoStatistics = function (){
+			$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
+				TotalCommit = 0;
+				console.log(response);
+				for (i = 0; i < response.data.all.length; i++) {
+					LastCommit = response.data.all[i];
+					TotalCommit += LastCommit;
+				}
+				$scope.LastCommithtml = LastCommit;
+				$scope.TotalCommithtml = TotalCommit;
+			});
+		};
+
 		$http.get(apiCallInfo + x + Autho).then(function (response) {
 			RepoLink = response.data.html_url;
 			$scope.getRepoLink = RepoLink;
@@ -178,20 +192,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			$scope.getAddress = getAddress;
 		};
 
-		$scope.RepoInfo = function () {
-			$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
-				CommitMessages = [];
-				shaArray = [];
-				TotalCommit = 0;
-				console.log(response);
-				for (i = 0; i < response.data.all.length; i++) {
-					LastCommit = response.data.all[i];
-					TotalCommit += LastCommit;
-				}
-				$scope.LastCommithtml = LastCommit;
-				$scope.TotalCommithtml = TotalCommit;
-			});
-
+		$scope.GetCommits = function () {
 			var currentdate = new Date();
 			var datetime = currentdate.getFullYear() + "-"
 			+ (currentdate.getMonth() + 1) + "-"
@@ -209,16 +210,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					PreviousAmount = CurrentAmount;
 				}
 			});
-
-			$scope.GetCommits = function () {
-				$http.get(apiCallCommits + Autho).then(function (response) {
-					for (i = 0; i < response.data.length; i++) {
-						CommitMessages.push(response.data[i].commit.message);
-						$scope.AllCommits = CommitMessages;
-						shaArray.push(response.data[i].sha);
-					}
-				});
-			};
+			
+			$http.get(apiCallCommits + Autho).then(function (response) {
+				for (i = 0; i < response.data.length; i++) {
+					CommitMessages.push(response.data[i].commit.message);
+					$scope.AllCommits = CommitMessages;
+					shaArray.push(response.data[i].sha);
+				}
+			});
 
 			$scope.idCommit = null;
 			$scope.SelectCommit = function (index) {
@@ -241,7 +240,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					Window.alert("Please Fill out a valid comment");
 				}
 			}
-		}
+		};
 
 		$scope.GetScriptie = function () {
 			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho).then(function (response) {
@@ -277,7 +276,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	
 		//Login
 		$scope.SignIn = function () {
-
+			var client_id = "?client_id=651b11583f0162b4cc91";
 			window.location.replace(apiLogin + client_id);
 
 		};

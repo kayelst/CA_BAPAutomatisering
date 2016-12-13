@@ -12,6 +12,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
+	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576"
+	var client_id = "?client_id=651b11583f0162b4cc91"
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";

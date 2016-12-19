@@ -8,6 +8,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var UserCode = window.location.search;
 	var CommitMessages = [];
 	var shaArray = [];
+	var ParticipationArray = [];
+	var zerocounter = 0
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -17,7 +19,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfoLog = "/contents/Logfiles/Log1.txt";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
-	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf"
+	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
+	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation"
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
@@ -200,6 +203,55 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					ShowLogButton.HIDDEN = true;
 				}
 			});
+			
+			$scope.ShowCharts = function () {
+				$http.get(Participation + Autho).then (function(response){
+					console.log(response);
+					for(i = 0; i < response.data.owner.length; i++){
+						if (response.data.owner[i] != 0){
+							zerocounter++;
+							ParticipationArray.push(response.data.owner[i]);
+							console.log(zerocounter);
+						}
+						else if (zerocounter > 0){
+							ParticipationArray.push(response.data.owner[i]);
+						}
+						console.log(zerocounter);
+						console.log(ParticipationArray);
+					}
+
+					for(i = 0; i < ParticipationArray.length; i++){
+						
+					}
+					/*
+					var myData = new Array([ParticipationArray[i], index], [15, 0], [18, 3], [19, 6], [20, 8.5], [25, 10], [30, 9], [35, 8], [40, 5], [45, 6], [50, 2.5]);
+					var myChart = new JSChart('chartid', 'line');
+					myChart.setDataArray(myData);
+					myChart.setAxisNameFontSize(10);
+					myChart.setAxisNameX('Horizontal axis values');
+					myChart.setAxisNameY('Vertical axis');
+					myChart.setAxisNameColor('#787878');
+					myChart.setAxisValuesNumberX(6);
+					myChart.setAxisValuesNumberY(5);
+					myChart.setAxisValuesColor('#38a4d9');
+					myChart.setAxisColor('#38a4d9');
+					myChart.setLineColor('#C71112');
+					myChart.setTitle('A customized chart');
+					myChart.setTitleColor('#383838');
+					myChart.setGraphExtend(true);
+					myChart.setGridColor('#38a4d9');
+					myChart.setSize(616, 321);
+					myChart.setAxisPaddingLeft(140);
+					myChart.setAxisPaddingRight(140);
+					myChart.setAxisPaddingTop(60);
+					myChart.setAxisPaddingBottom(45);
+					myChart.setTextPaddingLeft(105);
+					myChart.setTextPaddingBottom(12);
+					myChart.setBackgroundImage('path/background.jpg');
+					myChart.draw();*/
+				});
+				
+			}
 		};
 
 		$http.get(apiCallInfo + x + Autho).then(function (response) {

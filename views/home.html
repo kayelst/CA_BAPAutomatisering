@@ -131,8 +131,13 @@
 								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Issues]">Issues</button>
 							</div>
 							<div ng-switch-when="1" class="my-switch-animation">
-								<div ng-repeat="StudentCommit in AllCommits track by $index">
+								<div ng-repeat="StudentCommit in AllCommits track by $index" class="col-md-8">
 									<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
+								</div>
+								<div  class="pull-right col-md-4">
+									<p> {{CommentInfo}}</p>
+									<textarea id="CommentArea"></textarea>
+									<button ng-click="PostComment()">Comment</button>
 								</div>
 							</div>
 							<div ng-switch-when="2" class="my-switch-animation">
@@ -166,15 +171,13 @@
 							</div>
 						</div>	
 					</div>
-					<div ng-switch-when="3" class="my-switch-animation">
-						<div ng-click="GetScriptie()" class="btn-group" role="group">
-							<button type="button" class="btn btn-success">Get Scriptie</button>
+					<div ng-switch-when="3" class="my-switch-animation"  ng-click="GetScriptie()">
+						<div ng-bind-html = "ScriptieData" ng-mouseup="showSelectedText()" class="col-md-9"></div>
+						<div class="col-md-3">
+ 						<h1> Selected Text </h1>
+							<div ng-bind="selectedText"></div>
+							<textarea></textarea>
 						</div>
-						<div ng-bind-html = "ScriptieData" ng-mouseup="showSelectedText()"></div>
-						<h1> Selected Text </h1>
-						<div ng-bind="selectedText">
-						</div>
-						<button>Add Lines</button>
 					</div>
 				</div>
  	 		</div>

@@ -15,6 +15,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
+	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf"
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
@@ -210,7 +211,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					PreviousAmount = CurrentAmount;
 				}
 			});
-			
+
 			$http.get(apiCallCommits + Autho).then(function (response) {
 				for (i = 0; i < response.data.length; i++) {
 					CommitMessages.push(response.data[i].commit.message);
@@ -219,26 +220,24 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				}
 			});
 
-			$scope.idCommit = null;
 			$scope.SelectCommit = function (index) {
 				console.log(index);
 				console.log(CommitMessages[index]);
 				console.log(shaArray[index]);
 				CommentSha = shaArray[index];
-				CommentInfo = "test";
-				var CommentInfo = prompt("Please enter your Comment for " + CommitMessages[index], "Comment");
-				if(CommentInfo != null) {
-					console.log("Posting comment");
-					console.log(CommentInfo);
-					var config = {headers: {'Content-Type': 'application/json'}};
-					$http.post(apiCallComment + CommentSha + "/comments" + Autho, {'body': CommentInfo}, config).then(function (res) {
-						console.log(res);
-					});
-					console.log("Comment was filled");
-				}
-				else {
-					Window.alert("Please Fill out a valid comment");
-				}
+				CommentName = CommitMessages[index];
+				$scope.CommentInfo = CommentName;
+				document.getElementById("CommentArea").focus();
+			}
+
+			$scope.PostComment = function (){
+				var config = {headers: {'Content-Type': 'application/json'}};
+				CommentBody = document.getElementById("CommentArea").value;
+
+				console.log(CommentBody);
+				$http.post(apiCallComment + CommentSha + "/comments" + Access, {'body': CommentBody}, config).then(function (res) {
+					console.log(res);
+				});
 			}
 		};
 

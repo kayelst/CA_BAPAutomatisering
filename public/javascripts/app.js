@@ -1,18 +1,20 @@
 angular.module("myapp",[]);
 angular.module("myapp2",["ngAnimate"]);
-var LastCommit;
-var TotalCommit = 0;
-var PreviousAmount = 0;
-var UserCode = window.location.search;
-var CommitMessages = [];
-var shaArray = [];
 
 angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, $scope, $templateCache, $sce) {
+	var LastCommit;
+	var TotalCommit = 0;
+	var PreviousAmount = 0;
+	var UserCode = window.location.search;
+	var CommitMessages = [];
+	var shaArray = [];
+
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallInfo2 = "/contents/Info.md";
+	var apiCallInfoLog = "/contents/Logfiles/Log1.txt";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf"
@@ -163,6 +165,41 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.LastCommithtml = LastCommit;
 				$scope.TotalCommithtml = TotalCommit;
 			});
+
+
+			var currentdate = new Date();
+			var datetime = currentdate.getFullYear() + "-"
+				+ (currentdate.getMonth() + 1) + "-"
+				+ currentdate.getDate() + "T"
+				+ currentdate.getHours() + ":"
+				+ currentdate.getMinutes() + ":"
+				+ currentdate.getSeconds() + "Z";
+			console.log(datetime);
+
+			$http.get(apiCallLogCommits + x + "/commits" + Autho + "&path=Logfiles&until=" + datetime).then(function (response) {
+				var CurrentAmount = response.data.length;
+				ShowLogButton = document.getElementById("ShowLog");
+				console.log("CurrentAmount is " + CurrentAmount);
+				if (CurrentAmount > PreviousAmount) {
+					$scope.NewLogInfo = "New Logs Available"
+					ShowLogButton.HIDDEN = false;
+					PreviousAmount = CurrentAmount;
+					$scope.ShowLog = function() {
+						$http.get(apiCallInfo + x + apiCallInfoLog + Autho).then(function (response) {
+							console.log(response.data.download_url);
+							LogLink = response.data.download_url;
+							$http.get(LogLink).then(function (response) {
+								console.log(response.data);
+								$scope.rawLog = response.data;
+							});
+						});
+					}
+				}
+				else {
+					$scope.NewLogInfo = "No new Logs"
+					ShowLogButton.HIDDEN = true;
+				}
+			});
 		};
 
 		$http.get(apiCallInfo + x + Autho).then(function (response) {
@@ -194,23 +231,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		};
 
 		$scope.GetCommits = function () {
-			var currentdate = new Date();
-			var datetime = currentdate.getFullYear() + "-"
-			+ (currentdate.getMonth() + 1) + "-"
-			+ currentdate.getDate() + "T"
-			+ currentdate.getHours() + ":"
-			+ currentdate.getMinutes() + ":"
-			+ currentdate.getSeconds() + "Z";
-			console.log(datetime);
-
-			$http.get(apiCallLogCommits + x + "/commits" + Autho + "&path=Logfiles&until=" + datetime).then(function (response) {
-				var CurrentAmount = response.data.length;
-				console.log(CurrentAmount);
-				if (CurrentAmount > PreviousAmount) {
-					console.log("Logs have been added");
-					PreviousAmount = CurrentAmount;
-				}
-			});
 
 			$http.get(apiCallCommits + Autho).then(function (response) {
 				for (i = 0; i < response.data.length; i++) {

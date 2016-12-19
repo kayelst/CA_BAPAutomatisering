@@ -121,6 +121,9 @@
 
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
+						<p>New logs: {{NewLogInfo}}</p>
+						<button id="ShowLog" ng-click="ShowLog()">Show new Log</button>
+						<p>{{rawLog}}</p>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
 						<div class="panel-body" ng-switch="div_val">

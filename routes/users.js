@@ -16,8 +16,10 @@ var router = express.Router();
   });
 });*/
 
-router.get('/Userinfo', function(res, req){
-	console.log("received get request");
+/*router.get('/GetUserCode', function(res, req){
 })
+
+router.get('/GiveUserCode', function(res, req){
+})*/
 
 module.exports = router;

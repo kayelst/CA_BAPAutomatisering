@@ -9,7 +9,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var CommitMessages = [];
 	var shaArray = [];
 	var ParticipationArray = [];
-	var zerocounter = 0
+	var zerocounter = 0;
+	var GottenUserCode;
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -18,9 +19,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallInfoLog = "/contents/Logfiles/Log1.txt";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
+	//var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
-	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation"
+	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
@@ -34,10 +35,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 
 	// onload
-	console.log(UserCode);
-	UserCode = UserCode.replace('?code=', '&');
-	console.log(UserCode);
-	$http.post(UserToken + Autho, {"body": UserCode});
+	//console.log(UserCode);
+	Usercode = UserCode.replace('?code=', '&');
+	//console.log(UserCode);
+	//$http.post(UserToken + Autho, {"body": UserCode});
+
 
 
 	//$http.post(UserToken + Autho + UserCode);
@@ -54,9 +56,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	 console.log('Oops and error', data);
 	});*/
 
-	$http.get("/UserInfo").success(function (data) {
-		$scope.A = data; //from your sample;
-		console.log("Load was performed. " + data);
+	$http.get("/GetUserCode").success(function (data) {
+		GottenUserCode = data.Usercode; //from your sample;
+		console.log("Usercode is " + GottenUserCode);
+
+	});
+
+	$http.post("/GiveUserCode", {body: Usercode}).success(function(res){
+		console.log(res);
 	});
 
 	//Button vars and fucntions

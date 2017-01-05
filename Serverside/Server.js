@@ -15,6 +15,8 @@ db.once('open', function callback(){
   console.log('BapAutomiserDB opened');
 });
 
+var app = express();
+
 /*//Hourly Call to Api
   console.log("in the function");
   var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&since=2016-11-15T13:1:27Z&client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
@@ -27,6 +29,7 @@ db.once('open', function callback(){
     }
   });*/
 
+/* DBSTUFF DELETE LATER
 var UserInfoSchema = new mongoose.Schema({
   name: String,
   GitName: String,
@@ -46,12 +49,10 @@ userinfo.save(function(err){
     console.log (err);
   else
     console.log(userinfo);
-});
+});*/
 
 var routes = require('../routes/index');
 var users = require('../routes/users');
-
-var app = express();
 
 // view engine setup
 app.engine('html', require('ejs').renderFile);
@@ -64,9 +65,22 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/UserInfo',function(req, res){
-        return res.json(userinfo);
+var ServerUsercode = {Usercode : "abcdefghijklm"};
+app.get('/GetUserCode',function(req, res){
+        return res.json(ServerUsercode);
     });
+
+app.post('/GiveUserCode', function(req, res){
+   console.log("received post request");
+    console.log(req.body.body);
+
+});
+//var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
+var http = require("http");
+var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded'}};
+http.post("https://github.com/login/oauth/access_token", {"code": ServerUsercode, "client_id": "1baec0307b78af13d928", client_secret: "dc35137ec396a830b64e4ff0f1666b88ff3e46f8" }, config).then(function(req,res){
+    console.log(request);
+});
 
 //db accessible for router
 app.use(function(req,res,next){

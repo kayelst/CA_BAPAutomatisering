@@ -35,35 +35,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 
 	// onload
-	//console.log(UserCode);
-	Usercode = UserCode.replace('?code=', '&');
-	//console.log(UserCode);
-	//$http.post(UserToken + Autho, {"body": UserCode});
 
+	Usercode = UserCode.replace('?code=', '');
+	
+	$http.post("/ClientToServer", {body: Usercode});
 
-
-	//$http.post(UserToken + Autho + UserCode);
-
-	//window.location.replace(UserToken + Autho + UserCode);
-
-	//var apiCallInfo2 = "/contents/README.md";
-
-	/*$http({method: 'GET', url: '/UserInfo'}).
-	 success(function(data, status, headers, config) {
-	 console.log('todos: ', data );
-	 }).
-	 error(function(data, status, headers, config) {
-	 console.log('Oops and error', data);
-	});*/
-
-	$http.get("/GetUserCode").success(function (data) {
-		GottenUserCode = data.Usercode; //from your sample;
+	$http.get("/ServerToClient").success(function (data) {
+		GottenUserCode = data; 
 		console.log("Usercode is " + GottenUserCode);
-
-	});
-
-	$http.post("/GiveUserCode", {body: Usercode}).success(function(res){
-		console.log(res);
 	});
 
 	//Button vars and fucntions
@@ -280,6 +259,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			var getPhone = rawInfoFile.substring(rawInfoFile.indexOf("<!---phone -->") + 24,
 				rawInfoFile.indexOf("<!---address -->") - 1);
 			var getAddress = rawInfoFile.substring(rawInfoFile.indexOf("<!---address -->") + 25,
+				rawInfoFile.indexOf("<!---company -->") - 1);
+			var getBedrijf = rawInfoFile.substring(rawInfoFile.indexOf("<!---company -->") + 25,
 				rawInfoFile.indexOf("<!---end -->") - 1);
 			$scope.SiteNaam = getNaam;
 			$scope.getGitNaam = getGitnaam;
@@ -287,6 +268,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			$scope.getPromotor = getPromotor;
 			$scope.getPhone = getPhone;
 			$scope.getAddress = getAddress;
+			$scope.getBedrijf = getBedrijf;
 		};
 
 		$scope.GetCommits = function () {

@@ -65,22 +65,43 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-var ServerUsercode = {Usercode : "abcdefghijklm"};
-app.get('/GetUserCode',function(req, res){
-        return res.json(ServerUsercode);
-    });
+var ServerUsercode;// = {Usercode : "abcdefghijklm"};
 
-app.post('/GiveUserCode', function(req, res){
-   console.log("received post request");
+
+app.post('/ClientToServer', function(req, res){
+   console.log("receiving Usercode");
     console.log(req.body.body);
+    ServerUsercode = req.body.body;
+    console.log("Done Recieving");
 
 });
+
+app.get('/ServerToClient',function(req, res){
+        console.log("Sending Token");
+        res.json(ServerUsercode);
+        console.log("Done Sending");
+    });
 //var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
-var http = require("http");
-var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded'}};
-http.post("https://github.com/login/oauth/access_token", {"code": ServerUsercode, "client_id": "1baec0307b78af13d928", client_secret: "dc35137ec396a830b64e4ff0f1666b88ff3e46f8" }, config).then(function(req,res){
-    console.log(request);
-});
+
+
+//post test
+var request = require("request");
+var http = require('http');
+var requestData = {"request": { "client_id": "651b11583f0162b4cc91", "client_secret": "9eff6f3108c5b06272cbe37d3f4d3b8141ba660c", "code": ServerUsercode}};
+var url = "https://github.com/login/oauth/access_token";
+
+http({url:url, method: "POST", json: true, headers: {"content-type": "application/json",}, body: JSON.stringify(requestData)}, 
+  function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body)
+        }
+        else {
+
+            console.log("error: " + error)
+            console.log("response.statusCode: " + response.statusCode)
+            console.log("response.statusText: " + response.statusText)
+        }
+    });
 
 //db accessible for router
 app.use(function(req,res,next){

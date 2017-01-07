@@ -19,7 +19,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallInfoLog = "/contents/Logfiles/Log1.txt";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	//var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 
@@ -38,9 +37,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	Usercode = UserCode.replace('?code=', '');
 	
-	$http.post("/ClientToServer", {body: Usercode});
-
-	$http.get("/ServerToClient").success(function (data) {
+	$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
 		GottenUserCode = data; 
 		console.log("Usercode is " + GottenUserCode);
 	});

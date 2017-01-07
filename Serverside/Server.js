@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var request = require("request");
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -8,7 +9,7 @@ var PreviousAmount = 10;
 
 //MongoConnection
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/BapAutomiserDB');
+//mongoose.connect('mongodb://localhost/BapAutomiserDB');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console,'connection error...'));
 db.once('open', function callback(){
@@ -51,6 +52,8 @@ userinfo.save(function(err){
     console.log(userinfo);
 });*/
 
+var request = require("request");
+
 var routes = require('../routes/index');
 var users = require('../routes/users');
 
@@ -69,39 +72,26 @@ var ServerUsercode;// = {Usercode : "abcdefghijklm"};
 
 
 app.post('/ClientToServer', function(req, res){
-   console.log("receiving Usercode");
+    console.log("receiving Usercode");
     console.log(req.body.body);
     ServerUsercode = req.body.body;
     console.log("Done Recieving");
 
-});
-
-app.get('/ServerToClient',function(req, res){
-        console.log("Sending Token");
-        res.json(ServerUsercode);
-        console.log("Done Sending");
-    });
-//var Autho = "?client_id=651b11583f0162b4cc91&client_secret=5fb45a1bc63e079a3d015aa6fea383d5aa00d576";
-
-
-//post test
-var request = require("request");
-var http = require('http');
-var requestData = {"request": { "client_id": "651b11583f0162b4cc91", "client_secret": "9eff6f3108c5b06272cbe37d3f4d3b8141ba660c", "code": ServerUsercode}};
-var url = "https://github.com/login/oauth/access_token";
-
-http({url:url, method: "POST", json: true, headers: {"content-type": "application/json",}, body: JSON.stringify(requestData)}, 
-  function (error, response, body) {
+    var requestData = {"client_id": "651b11583f0162b4cc91", "client_secret": "cc5f94be35b0ccf9891b55dd6d670f3f7cf29388", "code": ServerUsercode};
+    
+    console.log(requestData);
+    request.get("https://github.com/login/oauth/access_token?client_id=651b11583f0162b4cc91&client_secret=cc5f94be35b0ccf9891b55dd6d670f3f7cf29388&code=" + ServerUsercode, 
+    function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            console.log(body)
+            res.send(body);
         }
-        else {
-
+        else {  
             console.log("error: " + error)
             console.log("response.statusCode: " + response.statusCode)
-            console.log("response.statusText: " + response.statusText)
+            console.log("response.statusText: " + response.statusText)          
         }
     });
+});
 
 //db accessible for router
 app.use(function(req,res,next){
@@ -113,17 +103,17 @@ app.use('/', routes);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
+});*/
 
 // error handlers
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+/*if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -141,7 +131,7 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });
-});
+});*/
 
 
 module.exports = app;

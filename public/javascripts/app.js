@@ -10,7 +10,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var shaArray = [];
 	var ParticipationArray = [];
 	var zerocounter = 0;
-	var GottenUserCode;
+	var OauthToken;
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -38,8 +38,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	Usercode = UserCode.replace('?code=', '');
 	
 	$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
-		GottenUserCode = data; 
-		console.log("Usercode is " + GottenUserCode);
+		OauthToken = data; 
+		OauthToken = OauthToken.replace('access_token=', '?');
+		OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
+		console.log("AccessToken is " + OauthToken);
 	});
 
 	//Button vars and fucntions
@@ -112,7 +114,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		console.log(UserCode);
 
 		console.log("apiCallAllStudents");
-		$http.get(apiCallAllStudents + Autho).then(function (response) {
+		$http.get(apiCallAllStudents + OauthToken).then(function (response) {
 			console.log(response);
 			for (i = 0; i < response.data.length; i++) {
 				console.log("Looping - " + [i]);
@@ -130,7 +132,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	};
 
 	$scope.do = function(x){
-		$http.get(apiCallInfo + x + apiCallInfo2 + Autho).then(function (response) {
+		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -141,7 +143,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 
 		$scope.RepoStatistics = function (){
-			$http.get(apiCallRepoInfo + x + "/stats/participation" + Autho).then(function (response) {
+			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
 				TotalCommit = 0;
 				console.log(response);
 				for (i = 0; i < response.data.all.length; i++) {
@@ -162,7 +164,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				+ currentdate.getSeconds() + "Z";
 			console.log(datetime);
 
-			$http.get(apiCallLogCommits + x + "/commits" + Autho + "&path=Logfiles&until=" + datetime).then(function (response) {
+			$http.get(apiCallLogCommits + x + "/commits" + OauthToken + "&path=Logfiles&until=" + datetime).then(function (response) {
 				var CurrentAmount = response.data.length;
 				ShowLogButton = document.getElementById("ShowLog");
 				console.log("CurrentAmount is " + CurrentAmount);
@@ -188,7 +190,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 			
 			$scope.ShowCharts = function () {
-				$http.get(Participation + Autho).then (function(response){
+				$http.get(Participation + OauthToken).then (function(response){
 					console.log(response);
 					for(i = 0; i < response.data.owner.length; i++){
 						if (response.data.owner[i] != 0){
@@ -237,7 +239,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			}
 		};
 
-		$http.get(apiCallInfo + x + Autho).then(function (response) {
+		$http.get(apiCallInfo + x + OauthToken).then(function (response) {
 			RepoLink = response.data.html_url;
 			$scope.getRepoLink = RepoLink;
 		});
@@ -270,7 +272,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		$scope.GetCommits = function () {
 
-			$http.get(apiCallCommits + Autho).then(function (response) {
+			$http.get(apiCallCommits + OauthToken).then(function (response) {
 				for (i = 0; i < response.data.length; i++) {
 					CommitMessages.push(response.data[i].commit.message);
 					$scope.AllCommits = CommitMessages;
@@ -293,14 +295,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				CommentBody = document.getElementById("CommentArea").value;
 
 				console.log(CommentBody);
-				$http.post(apiCallComment + CommentSha + "/comments" + Access, {'body': CommentBody}, config).then(function (res) {
+				$http.post(apiCallComment + CommentSha + "/comments" + Access, {'body': CommentBody}, config).then(function (res) { //Access wa doet die hier en wie zijn access is da
 					console.log(res);
 				});
 			}
 		};
 
 		$scope.GetScriptie = function () {
-			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + Autho).then(function (response) {
+			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + OauthToken).then(function (response) {
 				rawScriptieLink = response.data.download_url;
 				$http.get(rawScriptieLink).then(function (response) {
 					ScriptieRaw = response.data;
@@ -349,7 +351,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.Repeat = [];
 
 	$scope.GetIssues = function(){
-		$http.get(apiAllIssuesCall + Autho).then(function (response){
+		$http.get(apiAllIssuesCall + OauthToken).then(function (response){
 			console.log(response);
 
 			$scope.IssueBodys.length = 0;

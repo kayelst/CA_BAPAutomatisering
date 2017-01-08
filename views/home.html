@@ -55,31 +55,6 @@
     					</div>
 				</div>
 				<div class="btn-group-vertical btn-width-fix" role="group">
-
-					<div class="input-group list-fix">
-					    <div class="panel panel-default">
-					      	<div class="panel-heading">
-					        	<h4 class="panel-title">
-					          		<a data-toggle="collapse" href="#collapse1">
-					          			Test Student info	
-					          		</a>
-					        	</h4>
-					      	</div>
-					      	<div id="collapse1" class="panel-collapse collapse">
-					        	<div class="panel-body">
-					        		<p>Name: {{SiteNaam}}</p>
-					        		<p>GitName: {{getGitNaam}}</p>
-					        		<p>Repo: {{getReponaam}}</p>
-					        		<p>Promotor: {{getPromotor}}</p>
-					        		<p>Phone: {{getPhone}}</p>
-					        		<p>Address: {{getAddress}}</p>
-					        		<p>Bedrijf: {{getBedrijf}}</p>
-									<a href="{{getRepoLink}}">Go To Repo</a>
-					        	</div>
-					      	</div>
-					    </div>
-					</div>
-
 					<div ng-repeat="x in RepoNames" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
 						<button type="button" ng-click="do(x)" class="btn btn-default btn-block">
 							{{x}}
@@ -89,9 +64,6 @@
  	 			</div>
  	 		</div>
  	 		<div class="col-md-8 col-lg-10 col-sm-8 col-xs-8 PrimaryColor">
-
- 	 			<div>ProjectName Student name</div>
-
 	 			<div class="btn-group btn-group-justified" role="group">
 					<div ng-click="Btn_RepoStats()" class="btn-group" role="group">
 					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
@@ -112,14 +84,14 @@
 
 				<div class="panel-body" ng-switch="div_value">
 					<div ng-switch-when="1" class="my-switch-animation">
-						<p>Name: {{SiteNaam}}</p>
+						<p>Name: {{getNaam}}</p>
 					    <p>GitName: {{getGitNaam}}</p>
 					    <p>Repo: {{getReponaam}}</p>
 					    <p>Promotor: {{getPromotor}}</p>
 					    <p>Phone: {{getPhone}}</p>
 					    <p>Address: {{getAddress}}</p>
+					    <p>Bedrijf: {{getBedrijf}}</p>
 					    <a href="{{getRepoLink}}">Go To Repo</a>
-
 						<p>This Weeks Commits: {{LastCommithtml}}</p>
 						<p>Total Commits: {{TotalCommithtml}}</p>
 						<p>New logs: {{NewLogInfo}}</p>
@@ -159,13 +131,13 @@
 									</div>
 								</div>
 								<div ng-switch="div_issues" class="my-switch-animation">
-									<div ng-switch-when="1" ng-repeat="x in Repeat">
+									<div ng-switch-when="1" ng-repeat="i in Repeat">
 										<div>
 											<br>
-											<p>Title: {{IssueTitels[x]}}</p>
-											<p>Issue Number: {{IssueNumbers[x]}}</p>
-											<p>Body: {{IssueBodys[x]}}</p>
-											<p>State: {{IssueStates[x]}}</p>
+											<p>Title: {{IssueTitels[i]}}</p>
+											<p>Issue Number: {{IssueNumbers[i]}}</p>
+											<p>Body: {{IssueBodys[i]}}</p>
+											<p>State: {{IssueStates[i]}}</p>
 										</div>
 									</div>
 									<div ng-switch-when="2" class="my-switch-animation">

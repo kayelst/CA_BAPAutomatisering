@@ -24,8 +24,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
-	var UserToken = "https://github.com/login/oauth/access_token";
-	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_IssueTest/issues";
+	//var UserToken = "https://github.com/login/oauth/access_token";
+	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_";
+	var TijdelijkeOauth = "?client_id=651b11583f0162b4cc91&client_secret=cc5f94be35b0ccf9891b55dd6d670f3f7cf29388"
 	
 	//KayCalls
 
@@ -114,25 +115,23 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		console.log(UserCode);
 
 		console.log("apiCallAllStudents");
-		$http.get(apiCallAllStudents + OauthToken).then(function (response) {
+		$http.get(apiCallAllStudents + TijdelijkeOauth).then(function (response) {
 			console.log(response);
 			for (i = 0; i < response.data.length; i++) {
-				console.log("Looping - " + [i]);
 				RepoName = response.data[i].name;
 				if (RepoName.indexOf("BAP1617") !== -1) {
 					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
 					RepoName = RepoName.substring(8);
 					$scope.RepoNames.push(RepoName);
-				};
-
-				console.log($scope.RepoNames);
+				};	
 			};
+			console.log($scope.RepoNames);
 
 		});
 	};
 
 	$scope.do = function(x){
-		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
+		$http.get(apiCallInfo + x + apiCallInfo2 + TijdelijkeOauth).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -143,7 +142,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 
 		$scope.RepoStatistics = function (){
-			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
+			$http.get(apiCallRepoInfo + x + "/stats/participation" + TijdelijkeOauth).then(function (response) {
 				TotalCommit = 0;
 				console.log(response);
 				for (i = 0; i < response.data.all.length; i++) {
@@ -164,7 +163,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				+ currentdate.getSeconds() + "Z";
 			console.log(datetime);
 
-			$http.get(apiCallLogCommits + x + "/commits" + OauthToken + "&path=Logfiles&until=" + datetime).then(function (response) {
+			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth + "&path=Logfiles&until=" + datetime).then(function (response) {
 				var CurrentAmount = response.data.length;
 				ShowLogButton = document.getElementById("ShowLog");
 				console.log("CurrentAmount is " + CurrentAmount);
@@ -190,7 +189,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 			
 			$scope.ShowCharts = function () {
-				$http.get(Participation + OauthToken).then (function(response){
+				$http.get(Participation + TijdelijkeOauth).then (function(response){
 					console.log(response);
 					for(i = 0; i < response.data.owner.length; i++){
 						if (response.data.owner[i] != 0){
@@ -239,7 +238,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			}
 		};
 
-		$http.get(apiCallInfo + x + OauthToken).then(function (response) {
+		$http.get(apiCallInfo + x + TijdelijkeOauth).then(function (response) {
 			RepoLink = response.data.html_url;
 			$scope.getRepoLink = RepoLink;
 		});
@@ -261,7 +260,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				rawInfoFile.indexOf("<!---company -->") - 1);
 			var getBedrijf = rawInfoFile.substring(rawInfoFile.indexOf("<!---company -->") + 25,
 				rawInfoFile.indexOf("<!---end -->") - 1);
-			$scope.SiteNaam = getNaam;
+			$scope.getNaam = getNaam;
 			$scope.getGitNaam = getGitnaam;
 			$scope.getReponaam = getReponaam;
 			$scope.getPromotor = getPromotor;
@@ -272,7 +271,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		$scope.GetCommits = function () {
 
-			$http.get(apiCallCommits + OauthToken).then(function (response) {
+			$http.get(apiCallCommits + TijdelijkeOauth).then(function (response) {
 				for (i = 0; i < response.data.length; i++) {
 					CommitMessages.push(response.data[i].commit.message);
 					$scope.AllCommits = CommitMessages;
@@ -302,7 +301,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		};
 
 		$scope.GetScriptie = function () {
-			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + OauthToken).then(function (response) {
+			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + TijdelijkeOauth).then(function (response) {
 				rawScriptieLink = response.data.download_url;
 				$http.get(rawScriptieLink).then(function (response) {
 					ScriptieRaw = response.data;
@@ -313,6 +312,52 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				});
 			});
 		};
+
+		//Issues
+		var IssueBody;
+		var IssueTitel;
+		var IssueNumber;
+		var IssueState;
+		$scope.IssueBodys = [];
+		$scope.IssueTitels = [];
+		$scope.IssueNumbers = [];
+		$scope.IssueStates = [];
+		$scope.Repeat = [];
+
+		$scope.GetIssues = function(){
+			$http.get(apiAllIssuesCall + x + "/issues" + TijdelijkeOauth).then(function (response){
+				console.log(response);
+
+				$scope.IssueBodys.length = 0;
+				$scope.IssueTitels.length = 0;
+				$scope.IssueNumbers.length = 0;
+				$scope.IssueStates.length = 0;
+				$scope.Repeat.length = 0;
+
+				for (var i = 0; i < response.data.length; i++) {
+					console.log("Looping - " + [i])
+					IssueBody = response.data[i].body;
+					IssueTitel = response.data[i].title;
+					IssueNumber = response.data[i].number;
+					IssueState = response.data[i].state;
+					console.log(IssueBody);
+
+					$scope.IssueBodys.push(IssueBody);
+					$scope.IssueTitels.push(IssueTitel);
+					$scope.IssueNumbers.push(IssueNumber);
+					$scope.IssueStates.push(IssueState);
+					$scope.Repeat.push(i);
+
+
+				};
+			});
+		};
+
+	$scope.CreateIssue = function(){
+		
+
+	};
+
 	};
 
 	$scope.showSelectedText = function() {
@@ -339,48 +384,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			window.location.replace(apiLogin + client_id);
 
 		};
-	//Issues
-	var IssueBody;
-	var IssueTitel;
-	var IssueNumber;
-	var IssueState;
-	$scope.IssueBodys = [];
-	$scope.IssueTitels = [];
-	$scope.IssueNumbers = [];
-	$scope.IssueStates = [];
-	$scope.Repeat = [];
-
-	$scope.GetIssues = function(){
-		$http.get(apiAllIssuesCall + OauthToken).then(function (response){
-			console.log(response);
-
-			$scope.IssueBodys.length = 0;
-			$scope.IssueTitels.length = 0;
-			$scope.IssueNumbers.length = 0;
-			$scope.IssueStates.length = 0;
-			$scope.Repeat.length = 0;
-
-			for (var x = 0; x < response.data.length; x++) {
-				console.log("Looping - " + [x])
-				IssueBody = response.data[x].body;
-				IssueTitel = response.data[x].title;
-				IssueNumber = response.data[x].number;
-				IssueState = response.data[x].state;
-
-				$scope.IssueBodys.push(IssueBody);
-				$scope.IssueTitels.push(IssueTitel);
-				$scope.IssueNumbers.push(IssueNumber);
-				$scope.IssueStates.push(IssueState);
-				$scope.Repeat.push(IssueNumber - 1);
-
-
-			};
-		});
-	};
-
-	$scope.CreateIssue = function(){
-		
-
-	};
+	
 
 });

@@ -55,6 +55,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var mi = currentdate.getMinutes();
 	var ss = currentdate.getSeconds();
 
+	//Commit to unfuck
+
 	if( mm < 10)
 		 mm = "0"+mm;
 	if (dd < 10)

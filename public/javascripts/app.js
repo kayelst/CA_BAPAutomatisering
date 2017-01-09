@@ -75,6 +75,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			OauthToken = OauthToken.replace('access_token=', '?');
 			OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
 			console.log("AccessToken is " + OauthToken);			
+		}).success(function(){
+			apiAllStudentsCall();
 		});
 	};
 	//Login
@@ -150,7 +152,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.RepoNames = [];
 	CommitTime = [];
 
-	$scope.apiAllStudentsCall = function () {
+	var apiAllStudentsCall = function () {
 		console.log(window.location.search);
 		console.log(UserCode);
 

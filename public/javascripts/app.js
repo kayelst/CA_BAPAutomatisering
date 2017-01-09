@@ -26,7 +26,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfoLog = "/contents/Logfiles/LOG.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
-	var Access2 = "?access_token=44ad48e9dfb3ee4f0e8832e695e04ab42b668553";
+	var Access2 = "?access_token=0daec56ae84b247121b53069e34c126259cf92fa";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var client_id = "?client_id=651b11583f0162b4cc91";
 
@@ -87,8 +87,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		console.log("Exchanging UserCode for AccessToken");
 		$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
 			OauthToken = data; 
-			OauthToken = OauthToken.replace('access_token=', '?');
+			//OauthToken = OauthToken.replace('access_token=', '');
 			OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
+			OauthToken = "?" + OauthToken;
 			console.log("AccessToken: " + OauthToken);			
 		}).success(function(){
 			console.log("Login Successfull");
@@ -97,7 +98,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	};
 	//Login
 	$scope.SignIn = function(){
-		window.location.replace(apiLogin + client_id);
+		window.location.replace(apiLogin + client_id + "&scope=public_repo");
 	};
 
 	//Button vars and fucntions
@@ -174,7 +175,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiAllStudentsCall = function () {
 
 		console.log("apiCallAllStudents");
-		$http.get(apiCallAllStudents + TijdelijkeOauth).then(function (response) {
+		$http.get(apiCallAllStudents + OauthToken).then(function (response) {
 			//console.log(response);
 			for (i = 0; i < response.data.length; i++) {
 				RepoName = response.data[i].name;
@@ -189,7 +190,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			console.log($scope.RepoNames);
 			for(i = 0; i < $scope.RepoNames.length ; i++){
 				console.log($scope.RepoNames[i]);
-			   	$http.get(apiCallCommits + $scope.RepoNames[i] + "/commits" + TijdelijkeOauth).then(function (response) {
+			   	$http.get(apiCallCommits + $scope.RepoNames[i] + "/commits" + OauthToken).then(function (response) {
 					for (i = 0; i < 1; i++) {
 						LastCommitDate = response.data[i].commit.author.date;
 					}
@@ -211,7 +212,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.do = function(x){
 		console.log("test");
 		x = x.replace(' ', '');
-		$http.get(apiCallInfo + x + apiCallInfo2 + TijdelijkeOauth).then(function (response) {
+		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -222,7 +223,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 
 		$scope.RepoStatistics = function (){
-			$http.get(apiCallRepoInfo + x + "/stats/participation" + TijdelijkeOauth).then(function (response) {
+			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
 				TotalCommit = 0;
 				console.log(response);
 				for (i = 0; i < response.data.all.length; i++) {
@@ -233,13 +234,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
-			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth + "&path=Logfiles&until=" + datetime).then(function (response) {
+			$http.get(apiCallLogCommits + x + "/commits" + OauthToken + "&path=Logfiles&until=" + datetime).then(function (response) {
 				var CurrentAmount = response.data.length;
 				ShowLogButton = document.getElementById("ShowLog");
 				console.log("CurrentAmount is " + CurrentAmount);
 				if (CurrentAmount > PreviousAmount) {
 					$scope.NewLogInfo = "New Logs Available"
-					$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth).then(function (response) {
+					$http.get(apiCallLogCommits + x + "/commits" + OauthToken).then(function (response) {
 						for (i = 0; i < 1; i++) {
 							LastLogDate = response.data[i].commit.author.date;
 						}
@@ -255,7 +256,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 							$scope.NewLogInfo = "Newest Log has not been uploaded."
 						}
 						$scope.ShowLog = function () {
-							$http.get(apiCallInfo + x + apiCallInfoLog + TijdelijkeOauth).then(function (response) {
+							$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
 								console.log(response.data.download_url);
 								LogLink = response.data.download_url;
 								$http.get(LogLink).then(function (response) {
@@ -285,7 +286,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			};
 
 			$scope.ShowCharts = function () {
-				$http.get(Participation + TijdelijkeOauth).then (function(response){
+				$http.get(Participation + OauthToken).then (function(response){
 					console.log(response);
 					for(i = 0; i < response.data.owner.length; i++){
 						if (response.data.owner[i] != 0){
@@ -334,7 +335,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			}
 		};
 
-		$http.get(apiCallInfo + x + TijdelijkeOauth).then(function (response) {
+		$http.get(apiCallInfo + x + OauthToken).then(function (response) {
 			RepoLink = response.data.html_url;
 			$scope.getRepoLink = RepoLink;
 		});
@@ -367,13 +368,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		$scope.GetCommits = function () {
 
-			$http.get(apiCallCommits + TijdelijkeOauth).then(function (response) {
+			$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
 				for (i = 0; i < response.data.length; i++) {
 					CommitMessages.push(response.data[i].commit.message);
 					$scope.AllCommits = CommitMessages;
 					shaArray.push(response.data[i].sha);
 				}
 			});
+		};
 
 			$scope.SelectCommit = function (index) {
 				console.log(index);
@@ -390,14 +392,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				CommentBody = document.getElementById("CommentArea").value;
 
 				console.log(CommentBody);
-				$http.post(apiCallCommits + x + "/commits" + CommentSha + "/comments" + Access, {'body': CommentBody}, config).then(function (res) { //Access wa doet die hier en wie zijn access is da
+				$http.post(apiCallCommits + x + "/commits/" + CommentSha + "/comments" + OauthToken, {'body': CommentBody}, config).then(function (res) { 
 					console.log(res);
 				});
-			}
-		};
+			};
+		
 
 		$scope.GetScriptie = function () {
-			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + TijdelijkeOauth).then(function (response) {
+			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + OauthToken).then(function (response) {
 				rawScriptieLink = response.data.download_url;
 				$http.get(rawScriptieLink).then(function (response) {
 					ScriptieRaw = response.data;
@@ -405,6 +407,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
 					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});
+			}, function (error) {
+				
 			});
 		};
 
@@ -421,7 +425,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		$scope.GetIssues = function(){
 			console.log("Call for Issues");
-			$http.get(apiAllIssuesCall + x + "/issues" + TijdelijkeOauth).then(function (response){
+			$http.get(apiAllIssuesCall + x + "/issues" + OauthToken).then(function (response){
 
 				$scope.IssueBodys.length = 0;
 				$scope.IssueTitels.length = 0;
@@ -457,7 +461,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			console.log(TitleIssue);
 			console.log(BodyIssue);
 			if(TitleIssue != "" && BodyIssue != ""){
-				$http.post(apiAllIssuesCall + x + '/issues' + Access2, 
+				$http.post(apiAllIssuesCall + x + '/issues' + OauthToken, 
 				{'title': TitleIssue, 'body': BodyIssue}, 
 				{ headers: { 'Content-Type': 'application/json'}}).then(function(res){
 					console.log(res);

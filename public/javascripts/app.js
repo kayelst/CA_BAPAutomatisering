@@ -14,6 +14,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var OauthToken;
 	var LastCommitDate = new Date();
 	var datetime = new Date();
+	var MondayDate = new Date();
+	var NextMondayDate = new Date();
 
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -21,7 +23,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
 	var apiCallInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallInfo2 = "/contents/Info.md";
-	var apiCallInfoLog = "/contents/Logfiles/Log1.txt";
+	var apiCallInfoLog = "/contents/Logfiles/LOG.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
@@ -33,11 +35,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	//var UserToken = "https://github.com/login/oauth/access_token";
 	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var TijdelijkeOauth = "?client_id=651b11583f0162b4cc91&client_secret=cc5f94be35b0ccf9891b55dd6d670f3f7cf29388"
-	
+
+
+	Converter = new showdown.Converter();
+
 	//KayCalls
 
 	var apiCallCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	var apiCallComment = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits/";
 
 
 	// onload
@@ -50,8 +54,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var hh = currentdate.getHours();
 	var mi = currentdate.getMinutes();
 	var ss = currentdate.getSeconds();
-
-	//Commit to unfuck
+	var ddMonday = currentdate.getDate() - currentdate.getDay() - 6;
+	var ddNextMonday = currentdate.getDate() - currentdate.getDay() + 1;
 
 	if( mm < 10)
 		 mm = "0"+mm;
@@ -63,9 +67,17 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		mi = "0"+mi;
 	if (ss < 10)
 		ss = "0"+ss;
+	if (ddMonday < 10)
+		ddMonday= "0"+ddMonday;
+	if (ddNextMonday < 10)
+		ddNextMonday = "0"+ddNextMonday;
 
 	datetime = yyyy+"-"+mm+"-"+dd+"T"+hh+":"+mi+":"+ss+"Z";
 	console.log(datetime);
+
+	MondayDate = ddMonday+"/"+mm+"/"+yyyy;
+
+	NextMondayDate = ddNextMonday+"/"+mm+"/"+yyyy;
 
 	if(UserCode != ""){
 		
@@ -86,7 +98,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.SignIn = function(){
 		window.location.replace(apiLogin + client_id);
 	};
-
 
 	//Button vars and fucntions
 	$scope.div_MainMenu = 1;
@@ -217,41 +228,55 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
-
-			var currentdate = new Date();
-			var datetime = currentdate.getFullYear() + "-"
-				+ (currentdate.getMonth() + 1) + "-"
-				+ currentdate.getDate() + "T"
-				+ currentdate.getHours() + ":"
-				+ currentdate.getMinutes() + ":"
-				+ currentdate.getSeconds() + "Z";
-			console.log(datetime);
-
 			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth + "&path=Logfiles&until=" + datetime).then(function (response) {
 				var CurrentAmount = response.data.length;
 				ShowLogButton = document.getElementById("ShowLog");
 				console.log("CurrentAmount is " + CurrentAmount);
 				if (CurrentAmount > PreviousAmount) {
 					$scope.NewLogInfo = "New Logs Available"
-					ShowLogButton.HIDDEN = false;
-					PreviousAmount = CurrentAmount;
-					$scope.ShowLog = function() {
-						$http.get(apiCallInfo + x + apiCallInfoLog + Autho).then(function (response) {
+			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth).then(function (response) {
+				for (i = 0; i < 1; i++) {
+					LastLogDate = response.data[i].commit.author.date;
+				}
+				var LastLogDateS = LastCommitDate.toString();
+				var datetimeS = datetime.toString();
+				var Time = Date.parse(datetimeS) - Date.parse(LastLogDateS);
+				var LogTime= Time / (1000 * 60 * 60 * 24);
+				console.log(LogTime);
+				if(LogTime < 7){
+					$scope.NewLogInfo = "Recent Log committed!"
+				}
+				else{
+					$scope.NewLogInfo = "Newest Log has not been uploaded."
+				}
+				$scope.ShowLog = function() {
+						$http.get(apiCallInfo + x + apiCallInfoLog + TijdelijkeOauth).then(function (response) {
 							console.log(response.data.download_url);
 							LogLink = response.data.download_url;
 							$http.get(LogLink).then(function (response) {
-								console.log(response.data);
-								$scope.rawLog = response.data;
+								//console.log(response.data);
+								PulledLog = response.data;
+								FilterLog();
 							});
 						});
 					}
-				}
-				else {
-					$scope.NewLogInfo = "No new Logs"
-					ShowLogButton.HIDDEN = true;
-				}
 			});
+
 			
+			function FilterLog(){
+				console.log(MondayDate);
+				console.log(NextMondayDate);
+				console.log(PulledLog.indexOf(MondayDate));
+				console.log(PulledLog.indexOf(NextMondayDate));
+
+				var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11, 
+					PulledLog.indexOf(NextMondayDate) - 12);
+				LogRaw = Logmd;
+
+				LogHtml = Converter.makeHtml(LogRaw);
+				$scope.rawLog = $sce.trustAsHtml(LogHtml);
+			};
+
 			$scope.ShowCharts = function () {
 				$http.get(Participation + TijdelijkeOauth).then (function(response){
 					console.log(response);
@@ -358,7 +383,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				CommentBody = document.getElementById("CommentArea").value;
 
 				console.log(CommentBody);
-				$http.post(apiCallComment + CommentSha + "/comments" + Access, {'body': CommentBody}, config).then(function (res) { //Access wa doet die hier en wie zijn access is da
+				$http.post(apiCallCommits + x + "/commits" + CommentSha + "/comments" + Access, {'body': CommentBody}, config).then(function (res) { //Access wa doet die hier en wie zijn access is da
 					console.log(res);
 				});
 			}
@@ -370,7 +395,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$http.get(rawScriptieLink).then(function (response) {
 					ScriptieRaw = response.data;
 
-					Converter = new showdown.Converter();
 					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
 					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});

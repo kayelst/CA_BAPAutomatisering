@@ -85,7 +85,7 @@
 						<p>Total Commits: {{TotalCommithtml}}</p>
 						<p>New logs: {{NewLogInfo}}</p>
 						<button id="ShowLog" ng-click="ShowLog()">Show new Log</button>
-						<p>{{rawLog}}</p>
+						<p ng-bind-html="rawLog"></p>
 						<button ng-click="ShowCharts()">Show Charts</button>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">

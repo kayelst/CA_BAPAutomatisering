@@ -245,7 +245,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 
 		$scope.RepoStatistics = function (){
-			LastLogDate = 0;
 			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
 				TotalCommit = 0;
 				console.log(response);
@@ -263,7 +262,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					}
 					console.log("log " + LastLogDate);
 					console.log("sunday "+ LastSundayDate);
-					var LastLogDateS = LastCommitDate.toString();
+					LastLogDateS = LastLogDate.toString();
 					var LastSundayDateS = LastSundayDate.toString();
 					console.log("sunday " + Date.parse(LastSundayDateS));
 					console.log("log "  + Date.parse( LastLogDateS));
@@ -271,10 +270,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					var LogTime = Time / (1000 * 60 * 60 * 24);
 					console.log(LogTime);
 					if (LogTime < 0) {
-						$scope.NewLogInfo = "Recent Log committed!"
+						$scope.NewLogInfo = "Last weeks LOG Comitted!"
 					}
 					else {
-						$scope.NewLogInfo = "Newest Log has not been uploaded."
+						$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
 					}
 					$scope.ShowLog = function () {
 						$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
@@ -328,32 +327,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					for(i = 0; i < ParticipationArray.length; i++){
 						
 					}
-					/*
-					var myData = new Array([ParticipationArray[i], index], [15, 0], [18, 3], [19, 6], [20, 8.5], [25, 10], [30, 9], [35, 8], [40, 5], [45, 6], [50, 2.5]);
-					var myChart = new JSChart('chartid', 'line');
-					myChart.setDataArray(myData);
-					myChart.setAxisNameFontSize(10);
-					myChart.setAxisNameX('Horizontal axis values');
-					myChart.setAxisNameY('Vertical axis');
-					myChart.setAxisNameColor('#787878');
-					myChart.setAxisValuesNumberX(6);
-					myChart.setAxisValuesNumberY(5);
-					myChart.setAxisValuesColor('#38a4d9');
-					myChart.setAxisColor('#38a4d9');
-					myChart.setLineColor('#C71112');
-					myChart.setTitle('A customized chart');
-					myChart.setTitleColor('#383838');
-					myChart.setGraphExtend(true);
-					myChart.setGridColor('#38a4d9');
-					myChart.setSize(616, 321);
-					myChart.setAxisPaddingLeft(140);
-					myChart.setAxisPaddingRight(140);
-					myChart.setAxisPaddingTop(60);
-					myChart.setAxisPaddingBottom(45);
-					myChart.setTextPaddingLeft(105);
-					myChart.setTextPaddingBottom(12);
-					myChart.setBackgroundImage('path/background.jpg');
-					myChart.draw();*/
 				});
 				
 			}

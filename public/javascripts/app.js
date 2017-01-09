@@ -135,13 +135,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Scriptie = false;
 		//$scope.btnstate_Issues = false;
 		//$scope.btnstate_Commits = true;
+		$scope.div_MainMenu = 2;
 		$scope.div_RepoHulpMenu = 1;
 		$scope.GetCommits();
 	};
 
 	$scope.Btn_Issues = function(){
 		$scope.btnstate_repostats = false;
-		console.log("bryan is gay")
+		$scope.div_MainMenu = 2;
 		$scope.btnstate_Repohulp = true;
 		$scope.btnstate_Scriptie = false;
 		//$scope.btnstate_Issues = true;

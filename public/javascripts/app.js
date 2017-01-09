@@ -26,6 +26,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfoLog = "/contents/Logfiles/LOG.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
+	var Access2 = "?access_token=44ad48e9dfb3ee4f0e8832e695e04ab42b668553";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var client_id = "?client_id=651b11583f0162b4cc91";
 
@@ -141,6 +142,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Issues = true;
 		$scope.btnstate_Commits = false;
 		$scope.div_RepoHulpMenu = 2;
+		$scope.GetIssues();
+		$scope.div_issues = 1;
+		$scope.btnstate_IssueCreate = false;
+		$scope.btnstate_IssuesView = true;
 	};
 
 	$scope.div_issues = 0;
@@ -416,7 +421,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		$scope.GetIssues = function(){
 			console.log("Call for Issues");
-			$http.get(apiAllIssuesCall + x + "/issues" + OauthToken).then(function (response){
+			$http.get(apiAllIssuesCall + x + "/issues" + TijdelijkeOauth).then(function (response){
 
 				$scope.IssueBodys.length = 0;
 				$scope.IssueTitels.length = 0;
@@ -443,11 +448,26 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			console.log("Issues recieved");
 		};
 
+		var TitleIssue;
+		var BodyIssue;
+
 		$scope.CreateIssue = function(){
+			TitleIssue = document.getElementById("Title").value;
+			BodyIssue = document.getElementById("Body").value;
+			console.log(TitleIssue);
+			console.log(BodyIssue);
+			if(TitleIssue != "" && BodyIssue != ""){
+				$http.post(apiAllIssuesCall + x + '/issues' + Access2, 
+				{'title': TitleIssue, 'body': BodyIssue}, 
+				{ headers: { 'Content-Type': 'application/json'}}).then(function(res){
+					console.log(res);
+				});
+			}else{alert('Bijde velden moeten ingevuld worden.')};
 			
+			document.getElementById("Title").value = "";
+	        document.getElementById("Body").value = "";
 
 		};
-
 	};
 
 	$scope.showSelectedText = function() {

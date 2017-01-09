@@ -234,32 +234,34 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				console.log("CurrentAmount is " + CurrentAmount);
 				if (CurrentAmount > PreviousAmount) {
 					$scope.NewLogInfo = "New Logs Available"
-			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth).then(function (response) {
-				for (i = 0; i < 1; i++) {
-					LastLogDate = response.data[i].commit.author.date;
-				}
-				var LastLogDateS = LastCommitDate.toString();
-				var datetimeS = datetime.toString();
-				var Time = Date.parse(datetimeS) - Date.parse(LastLogDateS);
-				var LogTime= Time / (1000 * 60 * 60 * 24);
-				console.log(LogTime);
-				if(LogTime < 7){
-					$scope.NewLogInfo = "Recent Log committed!"
-				}
-				else{
-					$scope.NewLogInfo = "Newest Log has not been uploaded."
-				}
-				$scope.ShowLog = function() {
-						$http.get(apiCallInfo + x + apiCallInfoLog + TijdelijkeOauth).then(function (response) {
-							console.log(response.data.download_url);
-							LogLink = response.data.download_url;
-							$http.get(LogLink).then(function (response) {
-								//console.log(response.data);
-								PulledLog = response.data;
-								FilterLog();
+					$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth).then(function (response) {
+						for (i = 0; i < 1; i++) {
+							LastLogDate = response.data[i].commit.author.date;
+						}
+						var LastLogDateS = LastCommitDate.toString();
+						var datetimeS = datetime.toString();
+						var Time = Date.parse(datetimeS) - Date.parse(LastLogDateS);
+						var LogTime = Time / (1000 * 60 * 60 * 24);
+						console.log(LogTime);
+						if (LogTime < 7) {
+							$scope.NewLogInfo = "Recent Log committed!"
+						}
+						else {
+							$scope.NewLogInfo = "Newest Log has not been uploaded."
+						}
+						$scope.ShowLog = function () {
+							$http.get(apiCallInfo + x + apiCallInfoLog + TijdelijkeOauth).then(function (response) {
+								console.log(response.data.download_url);
+								LogLink = response.data.download_url;
+								$http.get(LogLink).then(function (response) {
+									//console.log(response.data);
+									PulledLog = response.data;
+									FilterLog();
+								});
 							});
-						});
-					}
+						}
+					});
+				}
 			});
 
 			

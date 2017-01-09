@@ -15,6 +15,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var LastCommitDate = new Date();
 	var datetime = new Date();
 
+
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallAllStudents = "https://api.github.com/orgs/MyOrg1617/repos";
@@ -24,6 +25,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
+	var client_id = "?client_id=651b11583f0162b4cc91";
+
 
 	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
@@ -67,27 +70,26 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	if(UserCode != ""){
 		
 		Usercode = UserCode.replace('?code=', '');
-		console.log(Usercode);
-		console.log(UserCode);
-		
+		console.log("UserCode: " + Usercode);
+		console.log("Exchanging UserCode for AccessToken");
 		$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
 			OauthToken = data; 
 			OauthToken = OauthToken.replace('access_token=', '?');
 			OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
-			console.log("AccessToken is " + OauthToken);			
+			console.log("AccessToken: " + OauthToken);			
 		}).success(function(){
+			console.log("Login Successfull");
 			apiAllStudentsCall();
 		});
 	};
 	//Login
 	$scope.SignIn = function(){
-		var client_id = "?client_id=651b11583f0162b4cc91";
 		window.location.replace(apiLogin + client_id);
 	};
 
 
 	//Button vars and fucntions
-	$scope.div_value = 1;
+	$scope.div_MainMenu = 1;
 	$scope.btnstate_repostats = true;
 	$scope.btnstate_Repohulp = false;
 	$scope.btnstate_Scriptie = false;
@@ -96,38 +98,38 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_repostats = true;
 		$scope.btnstate_Repohulp = false;
 		$scope.btnstate_Scriptie = false;
-		$scope.div_value = 1;
+		$scope.div_MainMenu = 1;
 	};
 
 	$scope.Btn_RepoHulp = function () {
 		$scope.btnstate_repostats = false;
 		$scope.btnstate_Repohulp = true;
 		$scope.btnstate_Scriptie = false;
-		$scope.div_value = 2;
+		$scope.div_MainMenu = 2;
 	};
 
 	$scope.Btn_Scriptie = function () {
 		$scope.btnstate_repostats = false;
 		$scope.btnstate_Repohulp = false;
 		$scope.btnstate_Scriptie = true;
-		$scope.div_value = 3;
+		$scope.div_MainMenu = 3;
 	};
 
-	$scope.div_val = 1;
+	$scope.div_RepoHulpMenu = 1;
 	$scope.btnstate_Issues = false;
 	$scope.btnstate_Commits = true;
 
 	$scope.Btn_Commits = function(){
 		$scope.btnstate_Issues = false;
 		$scope.btnstate_Commits = true;
-		$scope.div_val = 1;
+		$scope.div_RepoHulpMenu = 1;
 		$scope.GetCommits();
 	};
 
 	$scope.Btn_Issues = function(){
 		$scope.btnstate_Issues = true;
 		$scope.btnstate_Commits = false;
-		$scope.div_val = 2;
+		$scope.div_RepoHulpMenu = 2;
 	};
 
 	$scope.div_issues = 0;
@@ -150,47 +152,49 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var RepoName;
 
 	$scope.RepoNames = [];
+	$scope.RepoNamesSplit = [];
 	CommitTime = [];
 
 	var apiAllStudentsCall = function () {
-		console.log(window.location.search);
-		console.log(UserCode);
 
 		console.log("apiCallAllStudents");
 		$http.get(apiCallAllStudents + TijdelijkeOauth).then(function (response) {
-			console.log(response);
+			//console.log(response);
 			for (i = 0; i < response.data.length; i++) {
 				RepoName = response.data[i].name;
 				if (RepoName.indexOf("BAP1617") !== -1) {
 					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
 					RepoName = RepoName.substring(8);
+					RepoNameSplit = RepoName.replace(/([A-Z])/g, ' $1').trim();
 					$scope.RepoNames.push(RepoName);
+					$scope.RepoNamesSplit.push(RepoNameSplit);
 				};	
 			};
 			console.log($scope.RepoNames);
 			for(i = 0; i < $scope.RepoNames.length ; i++){
-					console.log($scope.RepoNames[i]);
-				   $http.get(apiCallCommits + $scope.RepoNames[i] + "/commits" + TijdelijkeOauth).then(function (response) {
-						for (i = 0; i < 1; i++) {
-							LastCommitDate = response.data[i].commit.author.date;
-						}
-					   var LastCommitDateS = LastCommitDate.toString();
-					   var datetimeS = datetime.toString();
-					   var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
-					   var TimeDifference = difference / (1000 * 60 * 60 * 24);
-					   console.log(TimeDifference);
-					   CommitTime.push(TimeDifference);
-					   console.log(CommitTime);
+				console.log($scope.RepoNames[i]);
+			   	$http.get(apiCallCommits + $scope.RepoNames[i] + "/commits" + TijdelijkeOauth).then(function (response) {
+					for (i = 0; i < 1; i++) {
+						LastCommitDate = response.data[i].commit.author.date;
+					}
+				   	var LastCommitDateS = LastCommitDate.toString();
+				   	var datetimeS = datetime.toString();
+				   	var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
+				   	var TimeDifference = difference / (1000 * 60 * 60 * 24);
+				   	console.log(TimeDifference);
+				   	CommitTime.push(TimeDifference);
+				   	console.log(CommitTime);
 
-		});
-				}
+				});
+			};
 			console.log($scope.RepoNames);
-			});
+		});
 
 	};
 
 	$scope.do = function(x){
 		console.log("test");
+		x = x.replace(' ', '');
 		$http.get(apiCallInfo + x + apiCallInfo2 + TijdelijkeOauth).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
@@ -385,8 +389,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.Repeat = [];
 
 		$scope.GetIssues = function(){
-			$http.get(apiAllIssuesCall + x + "/issues" + TijdelijkeOauth).then(function (response){
-				console.log(response);
+			console.log("Call for Issues");
+			$http.get(apiAllIssuesCall + x + "/issues" + OauthToken).then(function (response){
 
 				$scope.IssueBodys.length = 0;
 				$scope.IssueTitels.length = 0;
@@ -395,7 +399,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.Repeat.length = 0;
 
 				for (var i = 0; i < response.data.length; i++) {
-					console.log("Looping - " + [i])
 					IssueBody = response.data[i].body;
 					IssueTitel = response.data[i].title;
 					IssueNumber = response.data[i].number;
@@ -411,6 +414,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 				};
 			});
+			console.log("Issues recieved");
 		};
 
 		$scope.CreateIssue = function(){

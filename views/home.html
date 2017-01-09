@@ -55,7 +55,7 @@
     					</div>
 				</div>
 				<div class="btn-group-vertical btn-width-fix" role="group">
-					<div ng-repeat="x in RepoNames" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
+					<div ng-repeat="x in RepoNamesSplit" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
 						<button type="button" ng-click="do(x)" class="btn btn-default btn-block">
 							{{x}}
 						</button>
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 
-				<div class="panel-body" ng-switch="div_value">
+				<div class="panel-body" ng-switch="div_MainMenu">
 					<div ng-switch-when="1" class="my-switch-animation">
 						<p>Name: {{getNaam}}</p>
 					    <p>GitName: {{getGitNaam}}</p>
@@ -100,7 +100,7 @@
 						<button ng-click="ShowCharts()">Show Charts</button>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
-						<div class="panel-body" ng-switch="div_val">
+						<div class="panel-body" ng-switch="div_RepoHulpMenu">
 							<div ng-click="Btn_Commits()" class="btn-group" role="group">
 								<button type="button" class="btn" ng-class="{'true':'btn-success','false':'btn-danger'}[btnstate_Commits]">Get Commits</button>
 							</div>

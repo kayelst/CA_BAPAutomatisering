@@ -29,24 +29,12 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var Access2 = "?access_token=0daec56ae84b247121b53069e34c126259cf92fa";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var client_id = "?client_id=651b11583f0162b4cc91";
-
-
-	//BryanCalls
 	var apiLogin = "https://github.com/login/oauth/authorize";
-	//var UserToken = "https://github.com/login/oauth/access_token";
 	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var TijdelijkeOauth = "?client_id=651b11583f0162b4cc91&client_secret=cc5f94be35b0ccf9891b55dd6d670f3f7cf29388"
-
-
-	Converter = new showdown.Converter();
-
-	//KayCalls
-
 	var apiCallCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 
-
-	// onload
-
+	Converter = new showdown.Converter();
 
 	var currentdate = new Date();
 	var yyyy = currentdate.getFullYear();
@@ -80,9 +68,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	NextMondayDate = ddNextMonday+"/"+mm+"/"+yyyy;
 
+	//Check if we recieved a Usercode
 	if(UserCode != ""){
 		
 		Usercode = UserCode.replace('?code=', '');
+		window.history.pushState("object or string", "Title", "/"+window.location.href.substring(window.location.href.lastIndexOf('/') + 1).split("?")[0]);
 		console.log("UserCode: " + Usercode);
 		console.log("Exchanging UserCode for AccessToken");
 		$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
@@ -96,12 +86,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			apiAllStudentsCall();
 		});
 	};
-	//Login
+
+	//Login Btn 
 	$scope.SignIn = function(){
 		window.location.replace(apiLogin + client_id + "&scope=public_repo");
 	};
 
-	//Button vars and fucntions
+	//Button vars and fucntions Switch between Divs
 	$scope.div_MainMenu = 1;
 	$scope.btnstate_repostats = true;
 	$scope.btnstate_Repohulp = false;
@@ -118,7 +109,12 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_repostats = false;
 		$scope.btnstate_Repohulp = true;
 		$scope.btnstate_Scriptie = false;
-		$scope.div_MainMenu = 2;
+		/*$scope.div_MainMenu = 2;
+		$scope.btnstate_Issues = false;
+		$scope.btnstate_Commits = true;
+		$scope.div_RepoHulpMenu = 1;
+		$scope.GetCommits();*/
+
 	};
 
 	$scope.Btn_Scriptie = function () {
@@ -126,22 +122,31 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Repohulp = false;
 		$scope.btnstate_Scriptie = true;
 		$scope.div_MainMenu = 3;
+		$scope.GetScriptie();
 	};
 
 	$scope.div_RepoHulpMenu = 1;
 	$scope.btnstate_Issues = false;
-	$scope.btnstate_Commits = true;
+	$scope.btnstate_Commits = false;
 
 	$scope.Btn_Commits = function(){
-		$scope.btnstate_Issues = false;
-		$scope.btnstate_Commits = true;
+		$scope.btnstate_repostats = false;
+		$scope.btnstate_Repohulp = true;
+		$scope.btnstate_Scriptie = false;
+		//$scope.btnstate_Issues = false;
+		//$scope.btnstate_Commits = true;
 		$scope.div_RepoHulpMenu = 1;
 		$scope.GetCommits();
 	};
 
 	$scope.Btn_Issues = function(){
-		$scope.btnstate_Issues = true;
-		$scope.btnstate_Commits = false;
+		$scope.btnstate_repostats = false;
+		console.log("bryan is gay")
+		$scope.btnstate_Repohulp = true;
+		$scope.btnstate_Scriptie = false;
+		//$scope.btnstate_Issues = true;
+		//$scope.btnstate_Commits = false;
+
 		$scope.div_RepoHulpMenu = 2;
 		$scope.GetIssues();
 		$scope.div_issues = 1;
@@ -209,8 +214,9 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	};
 
-	$scope.do = function(x){
-		console.log("test");
+	$scope.do = function(x){ 
+		$scope.selectedPerson = x;
+		$scope.Btn_RepoStats();
 		x = x.replace(' ', '');
 		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
 			rawfileLink = response.data.download_url;
@@ -369,6 +375,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.GetCommits = function () {
 
 			$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
+				CommitMessages.length = 0;
+				shaArray.length = 0;
 				for (i = 0; i < response.data.length; i++) {
 					CommitMessages.push(response.data[i].commit.message);
 					$scope.AllCommits = CommitMessages;
@@ -408,7 +416,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});
 			}, function (error) {
-				
+
 			});
 		};
 

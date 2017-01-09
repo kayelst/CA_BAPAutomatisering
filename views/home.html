@@ -26,6 +26,7 @@
 
 </head>
 <body ng-app="theapp" ng-controller="myCtrl" class="HeaderColor">
+	
 	<div class="text-center" >
   		<div class="btn-toolbar pull-right">
     		<div class="btn-group">
@@ -46,18 +47,12 @@
  	 	<div class="row">
  	 		<div class="col-md-4 col-lg-2 col-sm-4 col-xs-4 SecondaryColor">
  	 			<div id="SearchBar" class="input-group searchbar-fix">
-    				<input id="SearchTerm" type="text" placeholder="Search" class="form-control">
-    					<div class="input-group-btn">
-    						<button class="btn btn-default" type="submit">
-    							<i class="glyphicon glyphicon-search">
-    							</i>
-    						</button>
-    					</div>
+    				<input id="SearchTerm" type="text" placeholder="Search" ng-model="Search" class="form-control">
 				</div>
 				<div class="btn-group-vertical btn-width-fix" role="group">
-					<div ng-repeat="x in RepoNamesSplit" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
-						<button type="button" ng-click="do(x)" class="btn btn-default btn-block">
-							{{x}}
+					<div ng-repeat="name in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
+						<button type="button" ng-click="do(name)" class="btn" ng-class="{'true':'btn-Success','false':'btn-Danger'}[selectedPerson == name]">
+							{{name}}
 						</button>
 					</div>
 						
@@ -70,10 +65,14 @@
 					    RepoStats
 					    </button>
 					</div>
-					<div ng-click="Btn_RepoHulp()" class="btn-group" role="group">
-					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Repohulp]">
-					    RepoHulp
-					    </button>
+					<div class="dropdown btn-group" role="group">
+					  	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+					    Dropdown <span class="caret"></span>
+					  	</button>
+					  	<ul class="dropdown-menu">
+					    	<li><a href ng-click="Btn_Commits">Commits</a></li>
+					    	<li><a href ng-click="Btn_Issues">Issues</a></li>
+					    </ul>
 					</div>
 					<div ng-click="Btn_Scriptie()" class="btn-group" role="group">
 					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Scriptie]">
@@ -81,7 +80,6 @@
 					    </button>
 					</div>
 				</div>
-
 				<div class="panel-body" ng-switch="div_MainMenu">
 					<div ng-switch-when="1" class="my-switch-animation">
 						<p>Name: {{getNaam}}</p>
@@ -130,7 +128,7 @@
 										</button>
 									</div>
 								</div>
-								<div ng-switch="div_issues" class="my-switch-animation">
+								<div ng-switch="div_issues" class="my-switch-animation" style="overflow-y:scroll;height:60%;">
 									<div ng-switch-when="1" ng-repeat="i in Repeat">
 										<div>
 											<br>
@@ -162,5 +160,6 @@
  	 		</div>
  	 	</div> 
  	</div> 
+ </div> 
 </body>
 </html>

@@ -5,6 +5,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var LastCommit;
 	var TotalCommit = 0;
 	var PreviousAmount = 0;
+	var Usercode;
 	var UserCode = window.location.search;
 	var CommitMessages = [];
 	var shaArray = [];
@@ -38,14 +39,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	// onload
 
-	Usercode = UserCode.replace('?code=', '');
-	
-	$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
-		OauthToken = data; 
-		OauthToken = OauthToken.replace('access_token=', '?');
-		OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
-		console.log("AccessToken is " + OauthToken);
-	});
 
 	var currentdate = new Date();
 	var yyyy = currentdate.getFullYear();
@@ -70,6 +63,26 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	datetime = yyyy+"-"+mm+"-"+dd+"T"+hh+":"+mi+":"+ss+"Z";
 	console.log(datetime);
+
+	if(UserCode != ""){
+		
+		Usercode = UserCode.replace('?code=', '');
+		console.log(Usercode);
+		console.log(UserCode);
+		
+		$http.post("/ClientToServer", {body: Usercode}).success(function (data) {
+			OauthToken = data; 
+			OauthToken = OauthToken.replace('access_token=', '?');
+			OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
+			console.log("AccessToken is " + OauthToken);			
+		});
+	};
+	//Login
+	$scope.SignIn = function(){
+		var client_id = "?client_id=651b11583f0162b4cc91";
+		window.location.replace(apiLogin + client_id);
+	};
+
 
 	//Button vars and fucntions
 	$scope.div_value = 1;
@@ -150,8 +163,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
 					RepoName = RepoName.substring(8);
 					$scope.RepoNames.push(RepoName);
-				}
-			}
+				};	
+			};
 			console.log($scope.RepoNames);
 			for(i = 0; i < $scope.RepoNames.length ; i++){
 					console.log($scope.RepoNames[i]);
@@ -167,7 +180,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					   CommitTime.push(TimeDifference);
 					   console.log(CommitTime);
 
-					});
+		});
 				}
 			console.log($scope.RepoNames);
 			});
@@ -175,6 +188,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	};
 
 	$scope.do = function(x){
+		console.log("test");
 		$http.get(apiCallInfo + x + apiCallInfo2 + TijdelijkeOauth).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
@@ -197,12 +211,22 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
+
+			var currentdate = new Date();
+			var datetime = currentdate.getFullYear() + "-"
+				+ (currentdate.getMonth() + 1) + "-"
+				+ currentdate.getDate() + "T"
+				+ currentdate.getHours() + ":"
+				+ currentdate.getMinutes() + ":"
+				+ currentdate.getSeconds() + "Z";
+			console.log(datetime);
+
 			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth + "&path=Logfiles&until=" + datetime).then(function (response) {
 				var CurrentAmount = response.data.length;
 				ShowLogButton = document.getElementById("ShowLog");
 				console.log("CurrentAmount is " + CurrentAmount);
 				if (CurrentAmount > PreviousAmount) {
-					$scope.NewLogInfo = "New Logs Available";
+					$scope.NewLogInfo = "New Logs Available"
 					ShowLogButton.HIDDEN = false;
 					PreviousAmount = CurrentAmount;
 					$scope.ShowLog = function() {
@@ -217,7 +241,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					}
 				}
 				else {
-					$scope.NewLogInfo = "No new Logs";
+					$scope.NewLogInfo = "No new Logs"
 					ShowLogButton.HIDDEN = true;
 				}
 			});
@@ -387,10 +411,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 		};
 
-	$scope.CreateIssue = function(){
-		
+		$scope.CreateIssue = function(){
+			
 
-	};
+		};
 
 	};
 
@@ -411,13 +435,4 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.AddComment = function(){
 
 	};
-	
-		//Login
-		$scope.SignIn = function () {
-			var client_id = "?client_id=651b11583f0162b4cc91";
-			window.location.replace(apiLogin + client_id);
-
-		};
-	
-
 });

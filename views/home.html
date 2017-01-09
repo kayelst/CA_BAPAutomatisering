@@ -105,9 +105,9 @@
 						<button ng-click="ShowCharts()">Show Charts</button>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
-						<div class="panel-body" ng-switch="div_RepoHulpMenu">
-							<div ng-switch-when="1" class="my-switch-animation">
-								<div ng-repeat="StudentCommit in AllCommits track by $index" class="col-md-8">
+						<div class="panel-body" ng-switch="div_RepoHulpMenu"  id="CommitPage">
+							<div ng-switch-when="1" class="my-switch-animation" >
+								<div ng-repeat="StudentCommit in AllCommits track by $index" class="CommitArea">
 									<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 								</div>
 								<div  class="pull-right col-md-3">

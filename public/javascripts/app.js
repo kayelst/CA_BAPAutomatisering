@@ -16,7 +16,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var datetime = new Date();
 	var MondayDate = new Date();
 	var NextMondayDate = new Date();
-
+	var ThePromotor;
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -225,6 +225,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				rawInfoFile = response.data;
 				filterInfo(rawInfoFile);
 			});
+		}, function (err) {
+			console.log("send infoemail");
+			$http.post("/MailInfo", {body: x, "promotor": ThePromotor}).success(function () {
+				console.log("mail send");
+			});
 
 		});
 
@@ -274,6 +279,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 						}
 					});
 				}
+			}, function(error){
+				console.log("send Logmail");
+				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function(){
+					console.log("LogMail send");
+				});
 			});
 
 			
@@ -370,6 +380,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			$scope.getPhone = getPhone;
 			$scope.getAddress = getAddress;
 			$scope.getBedrijf = getBedrijf;
+			ThePromotor = getPromotor;
 		};
 
 		$scope.GetCommits = function () {
@@ -393,14 +404,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				CommentName = CommitMessages[index];
 				$scope.CommentInfo = CommentName;
 				document.getElementById("CommentArea").focus();
-			}
+			};
 
 			$scope.PostComment = function (){
 				var config = {headers: {'Content-Type': 'application/json'}};
 				CommentBody = document.getElementById("CommentArea").value;
 
 				console.log(CommentBody);
-				$http.post(apiCallCommits + x + "/commits/" + CommentSha + "/comments" + OauthToken, {'body': CommentBody}, config).then(function (res) { 
+				$http.post(apiCallCommits + x + "/commits/" + CommentSha + "/comments" + OauthToken, {'body': CommentBody}, config).then(function (res) {
 					console.log(res);
 				});
 			};
@@ -410,10 +421,15 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + OauthToken).then(function (response) {
 				rawScriptieLink = response.data.download_url;
 				$http.get(rawScriptieLink).then(function (response) {
-					ScriptieRaw = response.data;
+						ScriptieRaw = response.data;
 
-					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
-					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
+						ScriptieHtml = Converter.makeHtml(ScriptieRaw);
+						$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
+				});
+			}, function(error){
+				console.log("send scriptiemail");
+				$http.post("/MailScriptie", {body: x, "promotor": ThePromotor}).success(function(){
+					console.log("mail send");
 				});
 			}, function (error) {
 

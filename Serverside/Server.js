@@ -18,40 +18,6 @@ db.once('open', function callback(){
 
 var app = express();
 
-/*//Hourly Call to Api
-  console.log("in the function");
-  var apiCallLogCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits?path=Logfiles&since=2016-11-15T13:1:27Z&client_id=651b11583f0162b4cc91&client_secret=e42b41de694254d711122267d88d3bd884ad2de4";
-  $http.get(apiCallLogCommits).then(function(response){
-    var CurrentAmount = response.data.length;
-    console.log(CurrentAmount);
-    if (CurrentAmount > PreviousAmount){
-      console.log("Logs have been added");
-      PreviousAmount = CurrentAmount;
-    }
-  });*/
-
-/* DBSTUFF DELETE LATER
-var UserInfoSchema = new mongoose.Schema({
-  name: String,
-  GitName: String,
-  Repo: String,
-  Promotor: String,
-  Phone: String,
-  Address: String,
-  Updated_At: {type: Date, default: Date.now}
-});
-
-var UserInfo = mongoose.model('Userinfo', UserInfoSchema);
-
-var userinfo = new UserInfo({name: 'Kay', GitName: 'Kayelst', Repo: 'RepoNaam', Promotor: 'Tim_Dams', Phone: '0476555636', Address: 'Kievitstraat2'});
-
-userinfo.save(function(err){
-  if(err)
-    console.log (err);
-  else
-    console.log(userinfo);
-});*/
-
 var request = require("request");
 
 var routes = require('../routes/index');
@@ -101,37 +67,118 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 app.use('/users', users);
+/*app.post('/MailScriptie', function(req,res){
+ var User = req.body.body;
+ from_email = new helper.Email("kay.elst@hotmail.com");
+ to_email = new helper.Email("kayelst@gmail.com");
+ subject = "Student heeft geen scriptiefile";
+ content = new helper.Content("Yay it works!");
+ mail = new helper.Mail(from_email, subject, to_email, content);
 
-// catch 404 and forward to error handler
-/*app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});*/
 
-// error handlers
+ var sg = require('sendgrid')('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');
+ var request = sg.emptyRequest({
+ method: 'POST',
+ path: '/v3/mail/send',
+ body: mail.toJSON()
+ });
 
-// development error handler
-// will print stacktrace
-/*if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+ sg.API(request, function(error, response) {
+ console.log(response.statusCode);
+ console.log(response.body);
+ console.log(response.headers);
+ });
+ });*/
+
+var helper = require('sendgrid').mail;
+
+app.post('/MailScriptie', function(req,res) {
+    var MissingUser = req.body.body;
+    var Promotor = req.body.promotor
+
+    if (Promotor = "Tim Dams"){
+        MailAddress = "kayelst@gmail.com";
+    }
+
+    from_email = new helper.Email("noreply@BapAutomizer.com");
+    to_email = new helper.Email(MailAddress);
+    subject = "De student " + MissingUser + "heeft geen scriptie";
+    content = new helper.Content('text/plain', "De student heeft nog geen scriptie en is hiervan op de hoogte gebracht");
+    mail = new helper.Mail(from_email, subject, to_email, content);
+
+    var sg = require('sendgrid')('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');
+    var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON()
     });
-  });
-}
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});*/
+    sg.API(request, function (error, response) {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+    });
+
+});
+
+app.post('/MailLog', function(req,res) {
+    var MissingUser = req.body.body;
+    var Promotor = req.body.promotor
+
+    if (Promotor = "Tim Dams"){
+        MailAddress = "kayelst@gmail.com";
+    }
+
+    from_email = new helper.Email("noreply@BapAutomizer.com");
+    to_email = new helper.Email(MailAddress);
+    subject = "De student " + MissingUser + "heeft geen LogFile";
+    content = new helper.Content('text/plain', "De student heeft nog geen LogFile en is hiervan op de hoogte gebracht");
+    mail = new helper.Mail(from_email, subject, to_email, content);
+
+    var sg = require('sendgrid')('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');
+    var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON()
+    });
+
+    sg.API(request, function (error, response) {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+    });
+
+});
+
+
+app.post('/MailInfo', function(req,res) {
+    var MissingUser = req.body.body;
+    var Promotor = req.body.promotor
+
+    if (Promotor = "Tim Dams"){
+        MailAddress = "kayelst@gmail.com";
+    }
+
+    from_email = new helper.Email("noreply@BapAutomizer.com");
+    to_email = new helper.Email(MailAddress);
+    subject = "De student " + MissingUser + "heeft geen InfoFile";
+    content = new helper.Content('text/plain', "De student heeft nog geen InfoFile en is hiervan op de hoogte gebracht");
+    mail = new helper.Mail(from_email, subject, to_email, content);
+
+    var sg = require('sendgrid')('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');
+    var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON()
+    });
+
+    sg.API(request, function (error, response) {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+    });
+
+});
 
 
 module.exports = app;

@@ -67,28 +67,6 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 app.use('/users', users);
-/*app.post('/MailScriptie', function(req,res){
- var User = req.body.body;
- from_email = new helper.Email("kay.elst@hotmail.com");
- to_email = new helper.Email("kayelst@gmail.com");
- subject = "Student heeft geen scriptiefile";
- content = new helper.Content("Yay it works!");
- mail = new helper.Mail(from_email, subject, to_email, content);
-
-
- var sg = require('sendgrid')('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');
- var request = sg.emptyRequest({
- method: 'POST',
- path: '/v3/mail/send',
- body: mail.toJSON()
- });
-
- sg.API(request, function(error, response) {
- console.log(response.statusCode);
- console.log(response.body);
- console.log(response.headers);
- });
- });*/
 
 var helper = require('sendgrid').mail;
 

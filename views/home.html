@@ -42,7 +42,7 @@
     				<input id="SearchTerm" type="text" placeholder="Search" ng-model="Search" class="form-control">
 				</div>
 				<div class="btn-group-vertical btn-width-fix" role="group">
-					<div ng-repeat="name in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
+					<div ng-repeat="name in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group" >
 						<button type="button" ng-click="do(name)" class="btn" ng-class="{'true':'btn-Success','false':'btn-Danger'}[selectedPerson == name]">
 							{{name}}
 						</button>

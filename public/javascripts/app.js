@@ -16,6 +16,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var datetime = new Date();
 	var MondayDate = new Date();
 	var NextMondayDate = new Date();
+	var LastSundayDate = new Date();
 	var ThePromotor;
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -45,6 +46,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var ss = currentdate.getSeconds();
 	var ddMonday = currentdate.getDate() - currentdate.getDay() - 6;
 	var ddNextMonday = currentdate.getDate() - currentdate.getDay() + 1;
+	var ddLastSunday = currentdate.getDate() - currentdate.getDay();
 
 	if( mm < 10)
 		 mm = "0"+mm;
@@ -60,9 +62,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		ddMonday= "0"+ddMonday;
 	if (ddNextMonday < 10)
 		ddNextMonday = "0"+ddNextMonday;
+	if (ddLastSunday < 10)
+		ddLastSunday = "0"+ddLastSunday;
 
 	datetime = yyyy+"-"+mm+"-"+dd+"T"+hh+":"+mi+":"+ss+"Z";
 	console.log(datetime);
+
+	LastSundayDate = yyyy+"-"+mm+"-"+ddLastSunday+"T"+hh+":"+mi+":"+ss+"Z";
 
 	MondayDate = ddMonday+"/"+mm+"/"+yyyy;
 
@@ -103,12 +109,14 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Repohulp = false;
 		$scope.btnstate_Scriptie = false;
 		$scope.div_MainMenu = 1;
+		CommitMessages = [];
 	};
 
 	$scope.Btn_RepoHulp = function () {
 		$scope.btnstate_repostats = false;
 		$scope.btnstate_Repohulp = true;
 		$scope.btnstate_Scriptie = false;
+		CommitMessages = [];
 		/*$scope.div_MainMenu = 2;
 		$scope.btnstate_Issues = false;
 		$scope.btnstate_Commits = true;
@@ -123,6 +131,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Scriptie = true;
 		$scope.div_MainMenu = 3;
 		$scope.GetScriptie();
+		CommitMessages = [];
 	};
 
 	$scope.div_RepoHulpMenu = 1;
@@ -145,6 +154,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_MainMenu = 2;
 		$scope.btnstate_Repohulp = true;
 		$scope.btnstate_Scriptie = false;
+		CommitMessages = [];
 		//$scope.btnstate_Issues = true;
 		//$scope.btnstate_Commits = false;
 
@@ -235,6 +245,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 
 		$scope.RepoStatistics = function (){
+			LastLogDate = 0;
 			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
 				TotalCommit = 0;
 				console.log(response);
@@ -246,46 +257,42 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
-			$http.get(apiCallLogCommits + x + "/commits" + OauthToken + "&path=Logfiles&until=" + datetime).then(function (response) {
-				var CurrentAmount = response.data.length;
-				ShowLogButton = document.getElementById("ShowLog");
-				console.log("CurrentAmount is " + CurrentAmount);
-				if (CurrentAmount > PreviousAmount) {
-					$scope.NewLogInfo = "New Logs Available"
-					$http.get(apiCallLogCommits + x + "/commits" + OauthToken).then(function (response) {
-						for (i = 0; i < 1; i++) {
-							LastLogDate = response.data[i].commit.author.date;
-						}
-						var LastLogDateS = LastCommitDate.toString();
-						var datetimeS = datetime.toString();
-						var Time = Date.parse(datetimeS) - Date.parse(LastLogDateS);
-						var LogTime = Time / (1000 * 60 * 60 * 24);
-						console.log(LogTime);
-						if (LogTime < 7) {
-							$scope.NewLogInfo = "Recent Log committed!"
-						}
-						else {
-							$scope.NewLogInfo = "Newest Log has not been uploaded."
-						}
-						$scope.ShowLog = function () {
-							$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
-								console.log(response.data.download_url);
-								LogLink = response.data.download_url;
-								$http.get(LogLink).then(function (response) {
-									//console.log(response.data);
-									PulledLog = response.data;
-									FilterLog();
-								});
+				$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
+					for (i = 0; i < 1; i++) {
+						LastLogDate = response.data[i].commit.author.date;
+					}
+					console.log("log " + LastLogDate);
+					console.log("sunday "+ LastSundayDate);
+					var LastLogDateS = LastCommitDate.toString();
+					var LastSundayDateS = LastSundayDate.toString();
+					console.log("sunday " + Date.parse(LastSundayDateS));
+					console.log("log "  + Date.parse( LastLogDateS));
+					var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
+					var LogTime = Time / (1000 * 60 * 60 * 24);
+					console.log(LogTime);
+					if (LogTime < 0) {
+						$scope.NewLogInfo = "Recent Log committed!"
+					}
+					else {
+						$scope.NewLogInfo = "Newest Log has not been uploaded."
+					}
+					$scope.ShowLog = function () {
+						$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
+							console.log(response.data.download_url);
+							LogLink = response.data.download_url;
+							$http.get(LogLink).then(function (response) {
+								//console.log(response.data);
+								PulledLog = response.data;
+								FilterLog();
 							});
-						}
+						});
+					}
+				}, function (error) {
+					console.log("send Logmail");
+					$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
+						console.log("LogMail send");
 					});
-				}
-			}, function(error){
-				console.log("send Logmail");
-				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function(){
-					console.log("LogMail send");
 				});
-			});
 
 			
 			function FilterLog(){
@@ -432,9 +439,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$http.post("/MailScriptie", {body: x, "promotor": ThePromotor}).success(function(){
 					console.log("mail send");
 				});
-			}, function (error) {
-
-			});
+			})
 		};
 
 		//Issues

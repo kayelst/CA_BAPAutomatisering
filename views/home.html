@@ -41,11 +41,22 @@
  	 			<div id="SearchBar" class="input-group searchbar-fix">
     				<input id="SearchTerm" type="text" placeholder="Search" ng-model="Search" class="form-control">
 				</div>
-				<div class="btn-group-vertical btn-width-fix" role="group">
-					<div ng-repeat="name in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group" >
-						<button type="button" ng-click="do(name)" class="btn" ng-class="{'true':'btn-Success','false':'btn-Danger'}[selectedPerson == name]">
-							{{name}}
-						</button>
+
+				<div class="btn-group-vertical" role="group">
+					<div ng-repeat="name in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group">
+						
+						<div class="btn-group" role"group">
+
+							<div class="btn-group" role="group">
+								<button type="button" ng-click="do(name)" class="btn btn-group btn-fix" role="group" ng-class="{'true':'btn-primary','false':'btn-default'}[selectedPerson == name]">
+								{{name}}
+								</button>
+							</div>
+
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default btn-group disabled btn-fix2" role="group" ng-class="{'orange':'btn-warning','red':'btn-danger','green':'btn-success'}[selectedPerson == name]"></button>
+							</div>
+						</div>
 					</div>						
  	 			</div>
  	 		</div>
@@ -57,18 +68,23 @@
 					    </button>
 					</div>
 					<div class="dropdown btn-group" role="group">
-					  	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-					    Dropdown <span class="caret"></span>
+					  	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
+					    RepoHulp <span class="caret"></span>
 					  	</button>
 					  	<ul class="dropdown-menu">
 					    	<li><a href ng-click="Btn_Commits()">Commits</a></li>
 					    	<li><a href ng-click="Btn_Issues()">Issues</a></li>
 					    </ul>
 					</div>
-					<div ng-click="Btn_Scriptie()" class="btn-group" role="group">
-					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Scriptie]">
-					    Scriptie
-					    </button>
+					<div class="dropdown btn-group" role="group">
+					  	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
+					    Documentatie <span class="caret"></span>
+					  	</button>
+					  	<ul class="dropdown-menu">
+					    	<li><a href ng-click="Btn_Scriptie()">Scriptie</a></li>
+					    	<li><a href ng-click="Btn_LastLog()">Last Log</a></li>
+					    	<li><a href ng-click="Btn_AllLogs()">All Logs</a></li>
+					    </ul>
 					</div>
 				</div>
 				<div class="panel-body" ng-switch="div_MainMenu">
@@ -94,10 +110,10 @@
 								<div ng-repeat="StudentCommit in AllCommits track by $index" class="col-md-8">
 									<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 								</div>
-								<div  class="pull-right col-md-4">
-									<p> {{CommentInfo}}</p>
-									<textarea id="CommentArea"></textarea>
-									<button ng-click="PostComment()">Comment</button>
+								<div  class="pull-right col-md-3">
+									<div> {{CommentInfo}}</div>
+									<textarea rows="10" class="form-control" id="CommentArea"></textarea>
+									<button class="btn btn-success"ng-click="PostComment()">Comment</button>
 								</div>
 							</div>
 							<div ng-switch-when="2" class="my-switch-animation">
@@ -142,12 +158,24 @@
 						</div>	
 					</div>
 					<div ng-switch-when="3" class="my-switch-animation"  ng-click="GetScriptie()">
+						<div ng-switch="div_documentatie" class="my-switch-animation">
+							<div ng-switch-when="1" class="my-switch-animation">
+
+							</div>
+							<div ng-switch-when="2" class="my-switch-animation">
+
+							</div>
+							<div ng-switch-when="3" class="my-switch-animation">
+
+							</div>
+						</div>
 						<div ng-bind-html="ScriptieData" style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()"></div>
 						<div>
  							<h1> Selected Text </h1>
 							<div ng-bind="selectedText"></div>
 							<textarea class="form-control" rows="4"></textarea>
 						</div>
+
 					</div>
 				</div>
  	 		</div>

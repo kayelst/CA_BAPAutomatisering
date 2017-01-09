@@ -5,6 +5,18 @@
 
 }
 
+.btn-fix{
+	width: 250px;
+
+}
+
+.btn-fix2{
+	width: 33px;
+	height: 33px;
+	margin-top: 1px;
+
+}
+
 .SignIn-fix{
 	margin-right: 30;
 	margin-bottom: 20;
@@ -24,10 +36,6 @@
 .btn-width-fix {
 	width: 100%;
 	overflow: hidden;
-}
-
-.glyphicon-search{
-	height: 20px;
 }
 
 .PrimaryColor{

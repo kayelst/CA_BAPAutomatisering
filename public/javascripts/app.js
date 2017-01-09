@@ -11,6 +11,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var ParticipationArray = [];
 	var zerocounter = 0;
 	var OauthToken;
+	var LastCommitDate = new Date();
+	var datetime = new Date();
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -30,7 +32,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	
 	//KayCalls
 
-	var apiCallCommits = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits";
+	var apiCallCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallComment = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/commits/";
 
 
@@ -44,6 +46,28 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		OauthToken = OauthToken.replace('&scope=&token_type=bearer', '');
 		console.log("AccessToken is " + OauthToken);
 	});
+
+	var currentdate = new Date();
+	var yyyy = currentdate.getFullYear();
+	var mm = currentdate.getMonth() + 1;
+	var dd = currentdate.getDate();
+	var hh = currentdate.getHours();
+	var mi = currentdate.getMinutes();
+	var ss = currentdate.getSeconds();
+
+	if( mm < 10)
+		 mm = "0"+mm;
+	if (dd < 10)
+		dd = "0"+dd;
+	if (hh < 10)
+		hh = "0"+hh;
+	if (mi < 10)
+		mi = "0"+mi;
+	if (ss < 10)
+		ss = "0"+ss;
+
+	datetime = yyyy+"-"+mm+"-"+dd+"T"+hh+":"+mi+":"+ss+"Z";
+	console.log(datetime);
 
 	//Button vars and fucntions
 	$scope.div_value = 1;
@@ -109,6 +133,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var RepoName;
 
 	$scope.RepoNames = [];
+	CommitTime = [];
 
 	$scope.apiAllStudentsCall = function () {
 		console.log(window.location.search);
@@ -123,11 +148,28 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
 					RepoName = RepoName.substring(8);
 					$scope.RepoNames.push(RepoName);
-				};	
-			};
+				}
+			}
 			console.log($scope.RepoNames);
+			for(i = 0; i < $scope.RepoNames.length ; i++){
+					console.log($scope.RepoNames[i]);
+				   $http.get(apiCallCommits + $scope.RepoNames[i] + "/commits" + TijdelijkeOauth).then(function (response) {
+						for (i = 0; i < 1; i++) {
+							LastCommitDate = response.data[i].commit.author.date;
+						}
+					   var LastCommitDateS = LastCommitDate.toString();
+					   var datetimeS = datetime.toString();
+					   var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
+					   var TimeDifference = difference / (1000 * 60 * 60 * 24);
+					   console.log(TimeDifference);
+					   CommitTime.push(TimeDifference);
+					   console.log(CommitTime);
 
-		});
+					});
+				}
+			console.log($scope.RepoNames);
+			});
+
 	};
 
 	$scope.do = function(x){
@@ -153,22 +195,12 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
-
-			var currentdate = new Date();
-			var datetime = currentdate.getFullYear() + "-"
-				+ (currentdate.getMonth() + 1) + "-"
-				+ currentdate.getDate() + "T"
-				+ currentdate.getHours() + ":"
-				+ currentdate.getMinutes() + ":"
-				+ currentdate.getSeconds() + "Z";
-			console.log(datetime);
-
 			$http.get(apiCallLogCommits + x + "/commits" + TijdelijkeOauth + "&path=Logfiles&until=" + datetime).then(function (response) {
 				var CurrentAmount = response.data.length;
 				ShowLogButton = document.getElementById("ShowLog");
 				console.log("CurrentAmount is " + CurrentAmount);
 				if (CurrentAmount > PreviousAmount) {
-					$scope.NewLogInfo = "New Logs Available"
+					$scope.NewLogInfo = "New Logs Available";
 					ShowLogButton.HIDDEN = false;
 					PreviousAmount = CurrentAmount;
 					$scope.ShowLog = function() {
@@ -183,7 +215,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					}
 				}
 				else {
-					$scope.NewLogInfo = "No new Logs"
+					$scope.NewLogInfo = "No new Logs";
 					ShowLogButton.HIDDEN = true;
 				}
 			});

@@ -49,7 +49,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var ddLastSunday = currentdate.getDate() - currentdate.getDay();
 
 	if( mm < 10)
-		 mm = "0"+mm;
+		mm = "0"+mm;
 	if (dd < 10)
 		dd = "0"+dd;
 	if (hh < 10)
@@ -125,14 +125,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	};
 
-	$scope.Btn_Scriptie = function () {
-		$scope.btnstate_repostats = false;
-		$scope.btnstate_Repohulp = false;
-		$scope.btnstate_Scriptie = true;
-		$scope.div_MainMenu = 3;
-		$scope.GetScriptie();
-		CommitMessages = [];
-	};
 
 	$scope.div_RepoHulpMenu = 1;
 	$scope.btnstate_Issues = false;
@@ -182,6 +174,40 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_issues = 2;
 	};
 
+	$scope.div_Documentatie = 1;
+	$scope.btnstate_Issues = false;
+	$scope.btnstate_Commits = false;
+
+	$scope.Btn_Scriptie = function () {
+		$scope.btnstate_repostats = false;
+		$scope.btnstate_Repohulp = false;
+		$scope.btnstate_Scriptie = true;
+		$scope.div_MainMenu = 3;
+		$scope.div_Documentatie = 1;
+		$scope.GetScriptie();
+		
+	};
+
+	$scope.Btn_LastLog = function () {
+		$scope.btnstate_repostats = false;
+		$scope.btnstate_Repohulp = false;
+		$scope.btnstate_Scriptie = true;
+		$scope.div_MainMenu = 3;
+		$scope.div_Documentatie = 2;
+
+		
+	};
+
+	$scope.Btn_AllLogs = function () {
+		$scope.btnstate_repostats = false;
+		$scope.btnstate_Repohulp = false;
+		$scope.btnstate_Scriptie = true;
+		$scope.div_MainMenu = 3;
+		$scope.div_Documentatie = 3;
+
+		
+	};
+
 	var RepoName;
 
 	$scope.RepoNames = [];
@@ -203,21 +229,21 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			};			
 
 			angular.forEach($scope.RepoNames, function(name, index) {
-			    $http.get(apiCallCommits + name + "/commits" + OauthToken)
-			    .then(function(response) {
-						var LastCommitDate = response.data[0].commit.author.date;
-					   	var LastCommitDateS = LastCommitDate.toString();
-					   	var datetimeS = datetime.toString();
-					   	var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
-					   	var TimeDifference = difference / (1000 * 60 * 60 * 24);
-					   	console.log(TimeDifference);
-					   	if(TimeDifference < 7)
-					   		$scope.PutPersonAsColor(name, "Green");
-					   	else if (TimeDifference > 7 && TimeDifference < 14)
-					   		$scope.PutPersonAsColor(name, "Orange");
-					   	else 
-					   		$scope.PutPersonAsColor(name, "Red");
-			    });
+				$http.get(apiCallCommits + name + "/commits" + OauthToken)
+				.then(function(response) {
+					var LastCommitDate = response.data[0].commit.author.date;
+					var LastCommitDateS = LastCommitDate.toString();
+					var datetimeS = datetime.toString();
+					var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
+					var TimeDifference = difference / (1000 * 60 * 60 * 24);
+					console.log(TimeDifference);
+					if(TimeDifference < 7)
+						$scope.PutPersonAsColor(name, "Green");
+					else if (TimeDifference > 7 && TimeDifference < 14)
+						$scope.PutPersonAsColor(name, "Orange");
+					else 
+						$scope.PutPersonAsColor(name, "Red");
+				});
 			});
 		});
 	};
@@ -232,15 +258,15 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 
 
-	$scope.do = function(x){ 
+	$scope.do = function(x) { 
 		$scope.selectedPerson = x;
 		$scope.Btn_RepoStats();
 		x = x.replace(' ', '');
 
-		/*$scope.RepoNames[] = x;// spot van x
-		$scope.color[spotOfX] = personColor;*/
+			/*$scope.RepoNames[] = x;// spot van x
+			$scope.color[spotOfX] = personColor;*/
 
-		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
+			$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -267,55 +293,55 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
-				$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
-					LastLogDate = response.data[0].commit.author.date;
-					console.log("log " + LastLogDate);
-					console.log("sunday "+ LastSundayDate);
-					LastLogDateS = LastLogDate.toString();
-					var LastSundayDateS = LastSundayDate.toString();
-					console.log("sunday " + Date.parse(LastSundayDateS));
-					console.log("log "  + Date.parse( LastLogDateS));
-					var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
-					var LogTime = Time / (1000 * 60 * 60 * 24);
-					console.log(LogTime);
-					if (LogTime < 0) {
-						$scope.NewLogInfo = "Last weeks LOG Comitted!"
-					}
-					else {
-						$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
-					}
-					$scope.ShowLog = function () {
-						$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
-							console.log(response.data.download_url);
-							LogLink = response.data.download_url;
-							$http.get(LogLink).then(function (response) {
+			$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
+				LastLogDate = response.data[0].commit.author.date;
+				console.log("log " + LastLogDate);
+				console.log("sunday "+ LastSundayDate);
+				LastLogDateS = LastLogDate.toString();
+				var LastSundayDateS = LastSundayDate.toString();
+				console.log("sunday " + Date.parse(LastSundayDateS));
+				console.log("log "  + Date.parse( LastLogDateS));
+				var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
+				var LogTime = Time / (1000 * 60 * 60 * 24);
+				console.log(LogTime);
+				if (LogTime < 0) {
+					$scope.NewLogInfo = "Last weeks LOG Comitted!"
+				}
+				else {
+					$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
+				}
+				$scope.ShowLog = function () {
+					$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
+						console.log(response.data.download_url);
+						LogLink = response.data.download_url;
+						$http.get(LogLink).then(function (response) {
 								//console.log(response.data);
 								PulledLog = response.data;
 								FilterLog();
 							});
-						});
-					}
-				}, function (error) {
-					console.log("send Logmail");
-					$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
-						console.log("LogMail send");
 					});
+				}
+			}, function (error) {
+				console.log("send Logmail");
+				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
+					console.log("LogMail send");
 				});
+			});
+		};
 
-			
-			function FilterLog(){
-				console.log(MondayDate);
-				console.log(NextMondayDate);
-				console.log(PulledLog.indexOf(MondayDate));
-				console.log(PulledLog.indexOf(NextMondayDate));
 
-				var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11, 
-					PulledLog.indexOf(NextMondayDate) - 12);
-				LogRaw = Logmd;
+		function FilterLog(){
+			console.log(MondayDate);
+			console.log(NextMondayDate);
+			console.log(PulledLog.indexOf(MondayDate));
+			console.log(PulledLog.indexOf(NextMondayDate));
 
-				LogHtml = Converter.makeHtml(LogRaw);
-				$scope.rawLog = $sce.trustAsHtml(LogHtml);
-			};
+			var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11, 
+				PulledLog.indexOf(NextMondayDate) - 12);
+			LogRaw = Logmd;
+
+			LogHtml = Converter.makeHtml(LogRaw);
+			$scope.rawLog = $sce.trustAsHtml(LogHtml);
 		};
 
 		$http.get(apiCallInfo + x + OauthToken).then(function (response) {
@@ -363,35 +389,35 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 		};
 
-			$scope.SelectCommit = function (index) {
-				console.log(index);
-				console.log(CommitMessages[index]);
-				console.log(shaArray[index]);
-				CommentSha = shaArray[index];
-				CommentName = CommitMessages[index];
-				$scope.CommentInfo = CommentName;
-				document.getElementById("CommentArea").focus();
-			};
+		$scope.SelectCommit = function (index) {
+			console.log(index);
+			console.log(CommitMessages[index]);
+			console.log(shaArray[index]);
+			CommentSha = shaArray[index];
+			CommentName = CommitMessages[index];
+			$scope.CommentInfo = CommentName;
+			document.getElementById("CommentArea").focus();
+		};
 
-			$scope.PostComment = function (){
-				var config = {headers: {'Content-Type': 'application/json'}};
-				CommentBody = document.getElementById("CommentArea").value;
+		$scope.PostComment = function (){
+			var config = {headers: {'Content-Type': 'application/json'}};
+			CommentBody = document.getElementById("CommentArea").value;
 
-				console.log(CommentBody);
-				$http.post(apiCallCommits + x + "/commits/" + CommentSha + "/comments" + OauthToken, {'body': CommentBody}, config).then(function (res) {
-					console.log(res);
-				});
-			};
-		
+			console.log(CommentBody);
+			$http.post(apiCallCommits + x + "/commits/" + CommentSha + "/comments" + OauthToken, {'body': CommentBody}, config).then(function (res) {
+				console.log(res);
+			});
+		};
+
 
 		$scope.GetScriptie = function () {
 			$http.get(apiCallScriptie + x + "/contents/scriptie/Scriptie.md" + OauthToken).then(function (response) {
 				rawScriptieLink = response.data.download_url;
 				$http.get(rawScriptieLink).then(function (response) {
-						ScriptieRaw = response.data;
+					ScriptieRaw = response.data;
 
-						ScriptieHtml = Converter.makeHtml(ScriptieRaw);
-						$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
+					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
+					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});
 			}, function(error){
 				console.log("send scriptiemail");
@@ -451,33 +477,33 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			console.log(BodyIssue);
 			if(TitleIssue != "" && BodyIssue != ""){
 				$http.post(apiAllIssuesCall + x + '/issues' + OauthToken, 
-				{'title': TitleIssue, 'body': BodyIssue}, 
-				{ headers: { 'Content-Type': 'application/json'}}).then(function(res){
-					console.log(res);
-				});
-			}else{alert('Bijde velden moeten ingevuld worden.')};
-			
-			document.getElementById("Title").value = "";
-	        document.getElementById("Body").value = "";
+					{'title': TitleIssue, 'body': BodyIssue}, 
+					{ headers: { 'Content-Type': 'application/json'}}).then(function(res){
+						console.log(res);
+					});
+				}else{alert('Bijde velden moeten ingevuld worden.')};
+
+				document.getElementById("Title").value = "";
+				document.getElementById("Body").value = "";
+
+			};
+		};
+
+		$scope.showSelectedText = function() {
+			$scope.selectedText =  $scope.getSelectionText();
+		};
+
+		$scope.getSelectionText = function() {
+			var text = "";
+			if (window.getSelection) {
+				text = window.getSelection().toString();
+			} else if (document.selection && document.selection.type != "Control") {
+				text = document.selection.createRange().text;
+			}
+			return text;
+		};
+
+		$scope.AddComment = function(){
 
 		};
-	};
-
-	$scope.showSelectedText = function() {
-		$scope.selectedText =  $scope.getSelectionText();
-	};
-
-	$scope.getSelectionText = function() {
-		var text = "";
-		if (window.getSelection) {
-			text = window.getSelection().toString();
-		} else if (document.selection && document.selection.type != "Control") {
-			text = document.selection.createRange().text;
-		}
-		return text;
-	};
-
-	$scope.AddComment = function(){
-
-	};
-});
+	});

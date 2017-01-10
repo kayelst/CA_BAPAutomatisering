@@ -26,6 +26,7 @@
 
 </head>
 <body ng-app="theapp" ng-controller="myCtrl" class="HeaderColor">
+	<div class="container-fluid">
 	<div class="text-center" >
   		<div class="btn-toolbar pull-right">
  	 		<button ng-click="SignIn()" type='button' class="btn btn-lg SignIn-fix AccentColorSignIn">
@@ -68,7 +69,7 @@
 					    </button>
 					</div>
 					<div class="dropdown btn-group" role="group">
-					  	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
+					  	<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Repohulp]">
 					    RepoHulp <span class="caret"></span>
 					  	</button>
 					  	<ul class="dropdown-menu">
@@ -77,7 +78,7 @@
 					    </ul>
 					</div>
 					<div class="dropdown btn-group" role="group">
-					  	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
+					  	<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Scriptie]">
 					    Documentatie <span class="caret"></span>
 					  	</button>
 					  	<ul class="dropdown-menu">
@@ -157,24 +158,24 @@
 							</div>
 						</div>	
 					</div>
-					<div ng-switch-when="3" class="my-switch-animation"  ng-click="GetScriptie()">
-						<div ng-switch="div_documentatie" class="my-switch-animation">
+					<div ng-switch-when="3" class="my-switch-animation">
+						<div ng-switch="div_Documentatie" class="my-switch-animation">
 							<div ng-switch-when="1" class="my-switch-animation">
-
-							</div>
+								<div ng-bind-html="ScriptieData" style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()"></div>
+									<div>
+ 										<h1> Selected Text </h1>
+										<div ng-bind="selectedText"></div>
+										<textarea class="form-control" rows="4"></textarea>
+									</div>
+								</div>
 							<div ng-switch-when="2" class="my-switch-animation">
-
+								Last Logs
 							</div>
 							<div ng-switch-when="3" class="my-switch-animation">
-
+								All Logs
 							</div>
 						</div>
-						<div ng-bind-html="ScriptieData" style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()"></div>
-						<div>
- 							<h1> Selected Text </h1>
-							<div ng-bind="selectedText"></div>
-							<textarea class="form-control" rows="4"></textarea>
-						</div>
+						
 
 					</div>
 				</div>

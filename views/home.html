@@ -27,168 +27,175 @@
 </head>
 <body ng-app="theapp" ng-controller="myCtrl" class="HeaderColor">
 	<div class="container-fluid">
-	<div class="text-center" >
-  		<div class="btn-toolbar pull-right">
- 	 		<button ng-click="SignIn()" type='button' class="btn btn-lg SignIn-fix AccentColorSignIn">
- 	 		SignIn
- 	 		</button>
-  		</div>
-  	<h2>BAP Automatisering</h2>
-  	<div class="clearfix"></div>
-	</div>
-	<div class="container-fluid"> <!-- -fluid to make it use full width of page//-->
- 	 	<div class="row">
- 	 		<div class="col-md-4 col-lg-2 col-sm-4 col-xs-4 SecondaryColor">
- 	 			<div id="SearchBar" class="input-group searchbar-fix">
-    				<input id="SearchTerm" type="text" placeholder="Search" ng-model="Search" class="form-control">
+		<div class="text-center" >
+			<div class="btn-toolbar pull-right">
+				<button ng-click="SignIn()" type='button' class="btn btn-lg SignIn-fix AccentColorSignIn">
+					SignIn
+				</button>
+			</div>
+			<h2>BAP Automatisering</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="container-fluid"> <!-- -fluid to make it use full width of page//-->
+			<div class="row">
+				<div class="col-md-4 col-lg-2 col-sm-4 col-xs-4 SecondaryColor">
+					<div id="SearchBar" class="input-group searchbar-fix">
+						<input id="SearchTerm" type="text" placeholder="Search" ng-model="Search" class="form-control">
+					</div>
+
+					<div class="btn-group-vertical" role="group">
+						<div ng-repeat="person in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group" id="parent">
+
+							<div class="btn-group" role="group">
+
+								<div class="btn-group" role="group">
+									<button type="button" ng-click="do(person.name)" class="btn btn-group btn-fix" role="group" ng-class="{'true':'btn-primary','false':'btn-default'}[selectedPerson == person.name]">
+										{{person.name}}
+									</button>
+								</div>
+
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-default btn-group btn-fix2" role="group" ng-class="{'Red':'btn-danger','Orange':'btn-warning','Green': 'btn-success'}[person.color]"></button>
+								</div>
+							</div>
+						</div>						
+					</div>
 				</div>
-
-				<div class="btn-group-vertical" role="group">
-					<div ng-repeat="person in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group" id="parent">
-						
-						<div class="btn-group" role="group">
-
-							<div class="btn-group" role="group">
-								<button type="button" ng-click="do(person.name)" class="btn btn-group btn-fix" role="group" ng-class="{'true':'btn-primary','false':'btn-default'}[selectedPerson == person.name]">
-								{{person.name}}
-								</button>
-							</div>
-
-							<div class="btn-group" role="group">
-								<button type="button" class="btn btn-default btn-group btn-fix2" role="group" ng-class="{'Red':'btn-danger','Orange':'btn-warning','Green': 'btn-success'}[person.color]"></button>
-							</div>
+				<div class="col-md-8 col-lg-10 col-sm-8 col-xs-8 PrimaryColor">
+					<div class="btn-group btn-group-justified" role="group">
+						<div ng-click="Btn_RepoStats()" class="btn-group" role="group">
+							<button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
+								RepoStats
+							</button>
 						</div>
-					</div>						
- 	 			</div>
- 	 		</div>
- 	 		<div class="col-md-8 col-lg-10 col-sm-8 col-xs-8 PrimaryColor">
-	 			<div class="btn-group btn-group-justified" role="group">
-					<div ng-click="Btn_RepoStats()" class="btn-group" role="group">
-					    <button type="button" class="btn" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_repostats]">
-					    RepoStats
-					    </button>
+						<div class="dropdown btn-group" role="group">
+							<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Repohulp]">
+								RepoHulp <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href ng-click="Btn_Commits()">Commits</a></li>
+								<li><a href ng-click="Btn_Issues()">Issues</a></li>
+							</ul>
+						</div>
+						<div class="dropdown btn-group" role="group">
+							<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Scriptie]">
+								Documentatie <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href ng-click="Btn_Scriptie()">Scriptie</a></li>
+								<li><a href ng-click="Btn_LastLog()">Last Log</a></li>
+								<li><a href ng-click="Btn_AllLogs()">All Logs</a></li>
+							</ul>
+						</div>
 					</div>
-					<div class="dropdown btn-group" role="group">
-					  	<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Repohulp]">
-					    RepoHulp <span class="caret"></span>
-					  	</button>
-					  	<ul class="dropdown-menu">
-					    	<li><a href ng-click="Btn_Commits()">Commits</a></li>
-					    	<li><a href ng-click="Btn_Issues()">Issues</a></li>
-					    </ul>
-					</div>
-					<div class="dropdown btn-group" role="group">
-					  	<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" ng-class="{'true':'btn-primary','false':'btn-default'}[btnstate_Scriptie]">
-					    Documentatie <span class="caret"></span>
-					  	</button>
-					  	<ul class="dropdown-menu">
-					    	<li><a href ng-click="Btn_Scriptie()">Scriptie</a></li>
-					    	<li><a href ng-click="Btn_LastLog()">Last Log</a></li>
-					    	<li><a href ng-click="Btn_AllLogs()">All Logs</a></li>
-					    </ul>
-					</div>
-				</div>
-				<div class="panel-body" ng-switch="div_MainMenu">
-					<div ng-switch-when="1" class="my-switch-animation">
-						<p>Name: {{getNaam}}</p>
-					    <p>GitName: {{getGitNaam}}</p>
-					    <p>Repo: {{getReponaam}}</p>
-					    <p>Promotor: {{getPromotor}}</p>
-					    <p>Phone: {{getPhone}}</p>
-					    <p>Address: {{getAddress}}</p>
-					    <p>Bedrijf: {{getBedrijf}}</p>
-					    <a href="{{getRepoLink}}">Go To Repo</a>
-						<p>This Weeks Commits: {{LastCommithtml}}</p>
-						<p>Total Commits: {{TotalCommithtml}}</p>
-						<p>New logs: {{NewLogInfo}}</p>
-						<p>Latest Log: {{LastPushDate}}</p>
-					</div>
-					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
-						<div class="panel-body" ng-switch="div_RepoHulpMenu"  id="CommitPage">
-							<div ng-switch-when="1" class="my-switch-animation" >
-								<div class="Commitfix1" style="overflow-y:scroll;height:45%;">
-									<div ng-repeat="StudentCommit in AllCommits track by $index">
-										<li ng-click="SelectCommit($index)" id="CommentArea">Commit: {{StudentCommit}} </li>
-									</div>
-								</div>
-								
-								<div class="Commitfix2">
-									<div > {{CommentInfo}}</div>
-									<textarea rows="9" class="form-control"></textarea>
-									<button class="btn btn-success"ng-click="PostComment()">Comment</button>
-								</div>
-							</div>
-							<div ng-switch-when="2" class="my-switch-animation">
-								<div ng-switch="div_issues" class="my-switch-animation">
-									<div ng-switch-when="1">
-										<div style="overflow-y:scroll;height:70%;">
-											<div ng-repeat="i in Repeat">
-												<div class="panel panel-info">
-													<div class="panel-heading">Title: {{IssueTitels[i]}}</div>
-													<div class="panel-body">Body: {{IssueBodys[i]}}t</div>
-													<div class="panel-footer">State: {{IssueStates[i]}} Number: {{IssueNumbers[i]}}</div>
+					<div class="panel-body" ng-switch="div_MainMenu">
+						<div ng-switch-when="1" class="my-switch-animation">
+							<p>Name: {{getNaam}}</p>
+							<p>GitName: {{getGitNaam}}</p>
+							<p>Repo: {{getReponaam}}</p>
+							<p>Promotor: {{getPromotor}}</p>
+							<p>Phone: {{getPhone}}</p>
+							<p>Address: {{getAddress}}</p>
+							<p>Bedrijf: {{getBedrijf}}</p>
+							<a href="{{getRepoLink}}">Go To Repo</a>
+							<p>This Weeks Commits: {{LastCommithtml}}</p>
+							<p>Total Commits: {{TotalCommithtml}}</p>
+							<p>New logs: {{NewLogInfo}}</p>
+							<p>Latest Log: {{LastPushDate}}</p>
+						</div>
+						<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
+							<div class="panel-body" ng-switch="div_RepoHulpMenu"  id="CommitPage">
+								<div ng-switch-when="1" class="my-switch-animation" >
+									<div class="Commitfix1">
+										<div class="panel panel-info"style="overflow-y:scroll;height:45%;" >
+											<div class="panel-heading">
+												<div class="panel-body" ng-repeat="StudentCommit in AllCommits track by $index">
+													<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 												</div>
-												<br>
 											</div>
 										</div>
-										<div ng-click="Btn_CreateIssue()">
-											<br>
-											<button type="button" class="btn btn-success">
-												Create Issue
-											</button>
+									</div>						
+									<div class="Commitfix2">
+										<div > {{CommentInfo}}</div>
+										<textarea rows="9" class="form-control" id="CommentArea" ></textarea>
+										<button class="btn btn-success"ng-click="PostComment()">Comment</button>
+									</div>
+								</div>
+								<div ng-switch-when="2" class="my-switch-animation">
+									<div ng-switch="div_issues" class="my-switch-animation">
+										<div ng-switch-when="1">
+											<div style="overflow-y:scroll;height:70%;">
+												<div ng-repeat="i in Repeat">
+													<div class="panel panel-info">
+														<div class="panel-heading">Title: {{IssueTitels[i]}}</div>
+														<div class="panel-body">Body: {{IssueBodys[i]}}t</div>
+														<div class="panel-footer">State: {{IssueStates[i]}} Number: {{IssueNumbers[i]}}</div>
+													</div>
+													<br>
+												</div>
+											</div>
+											<div ng-click="Btn_CreateIssue()">
+												<br>
+												<button type="button" class="btn btn-success">
+													Create Issue
+												</button>
+											</div>
+										</div>
+										<div ng-switch-when="2" class="my-switch-animation">
+											Title:  <input type="text" id="Title" class="form-control"><br>
+											Body: <textarea rows="10" type="text" id="Body" class="form-control"></textarea><br>
+											<div ng-click="Btn_CreateIssue()">
+												<br>
+												<button type="button" class="btn btn-success">
+													Submit
+												</button>
+											</div>
+											<div ng-click="Btn_GetIssues()">
+												<br>
+												<button type="button" class="btn btn-danger">
+													Cancel
+												</button>
+											</div>
+										</div>
+									</div>		
+								</div>
+							</div>	
+						</div>
+						<div ng-switch-when="3" class="my-switch-animation">
+							<div ng-switch="div_Documentatie" class="my-switch-animation">
+								<div ng-switch-when="1" class="my-switch-animation">
+									<div style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()">
+										<div class="panel panel-info" ng-bind-html="ScriptieData" >
+											<div class="panel-heading"></div>
 										</div>
 									</div>
-									<div ng-switch-when="2" class="my-switch-animation">
-										Title:  <input type="text" id="Title" class="form-control"><br>
-										Body: <textarea rows="10" type="text" id="Body" class="form-control"></textarea><br>
-										<div ng-click="Btn_CreateIssue()">
-											<br>
+									<div>
+										<h1> Selected Text </h1>
+										<div ng-bind="selectedText"></div>
+										<textarea class="form-control" rows="4" id="ScriptieIssue"></textarea>
+										<div ng-click="CreateIssueScriptie()">
 											<button type="button" class="btn btn-success">
 												Submit
 											</button>
 										</div>
-										<div ng-click="Btn_GetIssues()">
-											<br>
-											<button type="button" class="btn btn-danger">
-												Cancel
-											</button>
-										</div>
-									</div>
-								</div>		
-							</div>
-						</div>	
-					</div>
-					<div ng-switch-when="3" class="my-switch-animation">
-						<div ng-switch="div_Documentatie" class="my-switch-animation">
-							<div ng-switch-when="1" class="my-switch-animation">
-								<div style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()">
-									<div class="panel panel-info" ng-bind-html="ScriptieData" >
-										<div class="panel-heading"></div>
 									</div>
 								</div>
-								<div>
-										<h1> Selected Text </h1>
-									<div ng-bind="selectedText"></div>
-									<textarea class="form-control" rows="4" id="ScriptieIssue"></textarea>
-									<div ng-click="CreateIssueScriptie()">
-										<button type="button" class="btn btn-success">
-											Submit
-										</button>
+								<div ng-switch-when="2" class="my-switch-animation">
+									<div class="panel panel-info" style="overflow-y:scroll;height:80%;" >
+										<div class="panel-body" ng-bind-html="rawLog"></div>
 									</div>
 								</div>
-							</div>
-							<div ng-switch-when="2" class="my-switch-animation" style="overflow-y:scroll;height:80%;">
-								<p ng-bind-html="rawLog"></p>
-							</div>
-							<div ng-switch-when="3" class="my-switch-animation" style="overflow-y:scroll;height:80%;">
-								<p ng-bind-html="FullLog"></p>
+								<div ng-switch-when="3" class="my-switch-animation">
+									<div class="panel panel-info" style="overflow-y:scroll;height:80%;">
+										<div class="panel-body" ng-bind-html="FullLog" ></div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
- 	 		</div>
- 	 	</div> 
- 	</div> 
- </div> 
+			</div> 
+		</div> 
+	</div> 
 </body>
 </html>

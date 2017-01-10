@@ -28,13 +28,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var apiCallInfo2 = "/contents/Info.md";
 	var apiCallInfoLog = "/contents/Logfiles/LOG.md";
 	var apiCallLogCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	var Access = "?access_token=a67d824f6631ee92ff0ccd6f2698ddd8ed7170cf";
-	var Access2 = "?access_token=0daec56ae84b247121b53069e34c126259cf92fa";
 	var Participation = "https://api.github.com/repos/kayelst/CA_BAPAutomatisering/stats/participation";
 	var client_id = "?client_id=651b11583f0162b4cc91";
 	var apiLogin = "https://github.com/login/oauth/authorize";
 	var apiAllIssuesCall = "https://api.github.com/repos/MyOrg1617/BAP1617_";
-	var TijdelijkeOauth = "?client_id=651b11583f0162b4cc91&client_secret=cc5f94be35b0ccf9891b55dd6d670f3f7cf29388"
 	var apiCallCommits = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 
 	Converter = new showdown.Converter();
@@ -403,11 +400,15 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.PostComment = function () {
 			var config = {headers: {'Content-Type': 'application/json'}};
 			CommentBody = document.getElementById("CommentArea").value;
+			console.log(CommentBody);
 
 			console.log(CommentBody);
 			$http.post(apiCallCommits + x + "/commits/" + CommentSha + "/comments" + OauthToken, {'body': CommentBody}, config).then(function (res) {
 				console.log(res);
+			}, function (error) {
+				console.log(error);
 			});
+			document.getElementById("CommentArea").value = "";
 		};
 
 

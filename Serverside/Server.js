@@ -80,7 +80,7 @@ app.post('/MailScriptie', function(req,res) {
     content = new helper.Content('text/plain', "De student heeft nog geen scriptie en is hiervan op de hoogte gebracht");
     mail = new helper.Mail(from_email, subject, to_email, content);
 
-    var sg = require('sendgrid')('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');
+    var sg = require('sendgrid')('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');
     var request = sg.emptyRequest({
         method: 'POST',
         path: '/v3/mail/send',
@@ -105,7 +105,7 @@ app.post('/MailLog', function(req,res) {
     content = new helper.Content('text/plain', "De student heeft nog geen LogFile en is hiervan op de hoogte gebracht");
     mail = new helper.Mail(from_email, subject, to_email, content);
 
-    var sg = require('sendgrid')('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');
+    var sg = require('sendgrid')('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');
     var request = sg.emptyRequest({
         method: 'POST',
         path: '/v3/mail/send',
@@ -131,7 +131,7 @@ app.post('/MailInfo', function(req,res) {
     content = new helper.Content('text/plain', "De student heeft nog geen InfoFile en is hiervan op de hoogte gebracht");
     mail = new helper.Mail(from_email, subject, to_email, content);
 
-    var sg = require('sendgrid')('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');
+    var sg = require('sendgrid')('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');
     var request = sg.emptyRequest({
         method: 'POST',
         path: '/v3/mail/send',

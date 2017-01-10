@@ -174,10 +174,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.div_issues = 2;
 	};
 
-	$scope.div_Documentatie = 1;
-	$scope.btnstate_Issues = false;
-	$scope.btnstate_Commits = false;
-
 	$scope.Btn_Scriptie = function () {
 		$scope.btnstate_repostats = false;
 		$scope.btnstate_Repohulp = false;
@@ -226,7 +222,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					$scope.RepoNames.push(RepoName);
 					$scope.RepoNamesSplit.push({"name": RepoNameSplit});
 				};
-			};			
+			};
+
+
+			if ($scope.RepoNamesSplit.length > 0) $scope.do($scope.RepoNamesSplit[0].name);		
 
 			angular.forEach($scope.RepoNames, function(name, index) {
 				$http.get(apiCallCommits + name + "/commits" + OauthToken)

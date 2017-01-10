@@ -19,6 +19,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var NextMondayDate = new Date();
 	var LastSundayDate = new Date();
 	var ThePromotor;
+	var GetLog = false;
 
 	var apiCallRepoInfo = "https://api.github.com/repos/MyOrg1617/BAP1617_";
 	var apiCallScriptie = "https://api.github.com/repos/MyOrg1617/BAP1617_";
@@ -270,7 +271,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				filterInfo(rawInfoFile);
 			});
 		}, function (err) {
-			console.log("send infoemail");
+			alert("Deze student heeft zijn infoFile niet gemaakt en is hiervan per mail op de hoogte gebracht");
 			$http.post("/MailInfo", {body: x, "promotor": ThePromotor}).success(function () {
 				console.log("mail send");
 			});
@@ -312,11 +313,18 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				var LogTime = Time / (1000 * 60 * 60 * 24);
 				console.log(LogTime);
 				if (LogTime < 0) {
-					$scope.NewLogInfo = "Last weeks LOG Comitted!"
+					$scope.NewLogInfo = "Last weeks LOG Comitted!";
+					GetLog = true;
 				}
 				else {
-					$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
+					$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified";
+					GetLog = false;
 				}
+			}, function(err){
+				console.log("LOGmail");
+				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
+					console.log("logmail send");
+				});
 			});
 
 			$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
@@ -326,18 +334,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		};
 
 		function FilterLog() {
-			console.log(MondayDate);
-			console.log(NextMondayDate);
-			console.log(PulledLog.indexOf(MondayDate));
-			console.log(PulledLog.indexOf(NextMondayDate));
-
 			var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11,
-				PulledLog.indexOf(NextMondayDate) - 12);
+			PulledLog.indexOf(NextMondayDate) - 12);
 			LogRaw = Logmd;
 
 			LogHtml = Converter.makeHtml(LogRaw);
 			$scope.rawLog = $sce.trustAsHtml(LogHtml);
-		}
+		};
 
 
 		$http.get(apiCallInfo + x + OauthToken).then(function (response) {
@@ -416,12 +419,13 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
 					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});
-			}), function (error) {
+			}, function (error) {
+				alert("Deze student heeft geen scriptie en is hiervan per mail op de hoogte gebracht!");
 				console.log("send scriptiemail");
 				$http.post("/MailScriptie", {body: x, "promotor": ThePromotor}).success(function () {
 					console.log("mail send");
 				});
-			};
+			});
 
 			//Issues
 			var IssueBody;
@@ -499,14 +503,11 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 						PulledLog = response.data;
 						FilterLog();
 					});
-				});
-			}, function (error) {
-				console.log("send Logmail");
-				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
-					console.log("LogMail send");
+				}, function (error) {
+					alert("Deze student heeft geen Logs en is hiervan per mail op de hoogte gebracht!");
 				});
 			};
-		
+
 		$scope.GetFullLog = function() {
 			$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
 				console.log(response.data.download_url);
@@ -517,9 +518,10 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					FullLogHtml = Converter.makeHtml(PulledLogFull);
 					$scope.FullLog = $sce.trustAsHtml(FullLogHtml);
 				});
+			}, function (error) {
+				alert("Deze student heeft geen Logs en is hiervan per mail op de hoogte gebracht!");
 			});
-		}
-
+		};
 		$scope.showSelectedText = function () {
 			$scope.selectedText = $scope.getSelectionText();
 		};

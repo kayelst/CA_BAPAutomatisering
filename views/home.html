@@ -108,12 +108,12 @@
 							<div ng-switch-when="1" class="my-switch-animation" >
 								<div class="Commitfix1" style="overflow-y:scroll;height:45%;">
 									<div ng-repeat="StudentCommit in AllCommits track by $index">
-										<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
+										<li ng-click="SelectCommit($index)" id="CommentArea">Commit: {{StudentCommit}} </li>
 									</div>
 								</div>
 								
 								<div class="Commitfix2">
-									<div> {{CommentInfo}}</div>
+									<div > {{CommentInfo}}</div>
 									<textarea rows="9" class="form-control"></textarea>
 									<button class="btn btn-success"ng-click="PostComment()">Comment</button>
 								</div>

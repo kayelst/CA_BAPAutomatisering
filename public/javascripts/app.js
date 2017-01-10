@@ -186,7 +186,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 	$scope.RepoNames = [];
 	$scope.RepoNamesSplit = [];
-	CommitTime = [];
 
 	var apiAllStudentsCall = function () {
 
@@ -196,39 +195,51 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			for (i = 0; i < response.data.length; i++) {
 				RepoName = response.data[i].name;
 				if (RepoName.indexOf("BAP1617") !== -1) {
-					//RepoName Filteren zodat BAP1617_LameirBryan => Lameir Bryan word
 					RepoName = RepoName.substring(8);
 					RepoNameSplit = RepoName.replace(/([A-Z])/g, ' $1').trim();
 					$scope.RepoNames.push(RepoName);
-					$scope.RepoNamesSplit.push(RepoNameSplit);
+					$scope.RepoNamesSplit.push({"name": RepoNameSplit});
 				};	
-			};
-			console.log($scope.RepoNames);
-			for(i = 0; i < $scope.RepoNames.length ; i++){
-				console.log($scope.RepoNames[i]);
-			   	$http.get(apiCallCommits + $scope.RepoNames[i] + "/commits" + OauthToken).then(function (response) {
-					for (i = 0; i < 1; i++) {
-						LastCommitDate = response.data[i].commit.author.date;
-					}
-				   	var LastCommitDateS = LastCommitDate.toString();
-				   	var datetimeS = datetime.toString();
-				   	var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
-				   	var TimeDifference = difference / (1000 * 60 * 60 * 24);
-				   	console.log(TimeDifference);
-				   	CommitTime.push(TimeDifference);
-				   	console.log(CommitTime);
+			};			
 
-				});
-			};
-			console.log($scope.RepoNames);
+			angular.forEach($scope.RepoNames, function(name, index) {
+			    $http.get(apiCallCommits + name + "/commits" + OauthToken)
+			    .then(function(response) {
+						var LastCommitDate = response.data[0].commit.author.date;
+					   	var LastCommitDateS = LastCommitDate.toString();
+					   	var datetimeS = datetime.toString();
+					   	var difference = Date.parse(datetimeS) - Date.parse(LastCommitDateS);
+					   	var TimeDifference = difference / (1000 * 60 * 60 * 24);
+					   	console.log(TimeDifference);
+					   	if(TimeDifference < 7)
+					   		$scope.PutPersonAsColor(name, "Green");
+					   	else if (TimeDifference > 7 && TimeDifference < 14)
+					   		$scope.PutPersonAsColor(name, "Orange");
+					   	else 
+					   		$scope.PutPersonAsColor(name, "Red");
+			    });
+			});
 		});
-
 	};
+
+	$scope.PutPersonAsColor = function (name, color) {
+		angular.forEach($scope.RepoNamesSplit, function(person, index){
+			if (person.name == name.replace(/([A-Z])/g, ' $1').trim()) { $scope.RepoNamesSplit[index].color = color;
+				console.log($scope.RepoNamesSplit[index]);
+			}
+		});
+	}
+
+
 
 	$scope.do = function(x){ 
 		$scope.selectedPerson = x;
 		$scope.Btn_RepoStats();
 		x = x.replace(' ', '');
+
+		/*$scope.RepoNames[] = x;// spot van x
+		$scope.color[spotOfX] = personColor;*/
+
 		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {

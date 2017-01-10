@@ -427,6 +427,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					console.log("mail send");
 				});
 			});
+		};
 
 			//Issues
 			var IssueBody;
@@ -505,7 +506,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				document.getElementById("Body").value = "";
 
 			};
-		};
+		
 
 		$scope.GetRecentLog = function () {
 			console.log("in function");

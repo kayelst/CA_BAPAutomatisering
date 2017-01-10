@@ -161,18 +161,22 @@
 					<div ng-switch-when="3" class="my-switch-animation">
 						<div ng-switch="div_Documentatie" class="my-switch-animation">
 							<div ng-switch-when="1" class="my-switch-animation">
-								<div ng-bind-html="ScriptieData" style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()"></div>
-									<div>
- 										<h1> Selected Text </h1>
-										<div ng-bind="selectedText"></div>
-										<textarea class="form-control" rows="4" id="ScriptieIssue"></textarea>
-										<div ng-click="CreateIssueScriptie()">
-											<button type="button" class="btn btn-success">
-												Submit
-											</button>
-										</div>
+								<div style="overflow-y:scroll;height:55%;" ng-mouseup="showSelectedText()">
+									<div class="panel panel-info" ng-bind-html="ScriptieData" >
+										<div class="panel-heading"></div>
 									</div>
 								</div>
+								<div>
+										<h1> Selected Text </h1>
+									<div ng-bind="selectedText"></div>
+									<textarea class="form-control" rows="4" id="ScriptieIssue"></textarea>
+									<div ng-click="CreateIssueScriptie()">
+										<button type="button" class="btn btn-success">
+											Submit
+										</button>
+									</div>
+								</div>
+							</div>
 							<div ng-switch-when="2" class="my-switch-animation" style="overflow-y:scroll;height:80%;">
 								<p ng-bind-html="rawLog"></p>
 							</div>

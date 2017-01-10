@@ -106,7 +106,7 @@
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
 						<div class="panel-body" ng-switch="div_RepoHulpMenu"  id="CommitPage">
 							<div ng-switch-when="1" class="my-switch-animation" >
-								<div class="Commitfix1" style="overflow-y:scroll;height:55%;">
+								<div class="Commitfix1" style="overflow-y:scroll;height:45%;">
 									<div ng-repeat="StudentCommit in AllCommits track by $index">
 										<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 									</div>
@@ -114,14 +114,14 @@
 								
 								<div class="Commitfix2">
 									<div> {{CommentInfo}}</div>
-									<textarea rows="10" class="form-control"></textarea>
+									<textarea rows="9" class="form-control"></textarea>
 									<button class="btn btn-success"ng-click="PostComment()">Comment</button>
 								</div>
 							</div>
 							<div ng-switch-when="2" class="my-switch-animation">
 								<div ng-switch="div_issues" class="my-switch-animation">
 									<div ng-switch-when="1">
-										<div style="overflow-y:scroll;height:75%;">
+										<div style="overflow-y:scroll;height:70%;">
 											<div ng-repeat="i in Repeat">
 												<div class="panel panel-info">
 													<div class="panel-heading">Title: {{IssueTitels[i]}}</div>
@@ -141,7 +141,7 @@
 									<div ng-switch-when="2" class="my-switch-animation">
 										Title:  <input type="text" id="Title" class="form-control"><br>
 										Body: <textarea rows="10" type="text" id="Body" class="form-control"></textarea><br>
-										<div ng-click="Btn_GetIssues()">
+										<div ng-click="Btn_CreateIssue()">
 											<br>
 											<button type="button" class="btn btn-success">
 												Submit
@@ -165,18 +165,21 @@
 									<div>
  										<h1> Selected Text </h1>
 										<div ng-bind="selectedText"></div>
-										<textarea class="form-control" rows="4"></textarea>
+										<textarea class="form-control" rows="4" id="ScriptieIssue"></textarea>
+										<div ng-click="CreateIssueScriptie()">
+											<button type="button" class="btn btn-success">
+												Submit
+											</button>
+										</div>
 									</div>
 								</div>
-							<div ng-switch-when="2" class="my-switch-animation">
+							<div ng-switch-when="2" class="my-switch-animation" style="overflow-y:scroll;height:80%;">
 								<p ng-bind-html="rawLog"></p>
 							</div>
-							<div ng-switch-when="3" class="my-switch-animation">
+							<div ng-switch-when="3" class="my-switch-animation" style="overflow-y:scroll;height:80%;">
 								<p ng-bind-html="FullLog"></p>
 							</div>
 						</div>
-						
-
 					</div>
 				</div>
  	 		</div>

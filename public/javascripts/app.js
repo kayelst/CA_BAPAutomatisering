@@ -174,6 +174,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_IssueCreate = true;
 		$scope.btnstate_IssuesView = false;
 		$scope.div_issues = 2;
+		$scope.CreateIssue();
 	};
 
 	$scope.Btn_Scriptie = function () {
@@ -462,14 +463,28 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 						$scope.Repeat.push(i);
 
 
-					}
-					;
+					};
 				});
 				console.log("Issues recieved");
 			};
 
 			var TitleIssue;
 			var BodyIssue;
+
+			$scope.CreateIssueScriptie = function(){
+				TitleIssue = $scope.selectedText;
+				BodyIssue = document.getElementById("ScriptieIssue").value;
+				if (TitleIssue != "" && BodyIssue != "") {
+					$http.post(apiAllIssuesCall + x + '/issues' + OauthToken,
+						{'title': TitleIssue, 'body': BodyIssue},
+						{headers: {'Content-Type': 'application/json'}}).then(function (res) {
+						console.log(res);
+					});
+				}else {alert('Bijde velden moeten ingevuld worden.')};
+				document.getElementById("ScriptieIssue").value = "";
+			}
+
+
 
 			$scope.CreateIssue = function () {
 				TitleIssue = document.getElementById("Title").value;
@@ -484,8 +499,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					});
 				} else {
 					alert('Bijde velden moeten ingevuld worden.')
-				}
-				;
+				};
 
 				document.getElementById("Title").value = "";
 				document.getElementById("Body").value = "";

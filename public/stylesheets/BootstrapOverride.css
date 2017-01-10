@@ -9,16 +9,8 @@
 	min-height: 55%;
 }
 
-
-.btn-fix{
-	width: 250px;
-
-}
-
-.btn-fix2 {
-    width: 33px;
+.btn-fix {
     height: 33px;
-    margin-top: 1px;
 }
 
 .SignIn-fix{

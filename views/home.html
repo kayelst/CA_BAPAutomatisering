@@ -29,8 +29,11 @@
 	<div class="container-fluid">
 		<div class="text-center" >
 			<div class="btn-toolbar pull-right">
-				<button ng-click="SignIn()" type='button' class="btn btn-lg SignIn-fix AccentColorSignIn">
-					SignIn
+				<button ng-if="!loggedIn" ng-click="SignIn()" type='button' class="btn btn-lg SignIn-fix AccentColorSignIn">
+					Sign in
+				</button>
+				<button ng-if="loggedIn" type="button" class="btn btn-lg SignIn-fix AccentColorSignIn disable">
+					Signed in
 				</button>
 			</div>
 			<h2>BAP Automatisering</h2>
@@ -43,21 +46,14 @@
 						<input id="SearchTerm" type="text" placeholder="Search" ng-model="Search" class="form-control">
 					</div>
 
-					<div class="btn-group-vertical" role="group">
-						<div ng-repeat="person in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class="btn-group btn-width-fix" role="group" id="parent">
-
-							<div class="btn-group" role="group">
-
-								<div class="btn-group" role="group">
-									<button type="button" ng-click="do(person.name)" class="btn btn-group btn-fix" role="group" ng-class="{'true':'btn-primary','false':'btn-default'}[selectedPerson == person.name]">
+					<div class="btn-group-vertical col-lg-12 col-sm-12 col-md-12 col-xs-12" role="group">
+						<div ng-repeat="person in RepoNamesSplit | filter:Search" ng-click="RepoStatistics()" class=" btn-width-fix" role="group" id="parent">
+							<div class="btn-group col-lg-12 col-sm-12 col-md-12 col-xs-12" role="group" >
+									<button type="button" ng-click="do(person.name)" class="btn col-md-10 col-lg-10 col-sm-10 col-xs-10 btn-group" role="group" ng-class="{'true':'btn-primary','false':'btn-default'}[selectedPerson == person.name]">
 										{{person.name}}
 									</button>
+									<button type="button" class="btn btn-default col-md-2 col-lg-2 col-sm-2 col-xs-2 btn-group btn-fix" role="group" ng-class="{'Red':'btn-danger','Orange':'btn-warning','Green': 'btn-success'}[person.color]"></button>
 								</div>
-
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default btn-group btn-fix2" role="group" ng-class="{'Red':'btn-danger','Orange':'btn-warning','Green': 'btn-success'}[person.color]"></button>
-								</div>
-							</div>
 						</div>						
 					</div>
 				</div>

@@ -88,6 +88,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			console.log("AccessToken: " + OauthToken);			
 		}).success(function(){
 			console.log("Login Successfull");
+			$scope.loggedIn = true;
 			apiAllStudentsCall();
 		});
 	};
@@ -256,6 +257,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	$scope.do = function(x) {
 		$scope.selectedPerson = x;
 		$scope.Btn_RepoStats();
+
 		x = x.replace(' ', '');
 
 		/*$scope.RepoNames[] = x;// spot van x
@@ -330,6 +332,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.LastPushDate = LastPush;
 			});
 		};
+
+		$scope.RepoStatistics();
 
 		function FilterLog() {
 			var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11,

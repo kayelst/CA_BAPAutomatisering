@@ -104,7 +104,6 @@
 						<p>Latest Log: {{LastPushDate}}</p>
 						<button id="ShowLog" ng-click="ShowLog()">Show new Log</button>
 						<p ng-bind-html="rawLog"></p>
-						<button ng-click="ShowCharts()">Show Charts</button>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
 						<div class="panel-body" ng-switch="div_RepoHulpMenu"  id="CommitPage">
@@ -112,7 +111,7 @@
 								<div ng-repeat="StudentCommit in AllCommits track by $index" class="CommitArea">
 									<li ng-click="SelectCommit($index)">Commit: {{StudentCommit}} </li>
 								</div>
-								<div  class="pull-right col-md-3" id="CommentArea">
+								<div  class="pull-right" id="CommentArea">
 									<div> {{CommentInfo}}</div>
 									<textarea rows="10" class="form-control"></textarea>
 									<button class="btn btn-success"ng-click="PostComment()">Comment</button>

@@ -16,24 +16,6 @@
     margin-top: 1px;
 }
 
-#CommitPage{
-	display: inline-block;
-	overflow: hidden;
-	clear: both;
-}
-
-
-.CommitArea{
-	float: left;
-	width: 70%;
-}
-
-
-#CommentArea{
-	margin-left: 2%;
-	overflow: hidden;
-}
-
 .SignIn-fix{
 	margin-right: 30px;
 	margin-bottom: 20px;

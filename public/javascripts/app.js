@@ -191,7 +191,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Scriptie = true;
 		$scope.div_MainMenu = 3;
 		$scope.div_Documentatie = 2;
-
 		
 	};
 
@@ -201,7 +200,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Scriptie = true;
 		$scope.div_MainMenu = 3;
 		$scope.div_Documentatie = 3;
-
 		
 	};
 

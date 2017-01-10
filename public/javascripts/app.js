@@ -199,7 +199,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					RepoNameSplit = RepoName.replace(/([A-Z])/g, ' $1').trim();
 					$scope.RepoNames.push(RepoName);
 					$scope.RepoNamesSplit.push({"name": RepoNameSplit});
-				};	
+				};
 			};			
 
 			angular.forEach($scope.RepoNames, function(name, index) {
@@ -268,9 +268,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			});
 
 				$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
-					for (i = 0; i < 1; i++) {
-						LastLogDate = response.data[i].commit.author.date;
-					}
+					LastLogDate = response.data[0].commit.author.date;
 					console.log("log " + LastLogDate);
 					console.log("sunday "+ LastSundayDate);
 					LastLogDateS = LastLogDate.toString();
@@ -318,29 +316,6 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				LogHtml = Converter.makeHtml(LogRaw);
 				$scope.rawLog = $sce.trustAsHtml(LogHtml);
 			};
-
-			$scope.ShowCharts = function () {
-				$http.get(Participation + OauthToken).then (function(response){
-					console.log(response);
-					for(i = 0; i < response.data.owner.length; i++){
-						if (response.data.owner[i] != 0){
-							zerocounter++;
-							ParticipationArray.push(response.data.owner[i]);
-							console.log(zerocounter);
-						}
-						else if (zerocounter > 0){
-							ParticipationArray.push(response.data.owner[i]);
-						}
-						console.log(zerocounter);
-						console.log(ParticipationArray);
-					}
-
-					for(i = 0; i < ParticipationArray.length; i++){
-						
-					}
-				});
-				
-			}
 		};
 
 		$http.get(apiCallInfo + x + OauthToken).then(function (response) {

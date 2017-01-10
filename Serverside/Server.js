@@ -79,7 +79,7 @@ app.post('/MailScriptie', function(req,res) {
     }
 
     from_email = new helper.Email("noreply@BapAutomizer.com");
-    to_email = new helper.Email(MailAddress);
+    to_email = new helper.Email("kayelst@gmail.com");
     subject = "De student " + MissingUser + "heeft geen scriptie";
     content = new helper.Content('text/plain', "De student heeft nog geen scriptie en is hiervan op de hoogte gebracht");
     mail = new helper.Mail(from_email, subject, to_email, content);
@@ -108,7 +108,7 @@ app.post('/MailLog', function(req,res) {
     }
 
     from_email = new helper.Email("noreply@BapAutomizer.com");
-    to_email = new helper.Email(MailAddress);
+    to_email = new helper.Email("kayelst@gmail.com");
     subject = "De student " + MissingUser + "heeft geen LogFile";
     content = new helper.Content('text/plain', "De student heeft nog geen LogFile en is hiervan op de hoogte gebracht");
     mail = new helper.Mail(from_email, subject, to_email, content);
@@ -138,7 +138,7 @@ app.post('/MailInfo', function(req,res) {
     }
 
     from_email = new helper.Email("noreply@BapAutomizer.com");
-    to_email = new helper.Email(MailAddress);
+    to_email = new helper.Email("kayelst@gmail.com");
     subject = "De student " + MissingUser + "heeft geen InfoFile";
     content = new helper.Content('text/plain', "De student heeft nog geen InfoFile en is hiervan op de hoogte gebracht");
     mail = new helper.Mail(from_email, subject, to_email, content);

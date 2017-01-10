@@ -12,6 +12,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 	var ParticipationArray = [];
 	var zerocounter = 0;
 	var OauthToken;
+	var LastPushDate;
 	var LastCommitDate = new Date();
 	var datetime = new Date();
 	var MondayDate = new Date();
@@ -253,9 +254,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				console.log($scope.RepoNamesSplit[index]);
 			}
 		});
-	}
-
-
+	};
 
 	$scope.do = function(x) { 
 		$scope.selectedPerson = x;
@@ -280,6 +279,17 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 
 		});
 
+		$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
+			CommitMessages.length = 0;
+			shaArray.length = 0;
+			var LastPush = response.data[0].commit.author.date;
+			for (i = 0; i < response.data.length; i++) {
+				CommitMessages.push(response.data[i].commit.message);
+				$scope.AllCommits = CommitMessages;
+				shaArray.push(response.data[i].sha);
+			}
+		});
+
 		$scope.RepoStatistics = function (){
 			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
 				TotalCommit = 0;
@@ -292,28 +302,33 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
-			$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
-				LastLogDate = response.data[0].commit.author.date;
-				console.log("log " + LastLogDate);
-				console.log("sunday "+ LastSundayDate);
-				LastLogDateS = LastLogDate.toString();
-				var LastSundayDateS = LastSundayDate.toString();
-				console.log("sunday " + Date.parse(LastSundayDateS));
-				console.log("log "  + Date.parse( LastLogDateS));
-				var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
-				var LogTime = Time / (1000 * 60 * 60 * 24);
-				console.log(LogTime);
-				if (LogTime < 0) {
-					$scope.NewLogInfo = "Last weeks LOG Comitted!"
-				}
-				else {
-					$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
-				}
-				$scope.ShowLog = function () {
-					$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
-						console.log(response.data.download_url);
-						LogLink = response.data.download_url;
-						$http.get(LogLink).then(function (response) {
+			$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
+				var LastPush = response.data[0].commit.author.date;
+				$scope.LastPushDate = LastPush;
+			});
+
+				$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
+					LastLogDate = response.data[0].commit.author.date;
+					console.log("log " + LastLogDate);
+					console.log("sunday "+ LastSundayDate);
+					LastLogDateS = LastLogDate.toString();
+					var LastSundayDateS = LastSundayDate.toString();
+					console.log("sunday " + Date.parse(LastSundayDateS));
+					console.log("log "  + Date.parse( LastLogDateS));
+					var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
+					var LogTime = Time / (1000 * 60 * 60 * 24);
+					console.log(LogTime);
+					if (LogTime < 0) {
+						$scope.NewLogInfo = "Last weeks LOG Comitted!"
+					}
+					else {
+						$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
+					}
+					$scope.ShowLog = function () {
+						$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
+							console.log(response.data.download_url);
+							LogLink = response.data.download_url;
+							$http.get(LogLink).then(function (response) {
 								//console.log(response.data);
 								PulledLog = response.data;
 								FilterLog();
@@ -380,6 +395,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
 				CommitMessages.length = 0;
 				shaArray.length = 0;
+				var LastPush = response.data[0].commit.author.date;
 				for (i = 0; i < response.data.length; i++) {
 					CommitMessages.push(response.data[i].commit.message);
 					$scope.AllCommits = CommitMessages;

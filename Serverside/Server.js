@@ -72,11 +72,7 @@ var helper = require('sendgrid').mail;
 
 app.post('/MailScriptie', function(req,res) {
     var MissingUser = req.body.body;
-    var Promotor = req.body.promotor
-
-    if (Promotor = "Tim Dams"){
-        MailAddress = "kayelst@gmail.com";
-    }
+    var Promotor = req.body.promotor;
 
     from_email = new helper.Email("noreply@BapAutomizer.com");
     to_email = new helper.Email("kayelst@gmail.com");
@@ -103,10 +99,6 @@ app.post('/MailLog', function(req,res) {
     var MissingUser = req.body.body;
     var Promotor = req.body.promotor
 
-    if (Promotor = "Tim Dams"){
-        MailAddress = "kayelst@gmail.com";
-    }
-
     from_email = new helper.Email("noreply@BapAutomizer.com");
     to_email = new helper.Email("kayelst@gmail.com");
     subject = "De student " + MissingUser + "heeft geen LogFile";
@@ -132,10 +124,6 @@ app.post('/MailLog', function(req,res) {
 app.post('/MailInfo', function(req,res) {
     var MissingUser = req.body.body;
     var Promotor = req.body.promotor
-
-    if (Promotor = "Tim Dams"){
-        MailAddress = "kayelst@gmail.com";
-    }
 
     from_email = new helper.Email("noreply@BapAutomizer.com");
     to_email = new helper.Email("kayelst@gmail.com");

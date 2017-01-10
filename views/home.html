@@ -103,7 +103,6 @@
 						<p>New logs: {{NewLogInfo}}</p>
 						<p>Latest Log: {{LastPushDate}}</p>
 						<button id="ShowLog" ng-click="ShowLog()">Show new Log</button>
-						<p ng-bind-html="rawLog"></p>
 					</div>
 					<div ng-switch-when="2" class="my-switch-animation" ng-click = "RepoInfo()">
 						<div class="panel-body" ng-switch="div_RepoHulpMenu"  id="CommitPage">
@@ -171,10 +170,10 @@
 									</div>
 								</div>
 							<div ng-switch-when="2" class="my-switch-animation">
-								Last Logs
+								<p ng-bind-html="rawLog"></p>
 							</div>
 							<div ng-switch-when="3" class="my-switch-animation">
-								All Logs
+								<p ng-bind-html="FullLog"></p>
 							</div>
 						</div>
 						

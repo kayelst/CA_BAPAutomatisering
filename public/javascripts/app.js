@@ -191,7 +191,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Scriptie = true;
 		$scope.div_MainMenu = 3;
 		$scope.div_Documentatie = 2;
-		
+		$scope.GetRecentLog();
 	};
 
 	$scope.Btn_AllLogs = function () {
@@ -200,7 +200,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		$scope.btnstate_Scriptie = true;
 		$scope.div_MainMenu = 3;
 		$scope.div_Documentatie = 3;
-		
+		$scope.GetFullLog();
 	};
 
 	var RepoName;
@@ -254,15 +254,15 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 		});
 	};
 
-	$scope.do = function(x) { 
+	$scope.do = function(x) {
 		$scope.selectedPerson = x;
 		$scope.Btn_RepoStats();
 		x = x.replace(' ', '');
 
-			/*$scope.RepoNames[] = x;// spot van x
-			$scope.color[spotOfX] = personColor;*/
+		/*$scope.RepoNames[] = x;// spot van x
+		 $scope.color[spotOfX] = personColor;*/
 
-			$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
+		$http.get(apiCallInfo + x + apiCallInfo2 + OauthToken).then(function (response) {
 			rawfileLink = response.data.download_url;
 			$http.get(rawfileLink).then(function (response) {
 				console.log(response.data);
@@ -288,7 +288,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			}
 		});
 
-		$scope.RepoStatistics = function (){
+		$scope.RepoStatistics = function () {
 			$http.get(apiCallRepoInfo + x + "/stats/participation" + OauthToken).then(function (response) {
 				TotalCommit = 0;
 				console.log(response);
@@ -300,61 +300,45 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 				$scope.TotalCommithtml = TotalCommit;
 			});
 
+			$http.get(apiCallLogCommits + x + "/commits" + OauthToken + "&path=Logfiles").then(function (response) {
+				LastLogDate = response.data[0].commit.author.date;
+				console.log("log " + LastLogDate);
+				console.log("sunday " + LastSundayDate);
+				LastLogDateS = LastLogDate.toString();
+				var LastSundayDateS = LastSundayDate.toString();
+				console.log("sunday " + Date.parse(LastSundayDateS));
+				console.log("log " + Date.parse(LastLogDateS));
+				var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
+				var LogTime = Time / (1000 * 60 * 60 * 24);
+				console.log(LogTime);
+				if (LogTime < 0) {
+					$scope.NewLogInfo = "Last weeks LOG Comitted!"
+				}
+				else {
+					$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
+				}
+			});
+
 			$http.get(apiCallCommits + x + "/commits" + OauthToken).then(function (response) {
 				var LastPush = response.data[0].commit.author.date;
 				$scope.LastPushDate = LastPush;
 			});
-
-				$http.get(apiCallLogCommits + x + "/commits" + OauthToken  + "&path=Logfiles").then(function (response) {
-					LastLogDate = response.data[0].commit.author.date;
-					console.log("log " + LastLogDate);
-					console.log("sunday "+ LastSundayDate);
-					LastLogDateS = LastLogDate.toString();
-					var LastSundayDateS = LastSundayDate.toString();
-					console.log("sunday " + Date.parse(LastSundayDateS));
-					console.log("log "  + Date.parse( LastLogDateS));
-					var Time = Date.parse(LastSundayDateS) - Date.parse(LastLogDateS);
-					var LogTime = Time / (1000 * 60 * 60 * 24);
-					console.log(LogTime);
-					if (LogTime < 0) {
-						$scope.NewLogInfo = "Last weeks LOG Comitted!"
-					}
-					else {
-						$scope.NewLogInfo = "Last Weeks LOG has not been Comitted. The student has been Notified"
-					}
-					$scope.ShowLog = function () {
-						$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
-							console.log(response.data.download_url);
-							LogLink = response.data.download_url;
-							$http.get(LogLink).then(function (response) {
-								//console.log(response.data);
-								PulledLog = response.data;
-								FilterLog();
-							});
-					});
-				}
-			}, function (error) {
-				console.log("send Logmail");
-				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
-					console.log("LogMail send");
-				});
-			});
 		};
 
-
-		function FilterLog(){
+		function FilterLog() {
 			console.log(MondayDate);
 			console.log(NextMondayDate);
 			console.log(PulledLog.indexOf(MondayDate));
 			console.log(PulledLog.indexOf(NextMondayDate));
 
-			var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11, 
+			var Logmd = PulledLog.substring(PulledLog.indexOf(MondayDate) - 11,
 				PulledLog.indexOf(NextMondayDate) - 12);
 			LogRaw = Logmd;
 
 			LogHtml = Converter.makeHtml(LogRaw);
 			$scope.rawLog = $sce.trustAsHtml(LogHtml);
-		};
+		}
+
 
 		$http.get(apiCallInfo + x + OauthToken).then(function (response) {
 			RepoLink = response.data.html_url;
@@ -412,7 +396,7 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			document.getElementById("CommentArea").focus();
 		};
 
-		$scope.PostComment = function (){
+		$scope.PostComment = function () {
 			var config = {headers: {'Content-Type': 'application/json'}};
 			CommentBody = document.getElementById("CommentArea").value;
 
@@ -432,69 +416,72 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 					ScriptieHtml = Converter.makeHtml(ScriptieRaw);
 					$scope.ScriptieData = $sce.trustAsHtml(ScriptieHtml);
 				});
-			}, function(error){
+			}), function (error) {
 				console.log("send scriptiemail");
-				$http.post("/MailScriptie", {body: x, "promotor": ThePromotor}).success(function(){
+				$http.post("/MailScriptie", {body: x, "promotor": ThePromotor}).success(function () {
 					console.log("mail send");
 				});
-			})
-		};
+			};
 
-		//Issues
-		var IssueBody;
-		var IssueTitel;
-		var IssueNumber;
-		var IssueState;
-		$scope.IssueBodys = [];
-		$scope.IssueTitels = [];
-		$scope.IssueNumbers = [];
-		$scope.IssueStates = [];
-		$scope.Repeat = [];
+			//Issues
+			var IssueBody;
+			var IssueTitel;
+			var IssueNumber;
+			var IssueState;
+			$scope.IssueBodys = [];
+			$scope.IssueTitels = [];
+			$scope.IssueNumbers = [];
+			$scope.IssueStates = [];
+			$scope.Repeat = [];
 
-		$scope.GetIssues = function(){
-			console.log("Call for Issues");
-			$http.get(apiAllIssuesCall + x + "/issues" + OauthToken).then(function (response){
+			$scope.GetIssues = function () {
+				console.log("Call for Issues");
+				$http.get(apiAllIssuesCall + x + "/issues" + OauthToken).then(function (response) {
 
-				$scope.IssueBodys.length = 0;
-				$scope.IssueTitels.length = 0;
-				$scope.IssueNumbers.length = 0;
-				$scope.IssueStates.length = 0;
-				$scope.Repeat.length = 0;
+					$scope.IssueBodys.length = 0;
+					$scope.IssueTitels.length = 0;
+					$scope.IssueNumbers.length = 0;
+					$scope.IssueStates.length = 0;
+					$scope.Repeat.length = 0;
 
-				for (var i = 0; i < response.data.length; i++) {
-					IssueBody = response.data[i].body;
-					IssueTitel = response.data[i].title;
-					IssueNumber = response.data[i].number;
-					IssueState = response.data[i].state;
-					console.log(IssueBody);
+					for (var i = 0; i < response.data.length; i++) {
+						IssueBody = response.data[i].body;
+						IssueTitel = response.data[i].title;
+						IssueNumber = response.data[i].number;
+						IssueState = response.data[i].state;
+						console.log(IssueBody);
 
-					$scope.IssueBodys.push(IssueBody);
-					$scope.IssueTitels.push(IssueTitel);
-					$scope.IssueNumbers.push(IssueNumber);
-					$scope.IssueStates.push(IssueState);
-					$scope.Repeat.push(i);
+						$scope.IssueBodys.push(IssueBody);
+						$scope.IssueTitels.push(IssueTitel);
+						$scope.IssueNumbers.push(IssueNumber);
+						$scope.IssueStates.push(IssueState);
+						$scope.Repeat.push(i);
 
 
-				};
-			});
-			console.log("Issues recieved");
-		};
+					}
+					;
+				});
+				console.log("Issues recieved");
+			};
 
-		var TitleIssue;
-		var BodyIssue;
+			var TitleIssue;
+			var BodyIssue;
 
-		$scope.CreateIssue = function(){
-			TitleIssue = document.getElementById("Title").value;
-			BodyIssue = document.getElementById("Body").value;
-			console.log(TitleIssue);
-			console.log(BodyIssue);
-			if(TitleIssue != "" && BodyIssue != ""){
-				$http.post(apiAllIssuesCall + x + '/issues' + OauthToken, 
-					{'title': TitleIssue, 'body': BodyIssue}, 
-					{ headers: { 'Content-Type': 'application/json'}}).then(function(res){
+			$scope.CreateIssue = function () {
+				TitleIssue = document.getElementById("Title").value;
+				BodyIssue = document.getElementById("Body").value;
+				console.log(TitleIssue);
+				console.log(BodyIssue);
+				if (TitleIssue != "" && BodyIssue != "") {
+					$http.post(apiAllIssuesCall + x + '/issues' + OauthToken,
+						{'title': TitleIssue, 'body': BodyIssue},
+						{headers: {'Content-Type': 'application/json'}}).then(function (res) {
 						console.log(res);
 					});
-				}else{alert('Bijde velden moeten ingevuld worden.')};
+				} else {
+					alert('Bijde velden moeten ingevuld worden.')
+				}
+				;
 
 				document.getElementById("Title").value = "";
 				document.getElementById("Body").value = "";
@@ -502,11 +489,42 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			};
 		};
 
-		$scope.showSelectedText = function() {
-			$scope.selectedText =  $scope.getSelectionText();
+		$scope.GetRecentLog = function () {
+			console.log("in function");
+				$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
+					console.log(response.data.download_url);
+					LogLink = response.data.download_url;
+					$http.get(LogLink).then(function (response) {
+						//console.log(response.data);
+						PulledLog = response.data;
+						FilterLog();
+					});
+				});
+			}, function (error) {
+				console.log("send Logmail");
+				$http.post("/MailLog", {body: x, "promotor": ThePromotor}).success(function () {
+					console.log("LogMail send");
+				});
+			};
+		
+		$scope.GetFullLog = function() {
+			$http.get(apiCallInfo + x + apiCallInfoLog + OauthToken).then(function (response) {
+				console.log(response.data.download_url);
+				LogLink = response.data.download_url;
+				$http.get(LogLink).then(function (response) {
+					//console.log(response.data);
+					PulledLogFull = response.data;
+					FullLogHtml = Converter.makeHtml(PulledLogFull);
+					$scope.FullLog = $sce.trustAsHtml(FullLogHtml);
+				});
+			});
+		}
+
+		$scope.showSelectedText = function () {
+			$scope.selectedText = $scope.getSelectionText();
 		};
 
-		$scope.getSelectionText = function() {
+		$scope.getSelectionText = function () {
 			var text = "";
 			if (window.getSelection) {
 				text = window.getSelection().toString();
@@ -516,7 +534,8 @@ angular.module("theapp",['myapp','myapp2']).controller("myCtrl",function($http, 
 			return text;
 		};
 
-		$scope.AddComment = function(){
+		$scope.AddComment = function () {
 
 		};
+	}
 	});

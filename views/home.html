@@ -125,13 +125,12 @@
 									<div ng-switch-when="1">
 										<div style="overflow-y:scroll;height:75%;">
 											<div ng-repeat="i in Repeat">
-												<div>
-													<br>
-													<p>Title: {{IssueTitels[i]}}</p>
-													<p>Issue Number: {{IssueNumbers[i]}}</p>
-													<p>Body: {{IssueBodys[i]}}</p>
-													<p>State: {{IssueStates[i]}}</p>
+												<div class="panel panel-info">
+													<div class="panel-heading">Title: {{IssueTitels[i]}}</div>
+													<div class="panel-body">Body: {{IssueBodys[i]}}t</div>
+													<div class="panel-footer">State: {{IssueStates[i]}} Number: {{IssueNumbers[i]}}</div>
 												</div>
+												<br>
 											</div>
 										</div>
 										<div ng-click="Btn_CreateIssue()">
